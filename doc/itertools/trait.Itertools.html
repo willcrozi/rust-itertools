@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The itertools library documentation.">
+
+    <title>itertools::Itertools - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body>
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait current' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.append_tuple.html'>append_tuple</a><a class='fn ' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a></div>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content trait">
+<h1 class='fqn'>Trait <a href='index.html'>itertools</a>::<a class='trait' href=''>Itertools</a><span class='out-of-band'><a id='src-2949' href='../src/itertools/src/lib.rs.html#142-184'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
+    fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt; { ... }
+    fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self) { ... }
+    fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt; { ... }
+    fn <a href='#method.write_to' class='fnname'>write_to</a>&lt;'a, I: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;&amp;'a mut A&gt;&gt;(&amp;mut self, iter: I) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a> { ... }
+}</pre><div class='docblock'><p>Extra iterator methods for arbitrary iterators</p>
+</div>
+            <h2 id='provided-methods'>Provided Methods</h2>
+            <div class='methods'>
+        <h3 id='method.fn_map' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt;</code></h3><div class='docblock'><p>Like regular <code>.map</code>, but using a simple function pointer instead,
+so that the resulting <code>FnMap</code> iterator value can be cloned.</p>
+</div><h3 id='method.drain' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self)</code></h3><div class='docblock'><p>Run the iterator to the end and consume all its elements</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2></div><h3 id='method.interleave' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt;</code></h3><div class='docblock'><p>Alternate elements from two iterators until both
+are run out</p>
+</div><h3 id='method.write_to' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.write_to' class='fnname'>write_to</a>&lt;'a, I: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;&amp;'a mut A&gt;&gt;(&amp;mut self, iter: I) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Assign to each reference in <code>iter</code> from this iterator, stopping
+at the shortest of the two iterators.</p>
+
+<p>Return the number of elements written.</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;A, T: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt; <a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Itertools</a>&lt;A&gt; for T</code></li>
+</ul><script type="text/javascript" async
+                              src="../implementors/itertools/trait.Itertools.js">
+                      </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code> (or <code>str</code>), <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "itertools";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
