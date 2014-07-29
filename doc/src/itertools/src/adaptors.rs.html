@@ -230,6 +230,17 @@
 <span id='190'>190</span>
 <span id='191'>191</span>
 <span id='192'>192</span>
+<span id='193'>193</span>
+<span id='194'>194</span>
+<span id='195'>195</span>
+<span id='196'>196</span>
+<span id='197'>197</span>
+<span id='198'>198</span>
+<span id='199'>199</span>
+<span id='200'>200</span>
+<span id='201'>201</span>
+<span id='202'>202</span>
+<span id='203'>203</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -241,6 +252,8 @@
 
 <span class='doccomment'>/// Alternate elements from two iterators until both</span>
 <span class='doccomment'>/// are run out</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Iterator element type is `A` if `I: Iterator&lt;A&gt;`</span>
 <span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Interleave</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
     <span class='ident'>a</span>: <span class='ident'>I</span>,
@@ -276,7 +289,9 @@
 <span class='doccomment'>/// Clonable iterator adaptor to map elementwise</span>
 <span class='doccomment'>/// from `Iterator&lt;A&gt;` to `Iterator&lt;B&gt;`</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Created with the `.fn_map(..)` method on an iterator</span>
+<span class='doccomment'>/// Created with `.static_map(..)` on an iterator</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Iterator element type is `B`</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
     <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
@@ -319,16 +334,18 @@
 
 <span class='doccomment'>/// An iterator adaptor that allows putting back a single</span>
 <span class='doccomment'>/// item to the front of the iterator.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Iterator element type is `A`</span>
 <span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span><span class='op'>&gt;</span> {
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
     <span class='ident'>top</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>,
-    <span class='ident'>iter</span>: <span class='ident'>T</span>
+    <span class='ident'>iter</span>: <span class='ident'>I</span>
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>///</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// Iterator element type is `A`</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>it</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>it</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
         <span class='ident'>PutBack</span>{<span class='ident'>top</span>: <span class='prelude-val'>None</span>, <span class='ident'>iter</span>: <span class='ident'>it</span>}
     }
 
@@ -341,7 +358,7 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span><span class='op'>&gt;</span> {
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>top</span>.<span class='ident'>take</span>() {
@@ -362,6 +379,8 @@
 
 <span class='doccomment'>/// An iterator adaptor that iterates over the cartesian product of</span>
 <span class='doccomment'>/// the element sets of two iterators `I` and `J`.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Iterator element type is `(A, B)` if `I: Iterator&lt;A&gt;` and `J: Iterator&lt;B&gt;`</span>
 <span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
     <span class='ident'>a</span>: <span class='ident'>I</span>,
@@ -373,6 +392,9 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>, <span class='ident'>J</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;&gt;</span>
     <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> 
 {
+    <span class='doccomment'>/// Create a new cartesian product iterator</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Iterator element type is `(A, B)` if `I: Iterator&lt;A&gt;` and `J: Iterator&lt;B&gt;`</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>i</span>: <span class='ident'>I</span>, <span class='ident'>j</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span>
     {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>i</span> <span class='op'>=</span> <span class='ident'>i</span>;

@@ -24,7 +24,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.append_tuple.html'>append_tuple</a><a class='fn ' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro current' href='macro.iproduct!.html'>iproduct!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro current' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -39,7 +39,7 @@
     </nav>
 
     <section id='main' class="content macro">
-<h1 class='fqn'><a href='index.html'>itertools</a>::<a class='macro' href=''>iproduct!</a><span class='out-of-band'><a id='src-4294967295' href='../src/itertools/src/lib.rs.html#89-103'>[src]</a></span></h1>
+<h1 class='fqn'><a href='index.html'>itertools</a>::<a class='macro' href=''>iproduct!</a><span class='out-of-band'><a id='src-4294967295' href='../src/itertools/src/lib.rs.html#88-105'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='kw'>pub</span> <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>iproduct</span>(
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
@@ -47,10 +47,13 @@
     );
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>:<span class='ident'>expr</span> $(, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>:<span class='ident'>expr</span>)<span class='op'>*</span>) <span class='op'>=&gt;</span> (
         {
+            <span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>unused_imports</span>)]</span>
+            <span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>AppendTuple</span>;
             <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> ::<span class='ident'>itertools</span>::<span class='ident'>Product</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>);
+            <span class='comment'>// FIXME: Use fn_map here somehow</span>
             $(
                 <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> ::<span class='ident'>itertools</span>::<span class='ident'>Product</span>::<span class='ident'>new</span>(<span class='ident'>it</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>)
-                    .<span class='ident'>fn_map</span>(::<span class='ident'>itertools</span>::<span class='ident'>append_tuple</span>);
+                    .<span class='ident'>map</span>(<span class='op'>|</span>(<span class='ident'>t</span>, <span class='ident'>x</span>)<span class='op'>|</span> <span class='ident'>t</span>.<span class='ident'>append</span>(<span class='ident'>x</span>));
             )<span class='op'>*</span>
             <span class='ident'>it</span>
         }
@@ -58,6 +61,10 @@
 )
 </pre>
 <div class='docblock'><p>Create an iterator over the “cartesian product” of iterators.</p>
+
+<p>Iterator element type is like <code>(A, B, ..., E)</code> if formed
+from iterators <code>(I, J, ..., M)</code> implementing <code>I: Iterator&lt;A&gt;</code>,
+<code>J: Iterator&lt;B&gt;</code>, ..., <code>M: Iterator&lt;E&gt;</code></p>
 
 <h2 id="example" class='section-header'><a
                            href="#example">Example</a></h2><pre class='rust '>

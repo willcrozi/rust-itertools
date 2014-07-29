@@ -24,7 +24,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait current' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.append_tuple.html'>append_tuple</a><a class='fn ' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait current' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -39,11 +39,13 @@
     </nav>
 
     <section id='main' class="content trait">
-<h1 class='fqn'>Trait <a href='index.html'>itertools</a>::<a class='trait' href=''>Itertools</a><span class='out-of-band'><a id='src-2949' href='../src/itertools/src/lib.rs.html#142-184'>[src]</a></span></h1>
+<h1 class='fqn'>Trait <a href='index.html'>itertools</a>::<a class='trait' href=''>Itertools</a><span class='out-of-band'><a id='src-2991' href='../src/itertools/src/lib.rs.html#184-259'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
     fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt; { ... }
-    fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self) { ... }
     fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt; { ... }
+    fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a> { ... }
+    fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self) { ... }
+    fn <a href='#method.apply' class='fnname'>apply</a>(&amp;mut self, f: |A|) { ... }
     fn <a href='#method.write_to' class='fnname'>write_to</a>&lt;'a, I: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;&amp;'a mut A&gt;&gt;(&amp;mut self, iter: I) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a> { ... }
 }</pre><div class='docblock'><p>Extra iterator methods for arbitrary iterators</p>
 </div>
@@ -51,11 +53,26 @@
             <div class='methods'>
         <h3 id='method.fn_map' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt;</code></h3><div class='docblock'><p>Like regular <code>.map</code>, but using a simple function pointer instead,
 so that the resulting <code>FnMap</code> iterator value can be cloned.</p>
-</div><h3 id='method.drain' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self)</code></h3><div class='docblock'><p>Run the iterator to the end and consume all its elements</p>
+
+<p>Iterator element type is <code>B</code></p>
+</div><h3 id='method.interleave' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt;</code></h3><div class='docblock'><p>Alternate elements from two iterators until both
+are run out</p>
+
+<p>Iterator element type is <code>A</code></p>
+</div><h3 id='method.dropn' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Consume <code>n</code> elements of the iterator eagerly</p>
+
+<p>Return actual number of elements consumed,
+until done or reaching the end.</p>
+</div><h3 id='method.drain' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self)</code></h3><div class='docblock'><p>Run the iterator, eagerly, to the end and consume all its elements.</p>
 
 <h2 id="example" class='section-header'><a
-                           href="#example">Example</a></h2></div><h3 id='method.interleave' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt;</code></h3><div class='docblock'><p>Alternate elements from two iterators until both
-are run out</p>
+                           href="#example">Example</a></h2><pre class='rust '>
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>cnt</span> <span class='op'>=</span> <span class='number'>0</span>;
+<span class='string'>&quot;hi&quot;</span>.<span class='ident'>chars</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>c</span><span class='op'>|</span> <span class='ident'>cnt</span> <span class='op'>+=</span> <span class='number'>1</span>).<span class='ident'>drain</span>();
+</pre>
+</div><h3 id='method.apply' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.apply' class='fnname'>apply</a>(&amp;mut self, f: |A|)</code></h3><div class='docblock'><p>Run the closure <code>f</code> eagerly on each element of the iterator.</p>
+
+<p>Consumes the iterator until its end.</p>
 </div><h3 id='method.write_to' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.write_to' class='fnname'>write_to</a>&lt;'a, I: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;&amp;'a mut A&gt;&gt;(&amp;mut self, iter: I) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Assign to each reference in <code>iter</code> from this iterator, stopping
 at the shortest of the two iterators.</p>
 

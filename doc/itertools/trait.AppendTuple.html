@@ -24,7 +24,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.append_tuple.html'>append_tuple</a><a class='fn ' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -39,10 +39,11 @@
     </nav>
 
     <section id='main' class="content trait">
-<h1 class='fqn'>Trait <a href='index.html'>itertools</a>::<a class='trait' href=''>AppendTuple</a><span class='out-of-band'><a id='src-1851' href='../src/itertools/src/lib.rs.html#44-46'>[src]</a></span></h1>
-<pre class='rust trait'>trait AppendTuple&lt;X, Y&gt; {
+<h1 class='fqn'>Trait <a href='index.html'>itertools</a>::<a class='trait' href=''>AppendTuple</a><span class='out-of-band'><a id='src-1917' href='../src/itertools/src/lib.rs.html#45-47'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait AppendTuple&lt;X, Y&gt; {
     fn <a href='#tymethod.append' class='fnname'>append</a>(self, x: X) -&gt; Y;
-}</pre><div class='docblock'><p>A trait for (x,y,z) ++ w =&gt; (x,y,z,w)</p>
+}</pre><div class='docblock'><p>A helper trait for (x,y,z) ++ w =&gt; (x,y,z,w),
+used for implementing <code>iproduct!</code> and <code>izip!</code></p>
 </div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>

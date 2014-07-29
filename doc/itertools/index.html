@@ -39,7 +39,7 @@
     </nav>
 
     <section id='main' class="content mod">
-<h1 class='fqn'>Crate <a class='mod' href=''>itertools</a><span class='out-of-band'><a href='stability.html'>[stability dashboard]</a> <a id='src-0' href='../src/itertools/src/lib.rs.html#1-186'>[src]</a></span></h1>
+<h1 class='fqn'>Crate <a class='mod' href=''>itertools</a><span class='out-of-band'><a href='stability.html'>[stability dashboard]</a> <a id='src-0' href='../src/itertools/src/lib.rs.html#1-261'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the macros in this crate, use the <code>phase(plugin)</code> attribute:</p>
@@ -81,6 +81,13 @@ and directly inspired by Python. Supports an optional filter clause.</p>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.iproduct!.html'
                                title='itertools::iproduct!'>iproduct!</a></td>
                         <td class='docblock short'><p>Create an iterator over the “cartesian product” of iterators.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.izip!.html'
+                               title='itertools::izip!'>izip!</a></td>
+                        <td class='docblock short'><p>Create an iterator running multiple iterators in lockstep.</p>
 </td>
                     </tr>
                 </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
@@ -144,7 +151,8 @@ item to the front of the iterator.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.AppendTuple.html'
                                title='itertools::AppendTuple'>AppendTuple</a></td>
-                        <td class='docblock short'><p>A trait for (x,y,z) ++ w =&gt; (x,y,z,w)</p>
+                        <td class='docblock short'><p>A helper trait for (x,y,z) ++ w =&gt; (x,y,z,w),
+used for implementing <code>iproduct!</code> and <code>izip!</code></p>
 </td>
                     </tr>
                 
@@ -156,12 +164,6 @@ item to the front of the iterator.</p>
                     </tr>
                 </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='fn' href='fn.append_tuple.html'
-                               title='itertools::append_tuple'>append_tuple</a></td>
-                        <td class='docblock short'></td>
-                    </tr>
-                
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='fn' href='fn.times.html'
                                title='itertools::times'>times</a></td>
