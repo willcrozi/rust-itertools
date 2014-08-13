@@ -69,8 +69,10 @@ tweak rustdoc css
 
 <h2 id="example" class='section-header'><a
                            href="#example">Example</a></h2><pre class='rust '>
-<span class='kw'>let</span> <span class='ident'>xs</span> <span class='op'>=</span> [<span class='number'>0i</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>, <span class='number'>5</span>];
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='ident'>StrideMut</span>::<span class='ident'>from_slice</span>(<span class='ident'>xs</span>.<span class='ident'>as_slice</span>(), <span class='number'>2</span>);
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>StrideMut</span>;
+
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>xs</span> <span class='op'>=</span> [<span class='number'>0i</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>, <span class='number'>5</span>];
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='ident'>StrideMut</span>::<span class='ident'>from_slice</span>(<span class='ident'>xs</span>.<span class='ident'>as_mut_slice</span>(), <span class='number'>2</span>);
 </pre>
 </div><h4 id='method.from_ptrs' class='method'><a class='stability Unmarked' title='No stability level'></a><code>unsafe fn <a href='#method.from_ptrs' class='fnname'>from_ptrs</a>(begin: *mut A, end: *mut A, stride: <a href='http://doc.rust-lang.org/master/std/primitive.int.html'>int</a>) -&gt; <a class='struct' href='../itertools/struct.StrideMut.html' title='itertools::StrideMut'>StrideMut</a>&lt;'a, A&gt;</code></h4>
 <div class='docblock'><p>Create Stride iterator from raw pointers from the <em>inclusive</em>

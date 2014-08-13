@@ -339,6 +339,10 @@ tweak rustdoc css
 <span id='283'>283</span>
 <span id='284'>284</span>
 <span id='285'>285</span>
+<span id='286'>286</span>
+<span id='287'>287</span>
+<span id='288'>288</span>
+<span id='289'>289</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -388,6 +392,8 @@ tweak rustdoc css
     <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Stride;</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// let xs = [0i, 1, 2, 3, 4, 5];</span>
     <span class='doccomment'>/// let mut iter = Stride::from_slice(xs.as_slice(), 2);</span>
     <span class='doccomment'>/// ```</span>
@@ -460,8 +466,10 @@ tweak rustdoc css
     <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
-    <span class='doccomment'>/// let xs = [0i, 1, 2, 3, 4, 5];</span>
-    <span class='doccomment'>/// let mut iter = StrideMut::from_slice(xs.as_slice(), 2);</span>
+    <span class='doccomment'>/// use itertools::StrideMut;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let mut xs = [0i, 1, 2, 3, 4, 5];</span>
+    <span class='doccomment'>/// let mut iter = StrideMut::from_slice(xs.as_mut_slice(), 2);</span>
     <span class='doccomment'>/// ```</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_slice</span>(<span class='ident'>xs</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> [<span class='ident'>A</span>], <span class='ident'>step</span>: <span class='ident'>uint</span>) <span class='op'>-&gt;</span> <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
     {
