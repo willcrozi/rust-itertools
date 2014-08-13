@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The itertools library documentation.">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/stride.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>stride.rs.html -- source</title>
 
@@ -11,8 +13,22 @@
 
     
     
+<!--
+tweak rustdoc css
+-->
+<style type="text/css">
+.collapse-toggle {
+    display: none;
+}
+
+.stability {
+    display: none;
+}
+</style>
+
+
 </head>
-<body>
+<body class="rustdoc">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -211,6 +227,118 @@
 <span id='171'>171</span>
 <span id='172'>172</span>
 <span id='173'>173</span>
+<span id='174'>174</span>
+<span id='175'>175</span>
+<span id='176'>176</span>
+<span id='177'>177</span>
+<span id='178'>178</span>
+<span id='179'>179</span>
+<span id='180'>180</span>
+<span id='181'>181</span>
+<span id='182'>182</span>
+<span id='183'>183</span>
+<span id='184'>184</span>
+<span id='185'>185</span>
+<span id='186'>186</span>
+<span id='187'>187</span>
+<span id='188'>188</span>
+<span id='189'>189</span>
+<span id='190'>190</span>
+<span id='191'>191</span>
+<span id='192'>192</span>
+<span id='193'>193</span>
+<span id='194'>194</span>
+<span id='195'>195</span>
+<span id='196'>196</span>
+<span id='197'>197</span>
+<span id='198'>198</span>
+<span id='199'>199</span>
+<span id='200'>200</span>
+<span id='201'>201</span>
+<span id='202'>202</span>
+<span id='203'>203</span>
+<span id='204'>204</span>
+<span id='205'>205</span>
+<span id='206'>206</span>
+<span id='207'>207</span>
+<span id='208'>208</span>
+<span id='209'>209</span>
+<span id='210'>210</span>
+<span id='211'>211</span>
+<span id='212'>212</span>
+<span id='213'>213</span>
+<span id='214'>214</span>
+<span id='215'>215</span>
+<span id='216'>216</span>
+<span id='217'>217</span>
+<span id='218'>218</span>
+<span id='219'>219</span>
+<span id='220'>220</span>
+<span id='221'>221</span>
+<span id='222'>222</span>
+<span id='223'>223</span>
+<span id='224'>224</span>
+<span id='225'>225</span>
+<span id='226'>226</span>
+<span id='227'>227</span>
+<span id='228'>228</span>
+<span id='229'>229</span>
+<span id='230'>230</span>
+<span id='231'>231</span>
+<span id='232'>232</span>
+<span id='233'>233</span>
+<span id='234'>234</span>
+<span id='235'>235</span>
+<span id='236'>236</span>
+<span id='237'>237</span>
+<span id='238'>238</span>
+<span id='239'>239</span>
+<span id='240'>240</span>
+<span id='241'>241</span>
+<span id='242'>242</span>
+<span id='243'>243</span>
+<span id='244'>244</span>
+<span id='245'>245</span>
+<span id='246'>246</span>
+<span id='247'>247</span>
+<span id='248'>248</span>
+<span id='249'>249</span>
+<span id='250'>250</span>
+<span id='251'>251</span>
+<span id='252'>252</span>
+<span id='253'>253</span>
+<span id='254'>254</span>
+<span id='255'>255</span>
+<span id='256'>256</span>
+<span id='257'>257</span>
+<span id='258'>258</span>
+<span id='259'>259</span>
+<span id='260'>260</span>
+<span id='261'>261</span>
+<span id='262'>262</span>
+<span id='263'>263</span>
+<span id='264'>264</span>
+<span id='265'>265</span>
+<span id='266'>266</span>
+<span id='267'>267</span>
+<span id='268'>268</span>
+<span id='269'>269</span>
+<span id='270'>270</span>
+<span id='271'>271</span>
+<span id='272'>272</span>
+<span id='273'>273</span>
+<span id='274'>274</span>
+<span id='275'>275</span>
+<span id='276'>276</span>
+<span id='277'>277</span>
+<span id='278'>278</span>
+<span id='279'>279</span>
+<span id='280'>280</span>
+<span id='281'>281</span>
+<span id='282'>282</span>
+<span id='283'>283</span>
+<span id='284'>284</span>
+<span id='285'>285</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -220,10 +348,9 @@
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>kinds</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ptr</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
-
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::<span class='ident'>Saturating</span>;
 
 <span class='doccomment'>/// Similar to the slice iterator, but with a certain number of steps</span>
 <span class='doccomment'>/// (stride) skipped per iteration.</span>
@@ -232,6 +359,8 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Iterator element type is `&amp;&#39;a A`</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> {
+    <span class='comment'>// begin is NULL when the iterator is exhausted, because</span>
+    <span class='comment'>// both begin and end are inclusive endpoints.</span>
     <span class='ident'>begin</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>A</span>,
     <span class='comment'>// Unlike the slice iterator, end is inclusive and the last</span>
     <span class='comment'>// pointer we will visit. This makes it possible to have</span>
@@ -239,6 +368,17 @@
     <span class='ident'>end</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>A</span>,
     <span class='ident'>stride</span>: <span class='ident'>int</span>,
     <span class='ident'>life</span>: <span class='ident'>kinds</span>::<span class='ident'>marker</span>::<span class='ident'>ContravariantLifetime</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+}
+
+<span class='doccomment'>/// Stride with mutable elements</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Iterator element type is `&amp;&#39;a mut A`</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> {
+    <span class='ident'>begin</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>A</span>,
+    <span class='ident'>end</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>A</span>,
+    <span class='ident'>stride</span>: <span class='ident'>int</span>,
+    <span class='ident'>life</span>: <span class='ident'>kinds</span>::<span class='ident'>marker</span>::<span class='ident'>ContravariantLifetime</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
+    <span class='ident'>nocopy</span>: <span class='ident'>kinds</span>::<span class='ident'>marker</span>::<span class='ident'>NoCopy</span>
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
@@ -257,7 +397,8 @@
         <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>mem</span>::<span class='ident'>size_of</span>::<span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>() <span class='op'>!=</span> <span class='number'>0</span>);
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>ptr</span>::<span class='ident'>null</span>();
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>end</span> <span class='op'>=</span> <span class='ident'>ptr</span>::<span class='ident'>null</span>();
-        <span class='kw'>let</span> <span class='ident'>nelem</span> <span class='op'>=</span> <span class='ident'>xs</span>.<span class='ident'>len</span>().<span class='ident'>saturating_add</span>(<span class='ident'>step</span> <span class='op'>-</span> <span class='number'>1</span>) <span class='op'>/</span> <span class='ident'>step</span>;
+        <span class='kw'>let</span> (<span class='ident'>d</span>, <span class='ident'>r</span>) <span class='op'>=</span> <span class='ident'>num</span>::<span class='ident'>div_rem</span>(<span class='ident'>xs</span>.<span class='ident'>len</span>(), <span class='ident'>step</span>);
+        <span class='kw'>let</span> <span class='ident'>nelem</span> <span class='op'>=</span> <span class='ident'>d</span> <span class='op'>+</span> <span class='kw'>if</span> <span class='ident'>r</span> <span class='op'>&gt;</span> <span class='number'>0</span> { <span class='number'>1</span> } <span class='kw'>else</span> { <span class='number'>0</span> };
         <span class='kw'>unsafe</span> {
             <span class='kw'>if</span> <span class='ident'>nelem</span> <span class='op'>!=</span> <span class='number'>0</span> {
                 <span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>xs</span>.<span class='ident'>as_ptr</span>();
@@ -282,7 +423,26 @@
         }
     }
 
-    <span class='doccomment'>/// Swap the being and end pointer and reverse the stride,</span>
+    <span class='doccomment'>/// Create Stride iterator from an existing Stride iterator</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_stride</span>(<span class='ident'>it</span>: <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>, <span class='ident'>step</span>: <span class='ident'>uint</span>) <span class='op'>-&gt;</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
+    {
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>step</span> <span class='op'>!=</span> <span class='number'>0</span>);
+        <span class='kw'>let</span> <span class='ident'>newstride</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>stride</span> <span class='op'>*</span> (<span class='ident'>step</span> <span class='kw'>as</span> <span class='ident'>int</span>);
+        <span class='kw'>let</span> <span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>begin</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>end</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>end</span>;
+        <span class='kw'>unsafe</span> {
+            <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
+                <span class='kw'>let</span> <span class='ident'>nelem</span> <span class='op'>=</span> (<span class='ident'>end</span> <span class='kw'>as</span> <span class='ident'>int</span> <span class='op'>-</span> <span class='ident'>begin</span> <span class='kw'>as</span> <span class='ident'>int</span>)
+                            <span class='op'>/</span> (<span class='ident'>mem</span>::<span class='ident'>size_of</span>::<span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>() <span class='kw'>as</span> <span class='ident'>int</span>)
+                            <span class='op'>/</span> <span class='ident'>newstride</span>;
+
+                <span class='ident'>end</span> <span class='op'>=</span> <span class='ident'>begin</span>.<span class='ident'>offset</span>(<span class='ident'>nelem</span> <span class='op'>*</span> <span class='ident'>newstride</span>);
+            }
+            <span class='ident'>Stride</span>::<span class='ident'>from_ptrs</span>(<span class='ident'>begin</span>, <span class='ident'>end</span>, <span class='ident'>newstride</span>)
+        }
+    }
+
+    <span class='doccomment'>/// Swap the begin and end pointer and reverse the stride,</span>
     <span class='doccomment'>/// in effect reversing the iterator.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>swap_ends</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) {
@@ -293,74 +453,154 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
 {
-    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span>
+    <span class='doccomment'>/// Create Stride iterator from a slice and the element step count</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ## Example</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// let xs = [0i, 1, 2, 3, 4, 5];</span>
+    <span class='doccomment'>/// let mut iter = StrideMut::from_slice(xs.as_slice(), 2);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_slice</span>(<span class='ident'>xs</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> [<span class='ident'>A</span>], <span class='ident'>step</span>: <span class='ident'>uint</span>) <span class='op'>-&gt;</span> <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
     {
-        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
-            <span class='prelude-val'>None</span>
-        } <span class='kw'>else</span> {
-            <span class='kw'>unsafe</span> {
-                <span class='kw'>let</span> <span class='ident'>elt</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span> <span class='op'>=</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='self'>self</span>.<span class='ident'>begin</span>);
-                <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>end</span> {
-                    <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>ptr</span>::<span class='ident'>null</span>();
-                } <span class='kw'>else</span> {
-                    <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>offset</span>(<span class='self'>self</span>.<span class='ident'>stride</span>);
-                }
-                <span class='prelude-val'>Some</span>(<span class='ident'>elt</span>)
-            }
-        }
-    }
-
-    <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>uint</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>uint</span><span class='op'>&gt;</span>)
-    {
-        <span class='kw'>let</span> <span class='ident'>len</span>;
-        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
-            <span class='ident'>len</span> <span class='op'>=</span> <span class='number'>0</span>;
-        } <span class='kw'>else</span> {
-            <span class='ident'>len</span> <span class='op'>=</span> (<span class='self'>self</span>.<span class='ident'>end</span> <span class='kw'>as</span> <span class='ident'>uint</span> <span class='op'>-</span> <span class='self'>self</span>.<span class='ident'>begin</span> <span class='kw'>as</span> <span class='ident'>uint</span>) <span class='kw'>as</span> <span class='ident'>int</span> <span class='op'>/</span> <span class='self'>self</span>.<span class='ident'>stride</span>
-                <span class='op'>/</span> <span class='ident'>mem</span>::<span class='ident'>size_of</span>::<span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>() <span class='kw'>as</span> <span class='ident'>int</span> <span class='op'>+</span> <span class='number'>1</span>;
-        }
-
-        (<span class='ident'>len</span> <span class='kw'>as</span> <span class='ident'>uint</span>, <span class='prelude-val'>Some</span>(<span class='ident'>len</span> <span class='kw'>as</span> <span class='ident'>uint</span>))
-    }
-}
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
-{
-    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span>
-    {
-        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
-            <span class='prelude-val'>None</span>
-        } <span class='kw'>else</span> {
-            <span class='kw'>unsafe</span> {
-                <span class='kw'>let</span> <span class='ident'>elt</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span> <span class='op'>=</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='self'>self</span>.<span class='ident'>end</span>);
-                <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>end</span> {
-                    <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>ptr</span>::<span class='ident'>null</span>();
-                } <span class='kw'>else</span> {
-                    <span class='self'>self</span>.<span class='ident'>end</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>end</span>.<span class='ident'>offset</span>(<span class='op'>-</span><span class='self'>self</span>.<span class='ident'>stride</span>);
-                }
-                <span class='prelude-val'>Some</span>(<span class='ident'>elt</span>)
-            }
-        }
-    }
-}
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>ExactSize</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> { }
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Index</span><span class='op'>&lt;</span><span class='ident'>uint</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
-{
-    <span class='kw'>fn</span> <span class='ident'>index</span><span class='op'>&lt;</span><span class='lifetime'>&#39;b</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> <span class='self'>self</span>, <span class='ident'>i</span>: <span class='kw-2'>&amp;</span><span class='ident'>uint</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> <span class='ident'>A</span>
-    {
-        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>*</span><span class='ident'>i</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>size_hint</span>().<span class='ident'>val0</span>());
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>step</span> <span class='op'>!=</span> <span class='number'>0</span>);
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>mem</span>::<span class='ident'>size_of</span>::<span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>() <span class='op'>!=</span> <span class='number'>0</span>);
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>ptr</span>::<span class='ident'>mut_null</span>();
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>end</span> <span class='op'>=</span> <span class='ident'>ptr</span>::<span class='ident'>mut_null</span>();
+        <span class='kw'>let</span> (<span class='ident'>d</span>, <span class='ident'>r</span>) <span class='op'>=</span> <span class='ident'>num</span>::<span class='ident'>div_rem</span>(<span class='ident'>xs</span>.<span class='ident'>len</span>(), <span class='ident'>step</span>);
+        <span class='kw'>let</span> <span class='ident'>nelem</span> <span class='op'>=</span> <span class='ident'>d</span> <span class='op'>+</span> <span class='kw'>if</span> <span class='ident'>r</span> <span class='op'>&gt;</span> <span class='number'>0</span> { <span class='number'>1</span> } <span class='kw'>else</span> { <span class='number'>0</span> };
         <span class='kw'>unsafe</span> {
-            <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>offset</span>(<span class='self'>self</span>.<span class='ident'>stride</span> <span class='op'>*</span> (<span class='op'>*</span><span class='ident'>i</span> <span class='kw'>as</span> <span class='ident'>int</span>));
-            <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>ptr</span>)
+            <span class='kw'>if</span> <span class='ident'>nelem</span> <span class='op'>!=</span> <span class='number'>0</span> {
+                <span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>xs</span>.<span class='ident'>as_mut_ptr</span>();
+                <span class='ident'>end</span> <span class='op'>=</span> <span class='ident'>begin</span>.<span class='ident'>offset</span>(((<span class='ident'>nelem</span> <span class='op'>-</span> <span class='number'>1</span>) <span class='op'>*</span> <span class='ident'>step</span>) <span class='kw'>as</span> <span class='ident'>int</span>);
+            }
+            <span class='ident'>StrideMut</span>::<span class='ident'>from_ptrs</span>(<span class='ident'>begin</span>, <span class='ident'>end</span>, <span class='ident'>step</span> <span class='kw'>as</span> <span class='ident'>int</span>)
+        }
+    }
+
+    <span class='doccomment'>/// Create Stride iterator from raw pointers from the *inclusive*</span>
+    <span class='doccomment'>/// pointer range [begin, end].</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// **Note:** `end` **must** be a whole number of `stride` steps away</span>
+    <span class='doccomment'>/// from `begin`</span>
+    <span class='kw'>pub</span> <span class='kw'>unsafe</span> <span class='kw'>fn</span> <span class='ident'>from_ptrs</span>(<span class='ident'>begin</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>A</span>, <span class='ident'>end</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>A</span>, <span class='ident'>stride</span>: <span class='ident'>int</span>) <span class='op'>-&gt;</span> <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
+    {
+        <span class='ident'>StrideMut</span> {
+            <span class='ident'>begin</span>: <span class='ident'>begin</span>,
+            <span class='ident'>end</span>: <span class='ident'>end</span>,
+            <span class='ident'>stride</span>: <span class='ident'>stride</span>,
+            <span class='ident'>life</span>: <span class='ident'>kinds</span>::<span class='ident'>marker</span>::<span class='ident'>ContravariantLifetime</span>,
+            <span class='ident'>nocopy</span>: <span class='ident'>kinds</span>::<span class='ident'>marker</span>::<span class='ident'>NoCopy</span>
+        }
+    }
+
+    <span class='doccomment'>/// Create StrideMut iterator from an existing StrideMut iterator</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_stride</span>(<span class='ident'>it</span>: <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>, <span class='ident'>step</span>: <span class='ident'>uint</span>) <span class='op'>-&gt;</span> <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
+    {
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>step</span> <span class='op'>!=</span> <span class='number'>0</span>);
+        <span class='kw'>let</span> <span class='ident'>newstride</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>stride</span> <span class='op'>*</span> (<span class='ident'>step</span> <span class='kw'>as</span> <span class='ident'>int</span>);
+        <span class='kw'>let</span> <span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>begin</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>end</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>end</span>;
+        <span class='kw'>unsafe</span> {
+            <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
+                <span class='kw'>let</span> <span class='ident'>nelem</span> <span class='op'>=</span> (<span class='ident'>end</span> <span class='kw'>as</span> <span class='ident'>int</span> <span class='op'>-</span> <span class='ident'>begin</span> <span class='kw'>as</span> <span class='ident'>int</span>)
+                            <span class='op'>/</span> (<span class='ident'>mem</span>::<span class='ident'>size_of</span>::<span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>() <span class='kw'>as</span> <span class='ident'>int</span>)
+                            <span class='op'>/</span> <span class='ident'>newstride</span>;
+
+                <span class='ident'>end</span> <span class='op'>=</span> <span class='ident'>begin</span>.<span class='ident'>offset</span>(<span class='ident'>nelem</span> <span class='op'>*</span> <span class='ident'>newstride</span>);
+            }
+            <span class='ident'>StrideMut</span>::<span class='ident'>from_ptrs</span>(<span class='ident'>begin</span>, <span class='ident'>end</span>, <span class='ident'>newstride</span>)
+        }
+    }
+
+    <span class='doccomment'>/// Swap the begin and end pointer and reverse the stride,</span>
+    <span class='doccomment'>/// in effect reversing the iterator.</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>swap_ends</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) {
+        <span class='kw'>if</span> <span class='op'>!</span><span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
+            <span class='ident'>mem</span>::<span class='ident'>swap</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>begin</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>.<span class='ident'>end</span>);
+            <span class='self'>self</span>.<span class='ident'>stride</span> <span class='op'>=</span> <span class='op'>-</span><span class='self'>self</span>.<span class='ident'>stride</span>;
         }
     }
 }
+
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>stride_iterator</span> {
+    (<span class='kw'>struct</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>:<span class='ident'>ident</span> <span class='op'>-&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>ptr</span>:<span class='ident'>ty</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span>:<span class='ident'>ty</span>) <span class='op'>=&gt;</span> {
+        <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
+        {
+            <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+            <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span><span class='op'>&gt;</span>
+            {
+                <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
+                    <span class='prelude-val'>None</span>
+                } <span class='kw'>else</span> {
+                    <span class='kw'>unsafe</span> {
+                        <span class='kw'>let</span> <span class='ident'>elt</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span> <span class='op'>=</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='self'>self</span>.<span class='ident'>begin</span>);
+                        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>end</span> {
+                            <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>RawPtr</span>::<span class='ident'>null</span>();
+                        } <span class='kw'>else</span> {
+                            <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>offset</span>(<span class='self'>self</span>.<span class='ident'>stride</span>);
+                        }
+                        <span class='prelude-val'>Some</span>(<span class='ident'>elt</span>)
+                    }
+                }
+            }
+
+            <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>uint</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>uint</span><span class='op'>&gt;</span>)
+            {
+                <span class='kw'>let</span> <span class='ident'>len</span>;
+                <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
+                    <span class='ident'>len</span> <span class='op'>=</span> <span class='number'>0</span>;
+                } <span class='kw'>else</span> {
+                    <span class='ident'>len</span> <span class='op'>=</span> (<span class='self'>self</span>.<span class='ident'>end</span> <span class='kw'>as</span> <span class='ident'>uint</span> <span class='op'>-</span> <span class='self'>self</span>.<span class='ident'>begin</span> <span class='kw'>as</span> <span class='ident'>uint</span>) <span class='kw'>as</span> <span class='ident'>int</span> <span class='op'>/</span> <span class='self'>self</span>.<span class='ident'>stride</span>
+                        <span class='op'>/</span> <span class='ident'>mem</span>::<span class='ident'>size_of</span>::<span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>() <span class='kw'>as</span> <span class='ident'>int</span> <span class='op'>+</span> <span class='number'>1</span>;
+                }
+
+                (<span class='ident'>len</span> <span class='kw'>as</span> <span class='ident'>uint</span>, <span class='prelude-val'>Some</span>(<span class='ident'>len</span> <span class='kw'>as</span> <span class='ident'>uint</span>))
+            }
+        }
+
+        <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
+        {
+            <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+            <span class='kw'>fn</span> <span class='ident'>next_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span><span class='op'>&gt;</span>
+            {
+                <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>is_null</span>() {
+                    <span class='prelude-val'>None</span>
+                } <span class='kw'>else</span> {
+                    <span class='kw'>unsafe</span> {
+                        <span class='kw'>let</span> <span class='ident'>elt</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span> <span class='op'>=</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='self'>self</span>.<span class='ident'>end</span>);
+                        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>end</span> {
+                            <span class='self'>self</span>.<span class='ident'>begin</span> <span class='op'>=</span> <span class='ident'>RawPtr</span>::<span class='ident'>null</span>();
+                        } <span class='kw'>else</span> {
+                            <span class='self'>self</span>.<span class='ident'>end</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>end</span>.<span class='ident'>offset</span>(<span class='op'>-</span><span class='self'>self</span>.<span class='ident'>stride</span>);
+                        }
+                        <span class='prelude-val'>Some</span>(<span class='ident'>elt</span>)
+                    }
+                }
+            }
+        }
+
+        <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>ExactSize</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>elem</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> { }
+
+        <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Index</span><span class='op'>&lt;</span><span class='ident'>uint</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
+        {
+            <span class='kw'>fn</span> <span class='ident'>index</span><span class='op'>&lt;</span><span class='lifetime'>&#39;b</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> <span class='self'>self</span>, <span class='ident'>i</span>: <span class='kw-2'>&amp;</span><span class='ident'>uint</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> <span class='ident'>A</span>
+            {
+                <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>*</span><span class='ident'>i</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>size_hint</span>().<span class='ident'>val0</span>());
+                <span class='kw'>unsafe</span> {
+                    <span class='kw'>let</span> <span class='ident'>ptr</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>begin</span>.<span class='ident'>offset</span>(<span class='self'>self</span>.<span class='ident'>stride</span> <span class='op'>*</span> (<span class='op'>*</span><span class='ident'>i</span> <span class='kw'>as</span> <span class='ident'>int</span>));
+                    <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>ptr</span>)
+                }
+            }
+        }
+    }
+}
+
+<span class='macro'>stride_iterator</span><span class='macro'>!</span>{<span class='kw'>struct</span> <span class='ident'>Stride</span> <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>A</span>, <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span>}
+<span class='macro'>stride_iterator</span><span class='macro'>!</span>{<span class='kw'>struct</span> <span class='ident'>StrideMut</span> <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>A</span>, <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>A</span>}
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>fmt</span>::<span class='ident'>Show</span><span class='op'>&gt;</span> <span class='ident'>fmt</span>::<span class='ident'>Show</span> <span class='kw'>for</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
 {
@@ -415,7 +655,7 @@
             </p>
             <p>
                 Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code> (or <code>str</code>), <code>enum</code>,
+                <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
             </p>

@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The itertools library documentation.">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/lib.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
 
@@ -11,8 +13,22 @@
 
     
     
+<!--
+tweak rustdoc css
+-->
+<style type="text/css">
+.collapse-toggle {
+    display: none;
+}
+
+.stability {
+    display: none;
+}
+</style>
+
+
 </head>
-<body>
+<body class="rustdoc">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -309,6 +325,39 @@
 <span id='269'>269</span>
 <span id='270'>270</span>
 <span id='271'>271</span>
+<span id='272'>272</span>
+<span id='273'>273</span>
+<span id='274'>274</span>
+<span id='275'>275</span>
+<span id='276'>276</span>
+<span id='277'>277</span>
+<span id='278'>278</span>
+<span id='279'>279</span>
+<span id='280'>280</span>
+<span id='281'>281</span>
+<span id='282'>282</span>
+<span id='283'>283</span>
+<span id='284'>284</span>
+<span id='285'>285</span>
+<span id='286'>286</span>
+<span id='287'>287</span>
+<span id='288'>288</span>
+<span id='289'>289</span>
+<span id='290'>290</span>
+<span id='291'>291</span>
+<span id='292'>292</span>
+<span id='293'>293</span>
+<span id='294'>294</span>
+<span id='295'>295</span>
+<span id='296'>296</span>
+<span id='297'>297</span>
+<span id='298'>298</span>
+<span id='299'>299</span>
+<span id='300'>300</span>
+<span id='301'>301</span>
+<span id='302'>302</span>
+<span id='303'>303</span>
+<span id='304'>304</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
@@ -339,6 +388,7 @@
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//!</span>
 
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Clones</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Interleave</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Product</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>PutBack</span>;
@@ -346,6 +396,7 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>boxiter</span>::<span class='ident'>BoxIter</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>intersperse</span>::<span class='ident'>Intersperse</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>stride</span>::<span class='ident'>Stride</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>stride</span>::<span class='ident'>StrideMut</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>Times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>times</span>;
 <span class='kw'>mod</span> <span class='ident'>adaptors</span>;
@@ -356,7 +407,7 @@
 
 <span class='doccomment'>/// A helper trait for (x,y,z) ++ w =&gt; (x,y,z,w),</span>
 <span class='doccomment'>/// used for implementing `iproduct!` and `izip!`</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>X</span>, <span class='ident'>Y</span><span class='op'>&gt;</span> {
+<span class='kw'>trait</span> <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>X</span>, <span class='ident'>Y</span><span class='op'>&gt;</span> {
     <span class='kw'>fn</span> <span class='ident'>append</span>(<span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>X</span>) <span class='op'>-&gt;</span> <span class='ident'>Y</span>;
 }
 
@@ -383,6 +434,35 @@
 
 <span class='macro'>impl_append_tuple</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>, <span class='ident'>G</span>, <span class='ident'>H</span>, <span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>K</span>, <span class='ident'>L</span>)
 
+<span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FlatTuples</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='ident'>iter</span>: <span class='ident'>I</span>,
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>X</span>, <span class='ident'>Y</span>, <span class='ident'>T</span>: <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>X</span>, <span class='ident'>Y</span><span class='op'>&gt;</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span>(<span class='ident'>T</span>, <span class='ident'>X</span>)<span class='op'>&gt;&gt;</span>
+<span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Y</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>FlatTuples</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
+{
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Y</span><span class='op'>&gt;</span>
+    {
+        <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>next</span>().<span class='ident'>map</span>(<span class='op'>|</span>(<span class='ident'>t</span>, <span class='ident'>x</span>)<span class='op'>|</span> <span class='ident'>t</span>.<span class='ident'>append</span>(<span class='ident'>x</span>))
+    }
+
+    <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>uint</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>uint</span><span class='op'>&gt;</span>) {
+        <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>()
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>X</span>, <span class='ident'>Y</span>, <span class='ident'>T</span>: <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>X</span>, <span class='ident'>Y</span><span class='op'>&gt;</span>, <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span>(<span class='ident'>T</span>, <span class='ident'>X</span>)<span class='op'>&gt;&gt;</span>
+<span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>Y</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>FlatTuples</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
+{
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>next_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Y</span><span class='op'>&gt;</span>
+    {
+        <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>next_back</span>().<span class='ident'>map</span>(<span class='op'>|</span>(<span class='ident'>t</span>, <span class='ident'>x</span>)<span class='op'>|</span> <span class='ident'>t</span>.<span class='ident'>append</span>(<span class='ident'>x</span>))
+    }
+}
+
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='doccomment'>/// Create an iterator over the “cartesian product” of iterators.</span>
 <span class='doccomment'>///</span>
@@ -405,13 +485,9 @@
     );
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>:<span class='ident'>expr</span> $(, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>:<span class='ident'>expr</span>)<span class='op'>*</span>) <span class='op'>=&gt;</span> (
         {
-            <span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>unused_imports</span>)]</span>
-            <span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>AppendTuple</span>;
             <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> ::<span class='ident'>itertools</span>::<span class='ident'>Product</span>::<span class='ident'>new</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>);
-            <span class='comment'>// FIXME: Use fn_map here somehow</span>
             $(
-                <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> ::<span class='ident'>itertools</span>::<span class='ident'>Product</span>::<span class='ident'>new</span>(<span class='ident'>it</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>)
-                    .<span class='ident'>map</span>(<span class='op'>|</span>(<span class='ident'>t</span>, <span class='ident'>x</span>)<span class='op'>|</span> <span class='ident'>t</span>.<span class='ident'>append</span>(<span class='ident'>x</span>));
+                <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> ::<span class='ident'>itertools</span>::<span class='ident'>FlatTuples</span>{<span class='ident'>iter</span>: ::<span class='ident'>itertools</span>::<span class='ident'>Product</span>::<span class='ident'>new</span>(<span class='ident'>it</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>)};
             )<span class='op'>*</span>
             <span class='ident'>it</span>
         }
@@ -444,12 +520,9 @@
     );
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>:<span class='ident'>expr</span> $(, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>:<span class='ident'>expr</span>)<span class='op'>*</span>) <span class='op'>=&gt;</span> (
         {
-            <span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>unused_imports</span>)]</span>
-            <span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>AppendTuple</span>;
             <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>.<span class='ident'>zip</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>);
-            <span class='comment'>// FIXME: Use fn_map here somehow</span>
             $(
-                <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>zip</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>).<span class='ident'>map</span>(<span class='op'>|</span>(<span class='ident'>t</span>, <span class='ident'>x</span>)<span class='op'>|</span> <span class='ident'>t</span>.<span class='ident'>append</span>(<span class='ident'>x</span>));
+                <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> ::<span class='ident'>itertools</span>::<span class='ident'>FlatTuples</span>{<span class='ident'>iter</span>: <span class='ident'>it</span>.<span class='ident'>zip</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>)};
             )<span class='op'>*</span>
             <span class='ident'>it</span>
         }
@@ -581,6 +654,15 @@
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Itertools</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>T</span> { }
+
+<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>ItertoolsClonable</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// An iterator like `.map(|elt| elt.clone())`</span>
+    <span class='kw'>fn</span> <span class='ident'>clones</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> {
+        <span class='ident'>Clones</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>ItertoolsClonable</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>I</span> { }
 </pre>
 </section>
     <section id='search' class="content hidden"></section>
@@ -611,7 +693,7 @@
             </p>
             <p>
                 Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code> (or <code>str</code>), <code>enum</code>,
+                <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
             </p>

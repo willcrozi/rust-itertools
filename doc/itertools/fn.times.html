@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The itertools library documentation.">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `times` fn in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, times">
 
     <title>itertools::times - Rust</title>
 
@@ -11,8 +13,22 @@
 
     
     
+<!--
+tweak rustdoc css
+-->
+<style type="text/css">
+.collapse-toggle {
+    display: none;
+}
+
+.stability {
+    display: none;
+}
+</style>
+
+
 </head>
-<body>
+<body class="rustdoc">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -24,7 +40,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn current' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.Clones.html'>Clones</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait ' href='trait.Itertools.html'>Itertools</a><a class='trait ' href='trait.ItertoolsClonable.html'>ItertoolsClonable</a></div><div class='block fn'><h2>Functions</h2><a class='fn current' href='fn.times.html'>times</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -39,7 +55,10 @@
     </nav>
 
     <section id='main' class="content fn">
-<h1 class='fqn'>Function <a href='index.html'>itertools</a>::<a class='fn' href=''>times</a><span class='out-of-band'><a id='src-2114' href='../src/itertools/src/times.rs.html#7-10'>[src]</a></span></h1>
+<h1 class='fqn'><div class='in-band'>Function <a href='index.html'>itertools</a>&#8203;::<a class='fn' href=''>times</a>&#8203;</div><div class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]
+            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-3375' href='../src/itertools/src/times.rs.html#7-10'>[src]</a></div></h1>
 <pre class='rust fn'>pub fn times(n: <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a>) -&gt; <a class='struct' href='../itertools/struct.Times.html' title='itertools::Times'>Times</a></pre><div class='docblock'><p>Return an iterator with <code>n</code> elements, for simple repetition
 a particular number of times. The iterator yields a counter.</p>
 
@@ -73,7 +92,7 @@ a particular number of times. The iterator yields a counter.</p>
             </p>
             <p>
                 Accepted types are: <code>fn</code>, <code>mod</code>,
-                <code>struct</code> (or <code>str</code>), <code>enum</code>,
+                <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
             </p>
