@@ -202,32 +202,43 @@ macro_rules! stride_impl {
                 }
             }
         }
+
+        impl<'a, A: fmt::Show> fmt::Show for $name<'a, A>
+        {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
+            {
+                try!(write!(f, "["));
+                for i in range(0, self.len()) {
+                    if i != 0 {
+                        try!(write!(f, ", "));
+                    }
+                    try!(write!(f, "{}", (*self)[i]));
+                }
+                write!(f, "]")
+            }
+        }
     }
 }
 
 stride_impl!{struct Stride -> &'a [A], as_ptr, *const A, &'a A}
 stride_impl!{struct StrideMut -> &'a mut [A], as_mut_ptr, *mut A, &'a mut A}
 
-impl<'a, A: fmt::Show> fmt::Show for Stride<'a, A>
-{
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
-    {
-        let it = *self;
-        try!(write!(f, "["));
-        for (i, elt) in it.enumerate() {
-            if i != 0 {
-                try!(write!(f, ", "));
-            }
-            try!(write!(f, "{}", *elt));
-        }
-        write!(f, "]")
-    }
-}
-
 impl<'a, A> Clone for Stride<'a, A>
 {
     fn clone(&self) -> Stride<'a, A>
     {
         *self
+    }
+}
+
+impl<'a, A> IndexMut<uint, A> for StrideMut<'a, A>
+{
+    fn index_mut<'b>(&'b mut self, i: &uint) -> &'b mut A
+    {
+        assert!(*i < self.size_hint().val0());
+        unsafe {
+            let ptr = self.begin.offset(self.offset + self.stride * (*i as int));
+            mem::transmute(ptr)
+        }
     }
 }
