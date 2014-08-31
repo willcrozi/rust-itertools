@@ -323,7 +323,7 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span> <span class='op'>+</span> <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span>
 <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
@@ -338,7 +338,7 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span> <span class='op'>+</span> <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span>
 <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
@@ -348,7 +348,7 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>ExactSize</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>ExactSize</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> { }
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span> <span class='op'>+</span> <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>ExactSize</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>ExactSize</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> { }
 
 <span class='doccomment'>/// Alternate elements from two iterators until both</span>
 <span class='doccomment'>/// are run out</span>

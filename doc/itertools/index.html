@@ -55,10 +55,10 @@ tweak rustdoc css
     </nav>
 
     <section id='main' class="content mod">
-<h1 class='fqn'><div class='in-band'>Crate <a class='mod' href=''>itertools</a>&#8203;</div><div class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
+<h1 class='fqn'><div class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></div><div class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/src/lib.rs.html#1-306'>[src]</a></div></h1>
+        </span><a id='src-0' href='../src/itertools/src/lib.rs.html#1-305'>[src]</a></div></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the macros in this crate, use the <code>phase(plugin)</code> attribute:</p>
@@ -69,7 +69,7 @@ tweak rustdoc css
 
 <p>I recommend shortening the crate name with something like:</p>
 <pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='ident'>itertools</span>;
+<span class='kw'>use</span> <span class='ident'>itertools</span> <span class='kw'>as</span> <span class='ident'>it</span>;
 </pre>
 
 <h2 id="license" class='section-header'><a
@@ -222,6 +222,14 @@ used for implementing <code>iproduct!</code> and <code>izip!</code></p>
                                title='itertools::times'>times</a></td>
                         <td class='docblock short'><p>Return an iterator with <code>n</code> elements, for simple repetition
 a particular number of times. The iterator yields a counter.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='fn' href='fn.write.html'
+                               title='itertools::write'>write</a></td>
+                        <td class='docblock short'><p>Assign to each reference in <code>to</code> from <code>from</code>, stopping
+at the shortest of the two iterators.</p>
 </td>
                     </tr>
                 </table></section>

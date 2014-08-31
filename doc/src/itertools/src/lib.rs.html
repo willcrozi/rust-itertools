@@ -359,7 +359,6 @@ tweak rustdoc css
 <span id='303'>303</span>
 <span id='304'>304</span>
 <span id='305'>305</span>
-<span id='306'>306</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
@@ -377,7 +376,7 @@ tweak rustdoc css
 <span class='doccomment'>//! I recommend shortening the crate name with something like:</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```ignore</span>
-<span class='doccomment'>//! use it = itertools;</span>
+<span class='doccomment'>//! use itertools as it;</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//! ## License </span>
 <span class='doccomment'>//! Dual-licensed to be compatible with the Rust project.</span>
@@ -424,7 +423,7 @@ tweak rustdoc css
 
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>:<span class='ident'>ident</span> $(,<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>:<span class='ident'>ident</span>)<span class='op'>*</span>) <span class='op'>=&gt;</span> (
         <span class='macro'>impl_append_tuple</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>),<span class='op'>*</span>)
-        <span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>uppercase_variables</span>)]</span>
+        <span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>non_snake_case</span>)]</span>
         <span class='kw'>impl</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span> <span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>T</span>, (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span> <span class='ident'>T</span>)<span class='op'>&gt;</span> <span class='kw'>for</span> (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>),<span class='op'>*</span>) {
             <span class='kw'>fn</span> <span class='ident'>append</span>(<span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span> <span class='ident'>T</span>) {
                 <span class='kw'>let</span> (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>),<span class='op'>*</span>) <span class='op'>=</span> <span class='self'>self</span>;
@@ -635,26 +634,6 @@ tweak rustdoc css
     <span class='kw'>fn</span> <span class='ident'>apply</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>f</span>: <span class='op'>|</span><span class='ident'>A</span><span class='op'>|</span>) {
         <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='op'>*</span><span class='self'>self</span> { <span class='ident'>f</span>(<span class='ident'>elt</span>) }
     }
-
-
-    <span class='doccomment'>/// Assign to each reference in `iter` from this iterator, stopping</span>
-    <span class='doccomment'>/// at the shortest of the two iterators.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Return the number of elements written.</span>
-    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>write_to</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>uint</span>
-    {
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>count</span> <span class='op'>=</span> <span class='number'>0u</span>;
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='ident'>iter</span>;
-        <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='op'>*</span><span class='self'>self</span> {
-            <span class='kw'>match</span> <span class='ident'>iter</span>.<span class='ident'>next</span>() {
-                <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>break</span>,
-                <span class='prelude-val'>Some</span>(<span class='ident'>ptr</span>) <span class='op'>=&gt;</span> <span class='op'>*</span><span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>elt</span>
-            }
-            <span class='ident'>count</span> <span class='op'>+=</span> <span class='number'>1</span>;
-        }
-        <span class='ident'>count</span>
-    }
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Itertools</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>T</span> { }
@@ -667,6 +646,25 @@ tweak rustdoc css
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>ItertoolsClonable</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>I</span> { }
+
+<span class='doccomment'>/// Assign to each reference in `to` from `from`, stopping</span>
+<span class='doccomment'>/// at the shortest of the two iterators.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Return the number of elements written.</span>
+<span class='attribute'>#[<span class='ident'>inline</span>]</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>write</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>A</span><span class='op'>&gt;</span>, <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span>
+    (<span class='kw-2'>mut</span> <span class='ident'>to</span>: <span class='ident'>I</span>, <span class='kw-2'>mut</span> <span class='ident'>from</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>uint</span>
+{
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>count</span> <span class='op'>=</span> <span class='number'>0u</span>;
+    <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='ident'>from</span> {
+        <span class='kw'>match</span> <span class='ident'>to</span>.<span class='ident'>next</span>() {
+            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>break</span>,
+            <span class='prelude-val'>Some</span>(<span class='ident'>ptr</span>) <span class='op'>=&gt;</span> <span class='op'>*</span><span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>elt</span>
+        }
+        <span class='ident'>count</span> <span class='op'>+=</span> <span class='number'>1</span>;
+    }
+    <span class='ident'>count</span>
+}
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

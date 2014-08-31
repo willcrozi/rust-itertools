@@ -111,7 +111,7 @@ tweak rustdoc css
 <span class='doccomment'>/// Iterator element type is `A`</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>BoxIter</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// The wrapped iterator pointer</span>
-    <span class='kw'>pub</span> <span class='ident'>iter</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span>
+    <span class='kw'>pub</span> <span class='ident'>iter</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='lifetime'>&#39;static</span><span class='op'>&gt;</span>
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>BoxIter</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>
@@ -119,11 +119,11 @@ tweak rustdoc css
     <span class='doccomment'>/// Create a BoxIter from an iterator value</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_iter</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='lifetime'>&#39;static</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>BoxIter</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>
     {
-        <span class='ident'>BoxIter</span>::<span class='ident'>from_box</span>(<span class='kw'>box</span> <span class='ident'>iter</span> <span class='kw'>as</span> <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span>)
+        <span class='ident'>BoxIter</span>::<span class='ident'>from_box</span>(<span class='kw'>box</span> <span class='ident'>iter</span> <span class='kw'>as</span> <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='lifetime'>&#39;static</span><span class='op'>&gt;</span>)
     }
 
     <span class='doccomment'>/// Create a BoxIter from an already boxed iterator</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_box</span>(<span class='ident'>iter</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>BoxIter</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_box</span>(<span class='ident'>iter</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='lifetime'>&#39;static</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>BoxIter</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>
     {
         <span class='ident'>BoxIter</span>{<span class='ident'>iter</span>: <span class='ident'>iter</span>}
     }
