@@ -40,7 +40,7 @@ tweak rustdoc css
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.BoxIter.html'>BoxIter</a><a class='struct ' href='struct.Clones.html'>Clones</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait current' href='trait.Itertools.html'>Itertools</a><a class='trait ' href='trait.ItertoolsClonable.html'>ItertoolsClonable</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Clones.html'>Clones</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.Itertools.html'>Itertools</a><a class='trait ' href='trait.ItertoolsClonable.html'>ItertoolsClonable</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -55,15 +55,15 @@ tweak rustdoc css
     </nav>
 
     <section id='main' class="content trait">
-<h1 class='fqn'><div class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>Itertools</a><wbr></div><div class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>Itertools</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4668' href='../src/itertools/src/lib.rs.html#210-275'>[src]</a></div></h1>
-<pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
+        </span><a id='src-4572' href='../src/itertools/src/lib.rs.html#208-273'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
     fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt; { ... }
-    fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt; { ... }
+    fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt; { ... }
     fn <a href='#method.intersperse' class='fnname'>intersperse</a>(self, element: A) -&gt; <a class='struct' href='../itertools/struct.Intersperse.html' title='itertools::Intersperse'>Intersperse</a>&lt;A, Self&gt; { ... }
-    fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a> { ... }
+    fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a> { ... }
     fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self) { ... }
     fn <a href='#method.apply' class='fnname'>apply</a>(&amp;mut self, f: |A|) { ... }
 }</pre><div class='docblock'><p>Extra iterator methods for arbitrary iterators</p>
@@ -74,7 +74,7 @@ tweak rustdoc css
 so that the resulting <code>FnMap</code> iterator value can be cloned.</p>
 
 <p>Iterator element type is <code>B</code></p>
-</div><h3 id='method.interleave' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt;</code></h3><div class='docblock'><p>Alternate elements from two iterators until both
+</div><h3 id='method.interleave' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt;</code></h3><div class='docblock'><p>Alternate elements from two iterators until both
 are run out</p>
 
 <p>Iterator element type is <code>A</code></p>
@@ -82,7 +82,7 @@ are run out</p>
 between each element of the adapted iterator.</p>
 
 <p>Iterator element type is <code>A</code></p>
-</div><h3 id='method.dropn' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/master/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Consume <code>n</code> elements of the iterator eagerly</p>
+</div><h3 id='method.dropn' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Consume <code>n</code> elements of the iterator eagerly</p>
 
 <p>Return actual number of elements consumed,
 until done or reaching the end.</p>
@@ -101,7 +101,7 @@ until done or reaching the end.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;A, T: <a class='trait' href='http://doc.rust-lang.org/master/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt; <a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Itertools</a>&lt;A&gt; for T</code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;A, T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt; <a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Itertools</a>&lt;A&gt; for T</code></li>
 </ul><script type="text/javascript" async
                               src="../implementors/itertools/trait.Itertools.js">
                       </script></section>

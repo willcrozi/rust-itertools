@@ -106,10 +106,6 @@ tweak rustdoc css
 <span id='50'>50</span>
 <span id='51'>51</span>
 <span id='52'>52</span>
-<span id='53'>53</span>
-<span id='54'>54</span>
-<span id='55'>55</span>
-<span id='56'>56</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::<span class='ident'>Saturating</span>;
 
@@ -122,7 +118,6 @@ tweak rustdoc css
     <span class='ident'>element</span>: <span class='ident'>A</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
     <span class='ident'>peek</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>,
-    <span class='ident'>insert</span>: <span class='ident'>bool</span>,
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
@@ -130,7 +125,7 @@ tweak rustdoc css
     <span class='doccomment'>/// Create a new Intersperse iterator</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='kw-2'>mut</span> <span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>elt</span>: <span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
     {
-        <span class='ident'>Intersperse</span>{<span class='ident'>peek</span>: <span class='ident'>iter</span>.<span class='ident'>next</span>(), <span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>element</span>: <span class='ident'>elt</span>, <span class='ident'>insert</span>: <span class='boolval'>false</span>}
+        <span class='ident'>Intersperse</span>{<span class='ident'>peek</span>: <span class='ident'>iter</span>.<span class='ident'>next</span>(), <span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>element</span>: <span class='ident'>elt</span>}
     }
 }
 
@@ -140,18 +135,15 @@ tweak rustdoc css
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>
     {
-        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>insert</span> {
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>peek</span>.<span class='ident'>is_some</span>() {
+            <span class='self'>self</span>.<span class='ident'>peek</span>.<span class='ident'>take</span>()
+        } <span class='kw'>else</span> {
+            <span class='self'>self</span>.<span class='ident'>peek</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>next</span>();
             <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>peek</span>.<span class='ident'>is_some</span>() {
-                <span class='self'>self</span>.<span class='ident'>insert</span> <span class='op'>=</span> <span class='boolval'>false</span>;
                 <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>element</span>.<span class='ident'>clone</span>())
             } <span class='kw'>else</span> {
                 <span class='prelude-val'>None</span>
             }
-        } <span class='kw'>else</span> {
-            <span class='kw'>let</span> <span class='ident'>elt</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>peek</span>.<span class='ident'>take</span>();
-            <span class='self'>self</span>.<span class='ident'>peek</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>next</span>();
-            <span class='self'>self</span>.<span class='ident'>insert</span> <span class='op'>=</span> <span class='boolval'>true</span>;
-            <span class='ident'>elt</span>
         }
     }
 
