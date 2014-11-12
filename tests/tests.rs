@@ -79,11 +79,11 @@ fn fn_map() {
 fn write_to() {
     let xs = [7i, 9, 8];
     let mut ys = [0i, ..5];
-    let cnt = it::write(ys.mut_iter(), xs.iter().map(|x| *x));
+    let cnt = it::write(ys.iter_mut(), xs.iter().map(|x| *x));
     assert!(cnt == xs.len());
     assert!(ys == &[7i, 9, 8, 0, 0]);
 
-    let cnt = it::write(ys.mut_iter(), range(0,10i));
+    let cnt = it::write(ys.iter_mut(), range(0,10i));
     assert!(cnt == ys.len());
     assert!(ys == &[0, 1, 2, 3, 4]);
 }
@@ -99,14 +99,6 @@ fn interleave() {
     let rs = [7u8, 2, 9, 77, 8, 10];
     let it = Interleave::new(ys.iter(), zs.iter());
     assert!(order::eq(it, rs.iter()));
-}
-
-#[test]
-fn boxiter() {
-    let ys = vec![1,2,3i];
-    let it = BoxIter::from_iter(ys.move_iter());
-    assert!(it.size_hint().val0() == 3);
-    assert!(order::eq(it, range(1i, 4)));
 }
 
 #[test]
