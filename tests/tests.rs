@@ -11,10 +11,9 @@
 extern crate test;
 
 use std::iter::order;
+use std::iter::AdditiveIterator;
 use itertools::Itertools;
 use itertools::Interleave;
-
-use itertools::ItertoolsClonable;
 
 use itertools as it;
 
@@ -152,4 +151,23 @@ fn clones() {
     let v: Vec<&str> = xs.iter().clones().collect();
     let text = v.concat();
     assert_eq!(text, "abc".to_string());
+    let xs = [1,2,3i];
+    let sum = xs.iter().clones().sum();
+    assert_eq!(sum, 6);
+}
+
+#[test]
+fn linspace() {
+    let mut iter = it::linspace::<f32>(0., 2., 3);
+    assert_eq!(iter.next(), Some(0.0));
+    assert_eq!(iter.next(), Some(1.0));
+    assert_eq!(iter.next(), Some(2.0));
+    assert_eq!(iter.next(), None);
+
+    let mut iter = it::linspace::<f32>(0., -2., 4);
+    assert_eq!(iter.next(), Some(0.));
+    assert_eq!(iter.next(), Some(-0.666666666667));
+    assert_eq!(iter.next(), Some(-1.333333333333));
+    assert_eq!(iter.next(), Some(-2.));
+    assert_eq!(iter.next(), None);
 }
