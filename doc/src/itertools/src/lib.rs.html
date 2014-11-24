@@ -355,8 +355,6 @@ tweak rustdoc css
 <span id='299'>299</span>
 <span id='300'>300</span>
 <span id='301'>301</span>
-<span id='302'>302</span>
-<span id='303'>303</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
@@ -397,8 +395,10 @@ tweak rustdoc css
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>stride</span>::<span class='ident'>StrideMut</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>Times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>times</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>linspace</span>::<span class='ident'>linspace</span>;
 <span class='kw'>mod</span> <span class='ident'>adaptors</span>;
 <span class='kw'>mod</span> <span class='ident'>intersperse</span>;
+<span class='kw'>mod</span> <span class='ident'>linspace</span>;
 <span class='kw'>mod</span> <span class='ident'>stride</span>;
 <span class='kw'>mod</span> <span class='ident'>times</span>;
 
@@ -592,6 +592,11 @@ tweak rustdoc css
         <span class='ident'>Intersperse</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>element</span>)
     }
 
+    <span class='doccomment'>/// An iterator like `.map(|elt| elt.clone())`</span>
+    <span class='kw'>fn</span> <span class='ident'>clones</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> {
+        <span class='ident'>Clones</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
+    }
+
     <span class='comment'>// non-adaptor methods</span>
 
     <span class='doccomment'>/// Consume `n` elements of the iterator eagerly</span>
@@ -633,15 +638,6 @@ tweak rustdoc css
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>T</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Itertools</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>T</span> { }
-
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>ItertoolsClonable</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// An iterator like `.map(|elt| elt.clone())`</span>
-    <span class='kw'>fn</span> <span class='ident'>clones</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> {
-        <span class='ident'>Clones</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
-    }
-}
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>ItertoolsClonable</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>I</span> { }
 
 <span class='doccomment'>/// Assign to each reference in `to` from `from`, stopping</span>
 <span class='doccomment'>/// at the shortest of the two iterators.</span>
