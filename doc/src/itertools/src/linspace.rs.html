@@ -80,11 +80,17 @@ tweak rustdoc css
 <span id='24'>24</span>
 <span id='25'>25</span>
 <span id='26'>26</span>
+<span id='27'>27</span>
+<span id='28'>28</span>
+<span id='29'>29</span>
 </pre><pre class='rust '>
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::{<span class='ident'>Float</span>, <span class='ident'>NumCast</span>};
 
+<span class='doccomment'>/// An iterator of `n` evenly spaced floats.</span>
+<span class='doccomment'>/// </span>
+<span class='doccomment'>/// Iterator element type is `F`.</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>Linspace</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>iter</span>::<span class='ident'>Take</span><span class='op'>&lt;</span><span class='ident'>iter</span>::<span class='ident'>Counter</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;&gt;</span>;
 
 <span class='doccomment'>/// Return an iterator with `n` elements, where the first</span>
@@ -96,7 +102,7 @@ tweak rustdoc css
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// use itertools as it;</span>
-<span class='doccomment'>/// let mut xs = it::linspace(0.0_f32, 1., 5);</span>
+<span class='doccomment'>/// let mut xs = it::linspace::&lt;f32&gt;(0., 1., 5);</span>
 <span class='doccomment'>/// assert_eq!(xs.collect::&lt;Vec&lt;_&gt;&gt;(),</span>
 <span class='doccomment'>///            vec![0., 0.25, 0.5, 0.75, 1.0]);</span>
 <span class='doccomment'>/// ```</span>

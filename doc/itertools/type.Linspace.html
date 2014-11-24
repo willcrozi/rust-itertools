@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `times` fn in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, times">
+    <meta name="description" content="API documentation for the Rust `Linspace` type in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Linspace">
 
-    <title>itertools::times - Rust</title>
+    <title>itertools::Linspace - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -40,7 +40,7 @@ tweak rustdoc css
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Clones.html'>Clones</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn current' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Clones.html'>Clones</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -54,15 +54,14 @@ tweak rustdoc css
         </form>
     </nav>
 
-    <section id='main' class="content fn">
-<h1 class='fqn'><span class='in-band'>Function <a href='index.html'>itertools</a>::<wbr><a class='fn' href=''>times</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content type">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>itertools</a>::<wbr><a class='type' href=''>Linspace</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-3370' href='../src/itertools/src/times.rs.html#7-10'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn times(n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a class='struct' href='../itertools/struct.Times.html' title='itertools::Times'>Times</a></pre><div class='docblock'><p>Return an iterator with <code>n</code> elements, for simple repetition
-a particular number of times. The iterator yields a counter.</p>
+        </span><a id='src-1269' href='../src/itertools/src/linspace.rs.html#8'>[src]</a></span></h1>
+<pre class='rust typedef'>type Linspace&lt;F&gt; = <a class='struct' href='http://doc.rust-lang.org/nightly/core/iter/struct.Take.html' title='core::iter::Take'>Take</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/core/iter/struct.Counter.html' title='core::iter::Counter'>Counter</a>&lt;F&gt;&gt;;</pre><div class='docblock'><p>An iterator of <code>n</code> evenly spaced floats.</p>
 
-<p>Iterator element type is <code>uint</code></p>
+<p>Iterator element type is <code>F</code>.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
 

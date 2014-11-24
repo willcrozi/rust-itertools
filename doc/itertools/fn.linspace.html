@@ -58,8 +58,8 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Function <a href='index.html'>itertools</a>::<wbr><a class='fn' href=''>linspace</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-1276' href='../src/itertools/src/linspace.rs.html#21-26'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn linspace&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/num/trait.Float.html' title='core::num::Float'>Float</a>&gt;(a: F, b: F, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; Linspace&lt;F&gt;</pre><div class='docblock'><p>Return an iterator with <code>n</code> elements, where the first
+        </span><a id='src-1278' href='../src/itertools/src/linspace.rs.html#24-29'>[src]</a></span></h1>
+<pre class='rust fn'>pub fn linspace&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/num/trait.Float.html' title='core::num::Float'>Float</a>&gt;(a: F, b: F, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a class='type' href='../itertools/type.Linspace.html' title='itertools::Linspace'>Linspace</a>&lt;F&gt;</pre><div class='docblock'><p>Return an iterator with <code>n</code> elements, where the first
 element is <code>a</code> and the last element is <code>b</code>.</p>
 
 <p>Iterator element type is <code>F</code>.</p>
@@ -67,7 +67,7 @@ element is <code>a</code> and the last element is <code>b</code>.</p>
 <p><strong>Panics</strong> if <code>n</code> is zero.</p>
 <pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>itertools</span> <span class='kw'>as</span> <span class='ident'>it</span>;
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>xs</span> <span class='op'>=</span> <span class='ident'>it</span>::<span class='ident'>linspace</span>(<span class='number'>0.0_f32</span>, <span class='number'>1.</span>, <span class='number'>5</span>);
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>xs</span> <span class='op'>=</span> <span class='ident'>it</span>::<span class='ident'>linspace</span>::<span class='op'>&lt;</span><span class='ident'>f32</span><span class='op'>&gt;</span>(<span class='number'>0.</span>, <span class='number'>1.</span>, <span class='number'>5</span>);
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>xs</span>.<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>(),
            <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0.</span>, <span class='number'>0.25</span>, <span class='number'>0.5</span>, <span class='number'>0.75</span>, <span class='number'>1.0</span>]);
 </pre>
