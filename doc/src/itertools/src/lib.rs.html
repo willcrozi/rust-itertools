@@ -349,12 +349,6 @@ tweak rustdoc css
 <span id='293'>293</span>
 <span id='294'>294</span>
 <span id='295'>295</span>
-<span id='296'>296</span>
-<span id='297'>297</span>
-<span id='298'>298</span>
-<span id='299'>299</span>
-<span id='300'>300</span>
-<span id='301'>301</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
@@ -385,7 +379,6 @@ tweak rustdoc css
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//!</span>
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Clones</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Interleave</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Product</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>PutBack</span>;
@@ -590,11 +583,6 @@ tweak rustdoc css
     <span class='doccomment'>/// Iterator element type is `A`</span>
     <span class='kw'>fn</span> <span class='ident'>intersperse</span>(<span class='self'>self</span>, <span class='ident'>element</span>: <span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>Self</span><span class='op'>&gt;</span> {
         <span class='ident'>Intersperse</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>element</span>)
-    }
-
-    <span class='doccomment'>/// An iterator like `.map(|elt| elt.clone())`</span>
-    <span class='kw'>fn</span> <span class='ident'>clones</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Clones</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> {
-        <span class='ident'>Clones</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
     }
 
     <span class='comment'>// non-adaptor methods</span>
