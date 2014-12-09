@@ -21,9 +21,7 @@ tweak rustdoc css
     display: none;
 }
 
-.stability {
-    display: none;
-}
+.stability.Unmarked { visibility: hidden }
 </style>
 
 
@@ -40,7 +38,7 @@ tweak rustdoc css
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.MapMut.html'>MapMut</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a><a class='struct ' href='struct.ZipLongest.html'>ZipLongest</a></div><div class='block enum'><h2>Enums</h2><a class='enum ' href='enum.EitherOrBoth.html'>EitherOrBoth</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -58,11 +56,13 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>Itertools</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4655' href='../src/itertools/src/lib.rs.html#209-274'>[src]</a></span></h1>
+        </span><a id='src-5945' href='../src/itertools/lib.rs.html#214-310'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
     fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt; { ... }
+    fn <a href='#method.map_unboxed' class='fnname'>map_unboxed</a>&lt;B, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(A,)</a>, B&gt;&gt;(self, map: F) -&gt; <a class='struct' href='../itertools/struct.MapMut.html' title='itertools::MapMut'>MapMut</a>&lt;A, B, F, Self&gt; { ... }
     fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt; { ... }
     fn <a href='#method.intersperse' class='fnname'>intersperse</a>(self, element: A) -&gt; <a class='struct' href='../itertools/struct.Intersperse.html' title='itertools::Intersperse'>Intersperse</a>&lt;A, Self&gt; { ... }
+    fn <a href='#method.zip_longest' class='fnname'>zip_longest</a>&lt;B, U: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;B&gt;&gt;(self, other: U) -&gt; <a class='struct' href='../itertools/struct.ZipLongest.html' title='itertools::ZipLongest'>ZipLongest</a>&lt;Self, U&gt; { ... }
     fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a> { ... }
     fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self) { ... }
     fn <a href='#method.apply' class='fnname'>apply</a>(&amp;mut self, f: |A|) { ... }
@@ -74,6 +74,9 @@ tweak rustdoc css
 so that the resulting <code>FnMap</code> iterator value can be cloned.</p>
 
 <p>Iterator element type is <code>B</code></p>
+</div><h3 id='method.map_unboxed' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.map_unboxed' class='fnname'>map_unboxed</a>&lt;B, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(A,)</a>, B&gt;&gt;(self, map: F) -&gt; <a class='struct' href='../itertools/struct.MapMut.html' title='itertools::MapMut'>MapMut</a>&lt;A, B, F, Self&gt;</code></h3><div class='docblock'><p>Like regular <code>.map</code>, but using an unboxed closure instead.</p>
+
+<p>Iterator element type is <code>B</code></p>
 </div><h3 id='method.interleave' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt;&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt;</code></h3><div class='docblock'><p>Alternate elements from two iterators until both
 are run out</p>
 
@@ -82,6 +85,22 @@ are run out</p>
 between each element of the adapted iterator.</p>
 
 <p>Iterator element type is <code>A</code></p>
+</div><h3 id='method.zip_longest' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.zip_longest' class='fnname'>zip_longest</a>&lt;B, U: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;B&gt;&gt;(self, other: U) -&gt; <a class='struct' href='../itertools/struct.ZipLongest.html' title='itertools::ZipLongest'>ZipLongest</a>&lt;Self, U&gt;</code></h3><div class='docblock'><p>Creates an iterator which iterates over both this and the specified
+iterators simultaneously, yielding pairs of two optional elements.
+When both iterators return None, all further invocations of next() will
+return None.</p>
+
+<h1 id="example" class='section-header'><a
+                           href="#example">Example</a></h1><pre class='rust '>
+<span class='kw'>let</span> <span class='ident'>a</span> <span class='op'>=</span> [<span class='number'>0i</span>];
+<span class='kw'>let</span> <span class='ident'>b</span> <span class='op'>=</span> [<span class='number'>1i</span>, <span class='number'>2i</span>];
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='ident'>a</span>.<span class='ident'>iter</span>().<span class='ident'>cloned</span>().<span class='ident'>zip_longest</span>(<span class='ident'>b</span>.<span class='ident'>iter</span>().<span class='ident'>cloned</span>());
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>it</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>Both</span>(<span class='number'>0</span>, <span class='number'>1</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>it</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>Right</span>(<span class='number'>2</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>it</span>.<span class='ident'>next</span>(), <span class='prelude-val'>None</span>);
+</pre>
+
+<p>Iterator element type is <code>EitherOrBoth&lt;A, B&gt;</code>.</p>
 </div><h3 id='method.dropn' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Consume <code>n</code> elements of the iterator eagerly</p>
 
 <p>Return actual number of elements consumed,

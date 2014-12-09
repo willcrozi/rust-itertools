@@ -21,9 +21,7 @@ tweak rustdoc css
     display: none;
 }
 
-.stability {
-    display: none;
-}
+.stability.Unmarked { visibility: hidden }
 </style>
 
 
@@ -58,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/src/lib.rs.html#1-295'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-331'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the macros in this crate, use the <code>phase(plugin)</code> attribute:</p>
@@ -142,6 +140,14 @@ between each element of the adapted iterator.</p>
                     </tr>
                 
                     <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.MapMut.html'
+                               title='itertools::MapMut'>MapMut</a></td>
+                        <td class='docblock short'><p>Clonable iterator adaptor to map elementwise
+from <code>Iterator&lt;A&gt;</code> to <code>Iterator&lt;B&gt;</code></p>
+</td>
+                    </tr>
+                
+                    <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Product.html'
                                title='itertools::Product'>Product</a></td>
                         <td class='docblock short'><p>An iterator adaptor that iterates over the cartesian product of
@@ -176,6 +182,23 @@ item to the front of the iterator.</p>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Times.html'
                                title='itertools::Times'>Times</a></td>
                         <td class='docblock short'><p>Iterator to repeat a simple number of times</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.ZipLongest.html'
+                               title='itertools::ZipLongest'>ZipLongest</a></td>
+                        <td class='docblock short'><p>An iterator which iterates two other iterators simultaneously</p>
+</td>
+                    </tr>
+                </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='enum' href='enum.EitherOrBoth.html'
+                               title='itertools::EitherOrBoth'>EitherOrBoth</a></td>
+                        <td class='docblock short'><p>A value yielded by <code>ZipLongest</code>.
+Contains one or two values,
+depending on which of the input iterators are exhausted.</p>
 </td>
                     </tr>
                 </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>

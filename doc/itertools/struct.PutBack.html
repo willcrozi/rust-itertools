@@ -21,9 +21,7 @@ tweak rustdoc css
     display: none;
 }
 
-.stability {
-    display: none;
-}
+.stability.Unmarked { visibility: hidden }
 </style>
 
 
@@ -40,7 +38,7 @@ tweak rustdoc css
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct current' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.MapMut.html'>MapMut</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct current' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Times.html'>Times</a><a class='struct ' href='struct.ZipLongest.html'>ZipLongest</a></div><div class='block enum'><h2>Enums</h2><a class='enum ' href='enum.EitherOrBoth.html'>EitherOrBoth</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -58,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>itertools</a>::<wbr><a class='struct' href=''>PutBack</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-374' href='../src/itertools/src/adaptors.rs.html#97-100'>[src]</a></span></h1>
+        </span><a id='src-378' href='../src/itertools/adaptors.rs.html#97-100'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct PutBack&lt;A, I&gt; {
     // some fields omitted
 }</pre><div class='docblock'><p>An iterator adaptor that allows putting back a single
