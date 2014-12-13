@@ -56,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-331'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-373'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the macros in this crate, use the <code>phase(plugin)</code> attribute:</p>
@@ -109,6 +109,22 @@ and directly inspired by Python. Supports an optional filter clause.</p>
                     </tr>
                 </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Batching.html'
+                               title='itertools::Batching'>Batching</a></td>
+                        <td class='docblock short'><p>An advanced iterator adaptor. The closure recives a reference to the iterator
+and may pick off as many elements as it likes, to produce the next iterator element.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Dedup.html'
+                               title='itertools::Dedup'>Dedup</a></td>
+                        <td class='docblock short'><p>Remove duplicates from sections of consecutive identical elements.
+If the iterator is sorted, all elements will be unique.</p>
+</td>
+                    </tr>
+                
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.FlatTuples.html'
                                title='itertools::FlatTuples'>FlatTuples</a></td>
@@ -166,15 +182,15 @@ item to the front of the iterator.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Stride.html'
                                title='itertools::Stride'>Stride</a></td>
-                        <td class='docblock short'><p>Similar to the slice iterator, but with a certain number of steps
-(stride) skipped per iteration.</p>
+                        <td class='docblock short'><p>Stride is similar to the slice iterator, but with a certain number of steps
+(the stride) skipped per iteration.</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.StrideMut.html'
                                title='itertools::StrideMut'>StrideMut</a></td>
-                        <td class='docblock short'><p>Stride with mutable elements</p>
+                        <td class='docblock short'><p>StrideMut is like Stride, but with mutable elements.</p>
 </td>
                     </tr>
                 
