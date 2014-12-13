@@ -202,3 +202,93 @@ Iterator<(A, B)> for Product<A, I, J>
     }
 }
 
+/// Remove duplicates from sections of consecutive identical elements.
+/// If the iterator is sorted, all elements will be unique.
+///
+/// Iterator element type is `A` if `I: Iterator<A>`
+#[deriving(Clone)]
+pub struct Dedup<A, I> {
+    last: Option<A>,
+    iter: I,
+}
+
+impl<A, I> Dedup<A, I>
+{
+    /// Create a new Dedup Iterator.
+    pub fn new(iter: I) -> Dedup<A, I>
+    {
+        Dedup{last: None, iter: iter}
+    }
+}
+
+impl<A: Clone + PartialEq, I: Iterator<A>> Iterator<A> for Dedup<A, I>
+{
+    #[inline]
+    fn next(&mut self) -> Option<A>
+    {
+        let mut elt;
+        loop {
+            elt = self.iter.next();
+
+            match self.last {
+                None => {
+                    break
+                }
+                Some(ref x) => match elt {
+                    Some(ref y) if x == y => continue,
+                    _ => break,
+                }
+            }
+        }
+        self.last = elt.clone();
+        elt
+    }
+
+    #[inline]
+    fn size_hint(&self) -> (uint, Option<uint>)
+    {
+        let (lower, upper) = self.iter.size_hint();
+        if self.last.is_some() || lower == 0{
+            // they might all be duplicates
+            (0, upper)
+        } else {
+            (1, upper)
+        }
+    }
+}
+
+
+/// An advanced iterator adaptor. The closure recives a reference to the iterator
+/// and may pick off as many elements as it likes, to produce the next iterator element.
+///
+/// Iterator element type is `B`, if the return type of `F` is `Option<B>`.
+#[deriving(Clone)]
+pub struct Batching<I, F> {
+    f: F,
+    iter: I,
+}
+
+impl<F, I> Batching<I, F> {
+    /// Create a new Batching iterator.
+    pub fn new(iter: I, f: F) -> Batching<I, F>
+    {
+        Batching{f: f, iter: iter}
+    }
+}
+
+impl<A, B, F: FnMut(&mut I) -> Option<B>, I: Iterator<A>>
+    Iterator<B> for Batching<I, F>
+{
+    #[inline]
+    fn next(&mut self) -> Option<B>
+    {
+        (self.f)(&mut self.iter)
+    }
+
+    #[inline]
+    fn size_hint(&self) -> (uint, Option<uint>)
+    {
+        // No information about closue behavior
+        (0, None)
+    }
+}

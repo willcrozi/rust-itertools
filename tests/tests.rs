@@ -4,17 +4,32 @@
 //! option. This file may not be copied, modified, or distributed
 //! except according to those terms.
 
+#![feature(unboxed_closures)]
 #![feature(phase)]
 
 #[phase(plugin, link)] extern crate itertools;
 
 extern crate test;
 
+use std::fmt::Show;
 use std::iter::order;
 use itertools::Itertools;
 use itertools::Interleave;
 
 use itertools as it;
+
+fn assert_iters_equal<
+    A: PartialEq + Show,
+    I: Iterator<A>,
+    J: Iterator<A>>(mut it: I, mut jt: J)
+{
+    loop {
+        let elti = it.next();
+        let eltj = jt.next();
+        assert_eq!(elti, eltj);
+        if elti.is_none() { break; }
+    }
+}
 
 #[test]
 fn product2() {
@@ -179,4 +194,32 @@ fn linspace() {
 
     let mut iter = it::linspace::<f32>(0., 1., 0);
     assert_eq!(iter.next(), None);
+}
+
+#[test]
+fn dedup() {
+    let xs = [0i, 1, 1, 1, 2, 1, 3, 3];
+    let ys = [0i, 1, 2, 1, 3];
+    assert_iters_equal(ys.iter(), xs.iter().dedup());
+    let xs = [0i, 0, 0, 0, 0];
+    let ys = [0i];
+    assert_iters_equal(ys.iter(), xs.iter().dedup());
+}
+
+#[test]
+fn batching() {
+    let xs = [0i, 1, 2, 1, 3];
+    let ys = [(0i, 1i), (2, 1)];
+
+    // An iterator that gathers elements up in pairs
+    let pit = xs.iter().cloned().batching(|mut it| {
+               match it.next() {
+                   None => None,
+                   Some(x) => match it.next() {
+                       None => None,
+                       Some(y) => Some((x, y)),
+                   }
+               }
+           });
+    assert_iters_equal(pit, ys.iter().cloned());
 }

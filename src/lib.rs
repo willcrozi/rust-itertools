@@ -32,6 +32,10 @@ pub use adaptors::Interleave;
 pub use adaptors::Product;
 pub use adaptors::PutBack;
 pub use adaptors::FnMap;
+pub use adaptors::{
+    Dedup,
+    Batching,
+};
 pub use intersperse::Intersperse;
 pub use map::MapMut;
 pub use stride::Stride;
@@ -225,7 +229,7 @@ pub trait Itertools<A> : Iterator<A> {
     /// Like regular `.map`, but using an unboxed closure instead.
     ///
     /// Iterator element type is `B`
-    fn map_unboxed<B, F: FnMut(A) -> B>(self, map: F) -> MapMut<A, B, F, Self> {
+    fn map_unboxed<B, F: FnMut(A) -> B>(self, map: F) -> MapMut<F, Self> {
         MapMut::new(self, map)
     }
 
@@ -267,6 +271,44 @@ pub trait Itertools<A> : Iterator<A> {
     #[inline]
     fn zip_longest<B, U: Iterator<B>>(self, other: U) -> ZipLongest<Self, U> {
         ZipLongest::new(self, other)
+    }
+
+    /// Remove duplicates from sections of consecutive identical elements.
+    /// If the iterator is sorted, all elements will be unique.
+    ///
+    /// Iterator element type is `A`.
+    fn dedup(self) -> Dedup<A, Self> {
+        Dedup::new(self)
+    }
+
+    /// An advanced iterator adaptor. The closure recives a reference to the iterator
+    /// and may pick off as many elements as it likes, to produce the next iterator element.
+    ///
+    /// Iterator element type is `B`.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// # use itertools::Itertools;
+    /// let xs = [0i, 1, 2, 1, 3];
+    ///
+    /// // An adaptor that gathers elements up in pairs
+    /// let mut pit = xs.iter().cloned().batching(|mut it| {
+    ///            match it.next() {
+    ///                None => None,
+    ///                Some(x) => match it.next() {
+    ///                    None => None,
+    ///                    Some(y) => Some((x, y)),
+    ///                }
+    ///            }
+    ///        });
+    /// assert_eq!(pit.next(), Some((0, 1)));
+    /// assert_eq!(pit.next(), Some((2, 1)));
+    /// assert_eq!(pit.next(), None);
+    /// ```
+    ///
+    fn batching<B, F: FnMut(&mut Self) -> Option<B>>(self, f: F) -> Batching<Self, F> {
+        Batching::new(self, f)
     }
 
     // non-adaptor methods
