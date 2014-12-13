@@ -120,7 +120,7 @@ impl<A, I: Iterator<A>> Iterator<A> for PutBack<A, I> {
     fn next(&mut self) -> Option<A> {
         match self.top {
             None => self.iter.next(),
-            ref mut some => mem::replace(some, None)
+            ref mut some => some.take(),
         }
     }
     #[inline]
@@ -226,29 +226,23 @@ impl<A: Clone + PartialEq, I: Iterator<A>> Iterator<A> for Dedup<A, I>
     #[inline]
     fn next(&mut self) -> Option<A>
     {
-        let mut elt;
-        loop {
-            elt = self.iter.next();
-
+        for elt in self.iter {
             match self.last {
-                None => {
-                    break
-                }
-                Some(ref x) => match elt {
-                    Some(ref y) if x == y => continue,
-                    _ => break,
+                Some(ref x) if x == &elt => continue,
+                _ => {
+                    self.last = Some(elt.clone());
+                    return Some(elt)
                 }
             }
         }
-        self.last = elt.clone();
-        elt
+        None
     }
 
     #[inline]
     fn size_hint(&self) -> (uint, Option<uint>)
     {
         let (lower, upper) = self.iter.size_hint();
-        if self.last.is_some() || lower == 0{
+        if self.last.is_some() || lower == 0 {
             // they might all be duplicates
             (0, upper)
         } else {
@@ -290,5 +284,61 @@ impl<A, B, F: FnMut(&mut I) -> Option<B>, I: Iterator<A>>
     {
         // No information about closue behavior
         (0, None)
+    }
+}
+
+#[deriving(Clone)]
+pub struct GroupBy<A, K, I, F> {
+    key: F,
+    iter: I,
+    current_key: Option<K>,
+    elts: Vec<A>,
+}
+
+impl<A, K, F, I> GroupBy<A, K, I, F> {
+    /// Create a new GroupBy iterator.
+    pub fn new(iter: I, key: F) -> GroupBy<A, K, I, F>
+    {
+        GroupBy{key: key, iter: iter, current_key: None, elts: Vec::new()}
+    }
+}
+
+impl<A, K: PartialEq, F: FnMut(&A) -> K, I: Iterator<A>>
+    Iterator<(K, Vec<A>)> for GroupBy<A, K, I, F>
+{
+    fn next(&mut self) -> Option<(K, Vec<A>)>
+    {
+        for elt in self.iter {
+            let key = (self.key)(&elt);
+            match self.current_key.take() {
+                None => {}
+                Some(old_key) => if old_key != key {
+                    self.current_key = Some(key);
+                    let v = mem::replace(&mut self.elts, vec![elt]);
+                    return Some((old_key, v))
+                },
+            }
+            self.current_key = Some(key);
+            self.elts.push(elt);
+        }
+        match self.current_key.take() {
+            None => None,
+            Some(key) => {
+                let v = mem::replace(&mut self.elts, Vec::new());
+                Some((key, v))
+            }
+        }
+    }
+
+    fn size_hint(&self) -> (uint, Option<uint>)
+    {
+        let (lower, upper) = self.iter.size_hint();
+        let stored_count = self.current_key.is_some() as uint;
+        let my_upper = upper.and_then(|x| x.checked_add(stored_count));
+        if lower > 0 || stored_count > 0 {
+            (1, my_upper)
+        } else {
+            (0, my_upper)
+        }
     }
 }

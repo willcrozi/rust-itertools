@@ -223,3 +223,23 @@ fn batching() {
            });
     assert_iters_equal(pit, ys.iter().cloned());
 }
+
+#[test]
+fn group_by() {
+    let xs = [0i, 1, 1, 1, 2, 1, 3, 3];
+    let ans = vec![(0, vec![0]), (1, vec![1, 1, 1]),
+                   (2, vec![2]), (1, vec![1]), (3, vec![3, 3])];
+    
+    let gb = xs.iter().cloned().group_by(|elt| *elt);
+    assert_iters_equal(gb, ans.into_iter());
+}
+
+#[test]
+fn put_back() {
+    let xs = [0i, 1, 1, 1, 2, 1, 3, 3];
+    let mut pb = it::PutBack::new(xs.iter().cloned());
+    pb.next();
+    pb.put_back(1);
+    pb.put_back(0);
+    assert_iters_equal(pb, xs.iter().cloned());
+}

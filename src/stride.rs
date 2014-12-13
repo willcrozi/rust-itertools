@@ -26,6 +26,8 @@ pub struct Stride<'a, A> {
     life: kinds::marker::ContravariantLifetime<'a>,
 }
 
+impl<'a, A> Copy for Stride<'a, A> {}
+
 /// StrideMut is like Stride, but with mutable elements.
 ///
 /// Iterator element type is `&'a mut A`.
