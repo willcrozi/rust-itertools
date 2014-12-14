@@ -502,6 +502,23 @@ tweak rustdoc css
 <span id='448'>448</span>
 <span id='449'>449</span>
 <span id='450'>450</span>
+<span id='451'>451</span>
+<span id='452'>452</span>
+<span id='453'>453</span>
+<span id='454'>454</span>
+<span id='455'>455</span>
+<span id='456'>456</span>
+<span id='457'>457</span>
+<span id='458'>458</span>
+<span id='459'>459</span>
+<span id='460'>460</span>
+<span id='461'>461</span>
+<span id='462'>462</span>
+<span id='463'>463</span>
+<span id='464'>464</span>
+<span id='465'>465</span>
+<span id='466'>466</span>
+<span id='467'>467</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>unboxed_closures</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
@@ -539,11 +556,11 @@ tweak rustdoc css
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//!</span>
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Interleave</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>Product</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>PutBack</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>FnMap</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::{
+    <span class='ident'>Interleave</span>,
+    <span class='ident'>Product</span>,
+    <span class='ident'>PutBack</span>,
+    <span class='ident'>FnMap</span>,
     <span class='ident'>Dedup</span>,
     <span class='ident'>Batching</span>,
     <span class='ident'>GroupBy</span>,
@@ -597,6 +614,10 @@ tweak rustdoc css
 
 <span class='macro'>impl_append_tuple</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>, <span class='ident'>G</span>, <span class='ident'>H</span>, <span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>K</span>, <span class='ident'>L</span>)
 
+<span class='doccomment'>/// A helper iterator that maps an iterator of tuples like</span>
+<span class='doccomment'>/// `((A, B), C)` to an iterator of `(A, B, C)`.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Used by the `izip!()` and `iproduct!()` macros.</span>
 <span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FlatTuples</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
     <span class='kw'>pub</span> <span class='ident'>iter</span>: <span class='ident'>I</span>,
@@ -870,7 +891,7 @@ tweak rustdoc css
     <span class='doccomment'>/// same original iterator.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// `RcIter` allows doing interesting things like using `.zip` on an iterator with</span>
-    <span class='doccomment'>/// itself, at the cost of runtime borrow checking and possible panic.</span>
+    <span class='doccomment'>/// itself, at the cost of runtime borrow checking.</span>
     <span class='doccomment'>/// (If it is not obvious: this has a performance penalty.)</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ## Example</span>
@@ -888,6 +909,12 @@ tweak rustdoc css
     <span class='doccomment'>/// assert_eq!(z.next(), Some((3, 5)));</span>
     <span class='doccomment'>/// assert_eq!(z.next(), None);</span>
     <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// **Panics** in iterator methods if a borrow error is encountered,</span>
+    <span class='doccomment'>/// but it can only happen if the RcIter is reentered in for example `.next()`,</span>
+    <span class='doccomment'>/// i.e. if it somehow participates in an &quot;iterator knot&quot; where it is an adaptor of itself.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Iterator element type is `A`.</span>
     <span class='kw'>fn</span> <span class='ident'>into_rc</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>RcIter</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span>
     {
         <span class='ident'>RcIter</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
@@ -930,6 +957,13 @@ tweak rustdoc css
     <span class='doccomment'>/// Consumes the iterator until its end.</span>
     <span class='kw'>fn</span> <span class='ident'>apply</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>f</span>: <span class='op'>|</span><span class='ident'>A</span><span class='op'>|</span>) {
         <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='op'>*</span><span class='self'>self</span> { <span class='ident'>f</span>(<span class='ident'>elt</span>) }
+    }
+
+    <span class='doccomment'>/// `.collec_vec()` is simply a type specialization of `.collect()`,</span>
+    <span class='doccomment'>/// for convenience.</span>
+    <span class='kw'>fn</span> <span class='ident'>collect_vec</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>
+    {
+        <span class='self'>self</span>.<span class='ident'>collect</span>()
     }
 }
 

@@ -56,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>Itertools</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-6924' href='../src/itertools/lib.rs.html#229-429'>[src]</a></span></h1>
+        </span><a id='src-6924' href='../src/itertools/lib.rs.html#233-446'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
     fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt; { ... }
     fn <a href='#method.map_unboxed' class='fnname'>map_unboxed</a>&lt;B, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(A,)</a>, B&gt;&gt;(self, map: F) -&gt; <a class='struct' href='../itertools/struct.MapMut.html' title='itertools::MapMut'>MapMut</a>&lt;F, Self&gt; { ... }
@@ -71,6 +71,7 @@ tweak rustdoc css
     fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a> { ... }
     fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self) { ... }
     fn <a href='#method.apply' class='fnname'>apply</a>(&amp;mut self, f: |A|) { ... }
+    fn <a href='#method.collect_vec' class='fnname'>collect_vec</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;A&gt; { ... }
 }</pre><div class='docblock'><p>Extra iterator methods for arbitrary iterators</p>
 </div>
             <h2 id='provided-methods'>Provided Methods</h2>
@@ -163,7 +164,7 @@ the original iterator.</p>
 same original iterator.</p>
 
 <p><code>RcIter</code> allows doing interesting things like using <code>.zip</code> on an iterator with
-itself, at the cost of runtime borrow checking and possible panic.
+itself, at the cost of runtime borrow checking.
 (If it is not obvious: this has a performance penalty.)</p>
 
 <h2 id="example" class='section-header'><a
@@ -178,6 +179,12 @@ itself, at the cost of runtime borrow checking and possible panic.
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>3</span>, <span class='number'>5</span>)));
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>None</span>);
 </pre>
+
+<p><strong>Panics</strong> in iterator methods if a borrow error is encountered,
+but it can only happen if the RcIter is reentered in for example <code>.next()</code>,
+i.e. if it somehow participates in an &quot;iterator knot&quot; where it is an adaptor of itself.</p>
+
+<p>Iterator element type is <code>A</code>.</p>
 </div><h3 id='method.dropn' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Consume <code>n</code> elements of the iterator eagerly</p>
 
 <p>Return actual number of elements consumed,
@@ -194,6 +201,8 @@ until done or reaching the end.</p>
 </div><h3 id='method.apply' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.apply' class='fnname'>apply</a>(&amp;mut self, f: |A|)</code></h3><div class='docblock'><p>Run the closure <code>f</code> eagerly on each element of the iterator.</p>
 
 <p>Consumes the iterator until its end.</p>
+</div><h3 id='method.collect_vec' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.collect_vec' class='fnname'>collect_vec</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;A&gt;</code></h3><div class='docblock'><p><code>.collec_vec()</code> is simply a type specialization of <code>.collect()</code>,
+for convenience.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
