@@ -12,7 +12,13 @@
 //! #[phase(plugin, link)] extern crate itertools;
 //! ```
 //!
-//! I recommend shortening the crate name with something like:
+//! To use the iterator methods in this crate, import the [**Itertools** trait](./trait.Itertools.html):
+//!
+//! ```ignore
+//! use itertools::Itertools;
+//! ```
+//!
+//! You can shorten the crate name with something like:
 //!
 //! ```ignore
 //! use itertools as it;
@@ -39,6 +45,7 @@ pub use adaptors::{
 };
 pub use intersperse::Intersperse;
 pub use map::MapMut;
+pub use rciter::RcIter;
 pub use stride::Stride;
 pub use stride::StrideMut;
 pub use tee::Tee;
@@ -50,6 +57,7 @@ mod adaptors;
 mod intersperse;
 mod linspace;
 mod map;
+mod rciter;
 mod stride;
 mod tee;
 mod times;
@@ -349,6 +357,35 @@ pub trait Itertools<A> : Iterator<A> {
     fn tee(self) -> (Tee<A, Self>, Tee<A, Self>)
     {
         tee::new(self)
+    }
+
+    /// Return the iterator wrapped in a `Rc<RefCell<_>>` wrapper.
+    ///
+    /// The returned `RcIter` can be cloned, and each clone will refer back to the
+    /// same original iterator.
+    ///
+    /// `RcIter` allows doing interesting things like using `.zip` on an iterator with
+    /// itself, at the cost of runtime borrow checking and possible panic.
+    /// (If it is not obvious: this has a performance penalty.)
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// # use itertools::Itertools;
+    ///
+    /// let xs = [0i, 1, 1, 1, 2, 1, 3, 5, 6];
+
+    /// let rit = xs.iter().cloned().into_rc();
+    /// let mut z = rit.clone().zip(rit.clone());
+    /// assert_eq!(z.next(), Some((0, 1)));
+    /// assert_eq!(z.next(), Some((1, 1)));
+    /// assert_eq!(z.next(), Some((2, 1)));
+    /// assert_eq!(z.next(), Some((3, 5)));
+    /// assert_eq!(z.next(), None);
+    /// ```
+    fn into_rc(self) -> RcIter<Self>
+    {
+        RcIter::new(self)
     }
 
     // non-adaptor methods
