@@ -38,7 +38,7 @@ tweak rustdoc css
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Batching.html'>Batching</a><a class='struct ' href='struct.Dedup.html'>Dedup</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.GroupBy.html'>GroupBy</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.MapMut.html'>MapMut</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Tee.html'>Tee</a><a class='struct ' href='struct.Times.html'>Times</a><a class='struct ' href='struct.ZipLongest.html'>ZipLongest</a></div><div class='block enum'><h2>Enums</h2><a class='enum ' href='enum.EitherOrBoth.html'>EitherOrBoth</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
+        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Batching.html'>Batching</a><a class='struct ' href='struct.Dedup.html'>Dedup</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.GroupBy.html'>GroupBy</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.MapMut.html'>MapMut</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.RcIter.html'>RcIter</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Tee.html'>Tee</a><a class='struct ' href='struct.Times.html'>Times</a><a class='struct ' href='struct.ZipLongest.html'>ZipLongest</a></div><div class='block enum'><h2>Enums</h2><a class='enum ' href='enum.EitherOrBoth.html'>EitherOrBoth</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
     </section>
 
     <nav class="sub">
@@ -56,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>Itertools</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-6776' href='../src/itertools/lib.rs.html#221-392'>[src]</a></span></h1>
+        </span><a id='src-6924' href='../src/itertools/lib.rs.html#229-429'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
     fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt; { ... }
     fn <a href='#method.map_unboxed' class='fnname'>map_unboxed</a>&lt;B, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(A,)</a>, B&gt;&gt;(self, map: F) -&gt; <a class='struct' href='../itertools/struct.MapMut.html' title='itertools::MapMut'>MapMut</a>&lt;F, Self&gt; { ... }
@@ -67,6 +67,7 @@ tweak rustdoc css
     fn <a href='#method.batching' class='fnname'>batching</a>&lt;B, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(&amp;mut Self,)</a>, <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;B&gt;&gt;&gt;(self, f: F) -&gt; <a class='struct' href='../itertools/struct.Batching.html' title='itertools::Batching'>Batching</a>&lt;Self, F&gt; { ... }
     fn <a href='#method.group_by' class='fnname'>group_by</a>&lt;K, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(&amp;A,)</a>, K&gt;&gt;(self, key: F) -&gt; <a class='struct' href='../itertools/struct.GroupBy.html' title='itertools::GroupBy'>GroupBy</a>&lt;A, K, Self, F&gt; { ... }
     fn <a href='#method.tee' class='fnname'>tee</a>(self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='struct' href='../itertools/struct.Tee.html' title='itertools::Tee'>Tee</a>&lt;A, Self&gt;, <a class='struct' href='../itertools/struct.Tee.html' title='itertools::Tee'>Tee</a>&lt;A, Self&gt;)</a> { ... }
+    fn <a href='#method.into_rc' class='fnname'>into_rc</a>(self) -&gt; <a class='struct' href='../itertools/struct.RcIter.html' title='itertools::RcIter'>RcIter</a>&lt;Self&gt; { ... }
     fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a> { ... }
     fn <a href='#method.drain' class='fnname'>drain</a>(&amp;mut self) { ... }
     fn <a href='#method.apply' class='fnname'>apply</a>(&amp;mut self, f: |A|) { ... }
@@ -155,6 +156,27 @@ the original iterator.</p>
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>t1</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='number'>3</span>));
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>t1</span>.<span class='ident'>next</span>(), <span class='prelude-val'>None</span>);
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>t2</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='number'>1</span>));
+</pre>
+</div><h3 id='method.into_rc' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.into_rc' class='fnname'>into_rc</a>(self) -&gt; <a class='struct' href='../itertools/struct.RcIter.html' title='itertools::RcIter'>RcIter</a>&lt;Self&gt;</code></h3><div class='docblock'><p>Return the iterator wrapped in a <code>Rc&lt;RefCell&lt;_&gt;&gt;</code> wrapper.</p>
+
+<p>The returned <code>RcIter</code> can be cloned, and each clone will refer back to the
+same original iterator.</p>
+
+<p><code>RcIter</code> allows doing interesting things like using <code>.zip</code> on an iterator with
+itself, at the cost of runtime borrow checking and possible panic.
+(If it is not obvious: this has a performance penalty.)</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre class='rust '>
+
+<span class='kw'>let</span> <span class='ident'>xs</span> <span class='op'>=</span> [<span class='number'>0i</span>, <span class='number'>1</span>, <span class='number'>1</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>1</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>6</span>];
+<span class='kw'>let</span> <span class='ident'>rit</span> <span class='op'>=</span> <span class='ident'>xs</span>.<span class='ident'>iter</span>().<span class='ident'>cloned</span>().<span class='ident'>into_rc</span>();
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>z</span> <span class='op'>=</span> <span class='ident'>rit</span>.<span class='ident'>clone</span>().<span class='ident'>zip</span>(<span class='ident'>rit</span>.<span class='ident'>clone</span>());
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>0</span>, <span class='number'>1</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>1</span>, <span class='number'>1</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>2</span>, <span class='number'>1</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>3</span>, <span class='number'>5</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>None</span>);
 </pre>
 </div><h3 id='method.dropn' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a></code></h3><div class='docblock'><p>Consume <code>n</code> elements of the iterator eagerly</p>
 
