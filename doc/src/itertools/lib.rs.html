@@ -759,7 +759,7 @@ tweak rustdoc css
     <span class='doccomment'>/// so that the resulting `FnMap` iterator value can be cloned.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is `B`</span>
-    <span class='attribute'>#[<span class='ident'>deprecated</span><span class='op'>=</span><span class='string'>&quot;use map_unboxed, or soon .map in libstd&quot;</span>]</span>
+    <span class='attribute'>#[<span class='ident'>deprecated</span><span class='op'>=</span><span class='string'>&quot;Use libstd .map() instead&quot;</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>fn_map</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>Self</span><span class='op'>&gt;</span> {
         <span class='ident'>FnMap</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>map</span>)
     }
@@ -767,7 +767,7 @@ tweak rustdoc css
     <span class='doccomment'>/// Like regular `.map`, but using an unboxed closure instead.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is `B`</span>
-    <span class='attribute'>#[<span class='ident'>experimental</span><span class='op'>=</span><span class='string'>&quot;libstd will catch up to this soon&quot;</span>]</span>
+    <span class='attribute'>#[<span class='ident'>deprecated</span><span class='op'>=</span><span class='string'>&quot;Use libstd .map() instead&quot;</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>map_unboxed</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>map</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>MapMut</span><span class='op'>&lt;</span><span class='ident'>F</span>, <span class='ident'>Self</span><span class='op'>&gt;</span> {
         <span class='ident'>MapMut</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>map</span>)
     }
