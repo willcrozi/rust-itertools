@@ -519,6 +519,7 @@ tweak rustdoc css
 <span id='465'>465</span>
 <span id='466'>466</span>
 <span id='467'>467</span>
+<span id='468'>468</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>unboxed_closures</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
@@ -899,14 +900,15 @@ tweak rustdoc css
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// # use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// let xs = [0i, 1, 1, 1, 2, 1, 3, 5, 6];</span>
+    <span class='doccomment'>/// let xs = [0i, 1, 1, 1, 2, 1, 3, 5, 6, 7];</span>
 
-    <span class='doccomment'>/// let rit = xs.iter().cloned().into_rc();</span>
+    <span class='doccomment'>/// let mut rit = xs.iter().cloned().into_rc();</span>
     <span class='doccomment'>/// let mut z = rit.clone().zip(rit.clone());</span>
     <span class='doccomment'>/// assert_eq!(z.next(), Some((0, 1)));</span>
     <span class='doccomment'>/// assert_eq!(z.next(), Some((1, 1)));</span>
     <span class='doccomment'>/// assert_eq!(z.next(), Some((2, 1)));</span>
-    <span class='doccomment'>/// assert_eq!(z.next(), Some((3, 5)));</span>
+    <span class='doccomment'>/// assert_eq!(rit.next(), Some(3));</span>
+    <span class='doccomment'>/// assert_eq!(z.next(), Some((5, 6)));</span>
     <span class='doccomment'>/// assert_eq!(z.next(), None);</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>///</span>

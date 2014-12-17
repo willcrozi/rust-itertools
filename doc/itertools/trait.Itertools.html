@@ -56,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>Itertools</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-6924' href='../src/itertools/lib.rs.html#233-446'>[src]</a></span></h1>
+        </span><a id='src-6924' href='../src/itertools/lib.rs.html#233-447'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Itertools&lt;A&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;A&gt; {
     fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(A) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;A, B, Self&gt; { ... }
     fn <a href='#method.map_unboxed' class='fnname'>map_unboxed</a>&lt;B, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(A,)</a>, B&gt;&gt;(self, map: F) -&gt; <a class='struct' href='../itertools/struct.MapMut.html' title='itertools::MapMut'>MapMut</a>&lt;F, Self&gt; { ... }
@@ -170,13 +170,14 @@ itself, at the cost of runtime borrow checking.
 <h2 id="example" class='section-header'><a
                            href="#example">Example</a></h2><pre class='rust '>
 
-<span class='kw'>let</span> <span class='ident'>xs</span> <span class='op'>=</span> [<span class='number'>0i</span>, <span class='number'>1</span>, <span class='number'>1</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>1</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>6</span>];
-<span class='kw'>let</span> <span class='ident'>rit</span> <span class='op'>=</span> <span class='ident'>xs</span>.<span class='ident'>iter</span>().<span class='ident'>cloned</span>().<span class='ident'>into_rc</span>();
+<span class='kw'>let</span> <span class='ident'>xs</span> <span class='op'>=</span> [<span class='number'>0i</span>, <span class='number'>1</span>, <span class='number'>1</span>, <span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>1</span>, <span class='number'>3</span>, <span class='number'>5</span>, <span class='number'>6</span>, <span class='number'>7</span>];
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>rit</span> <span class='op'>=</span> <span class='ident'>xs</span>.<span class='ident'>iter</span>().<span class='ident'>cloned</span>().<span class='ident'>into_rc</span>();
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>z</span> <span class='op'>=</span> <span class='ident'>rit</span>.<span class='ident'>clone</span>().<span class='ident'>zip</span>(<span class='ident'>rit</span>.<span class='ident'>clone</span>());
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>0</span>, <span class='number'>1</span>)));
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>1</span>, <span class='number'>1</span>)));
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>2</span>, <span class='number'>1</span>)));
-<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>3</span>, <span class='number'>5</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>rit</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>(<span class='number'>3</span>));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='number'>5</span>, <span class='number'>6</span>)));
 <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>z</span>.<span class='ident'>next</span>(), <span class='prelude-val'>None</span>);
 </pre>
 
