@@ -602,7 +602,7 @@ tweak rustdoc css
     );
 
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>:<span class='ident'>ident</span> $(,<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>:<span class='ident'>ident</span>)<span class='op'>*</span>) <span class='op'>=&gt;</span> (
-        <span class='macro'>impl_append_tuple</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>),<span class='op'>*</span>)
+        <span class='macro'>impl_append_tuple</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>),<span class='op'>*</span>);
         <span class='attribute'>#[<span class='ident'>allow</span>(<span class='ident'>non_snake_case</span>)]</span>
         <span class='kw'>impl</span><span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span> <span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>T</span>, (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span> <span class='ident'>T</span>)<span class='op'>&gt;</span> <span class='kw'>for</span> (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>),<span class='op'>*</span>) {
             <span class='kw'>fn</span> <span class='ident'>append</span>(<span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>A</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span> <span class='ident'>T</span>) {
@@ -611,9 +611,9 @@ tweak rustdoc css
             }
         }
     );
-)
+);
 
-<span class='macro'>impl_append_tuple</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>, <span class='ident'>G</span>, <span class='ident'>H</span>, <span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>K</span>, <span class='ident'>L</span>)
+<span class='macro'>impl_append_tuple</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>, <span class='ident'>G</span>, <span class='ident'>H</span>, <span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>K</span>, <span class='ident'>L</span>);
 
 <span class='doccomment'>/// A helper iterator that maps an iterator of tuples like</span>
 <span class='doccomment'>/// `((A, B), C)` to an iterator of `(A, B, C)`.</span>
@@ -677,7 +677,7 @@ tweak rustdoc css
             <span class='ident'>it</span>
         }
     );
-)
+);
 
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='doccomment'>/// Create an iterator running multiple iterators in lockstep.</span>
@@ -712,7 +712,7 @@ tweak rustdoc css
             <span class='ident'>it</span>
         }
     );
-)
+);
 
 <span class='comment'>// Note: Instead of using struct Product, we could implement iproduct!()</span>
 <span class='comment'>// using .flat_map as well; however it can&#39;t implement size_hint.</span>
@@ -750,7 +750,7 @@ tweak rustdoc css
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>r</span>:<span class='ident'>expr</span> <span class='kw'>for</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>x</span>:<span class='ident'>pat</span> <span class='kw'>in</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
         (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>).<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>x</span><span class='op'>|</span> <span class='prelude-val'>Some</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>r</span>))
     );
-)
+);
 
 <span class='doccomment'>/// Extra iterator methods for arbitrary iterators</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Itertools</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> : <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
