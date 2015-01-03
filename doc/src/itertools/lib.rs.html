@@ -520,7 +520,9 @@ tweak rustdoc css
 <span id='466'>466</span>
 <span id='467'>467</span>
 <span id='468'>468</span>
+<span id='469'>469</span>
 </pre><pre class='rust '>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>old_orphan_check</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>unboxed_closures</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
@@ -619,7 +621,7 @@ tweak rustdoc css
 <span class='doccomment'>/// `((A, B), C)` to an iterator of `(A, B, C)`.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Used by the `izip!()` and `iproduct!()` macros.</span>
-<span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FlatTuples</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
     <span class='kw'>pub</span> <span class='ident'>iter</span>: <span class='ident'>I</span>,
 }
@@ -753,7 +755,7 @@ tweak rustdoc css
 );
 
 <span class='doccomment'>/// Extra iterator methods for arbitrary iterators</span>
-<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Itertools</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> : <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
+<span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>Itertools</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> : <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>Sized</span> {
     <span class='comment'>// adaptors</span>
 
     <span class='doccomment'>/// Like regular `.map`, but using a simple function pointer instead,</span>

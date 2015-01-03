@@ -158,15 +158,17 @@ tweak rustdoc css
 <span id='104'>104</span>
 <span id='105'>105</span>
 <span id='106'>106</span>
+<span id='107'>107</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>;
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>EitherOrBoth</span>::{<span class='ident'>Right</span>, <span class='ident'>Left</span>, <span class='ident'>Both</span>};
 
 <span class='comment'>// ZipLongest originally written by SimonSapin,</span>
 <span class='comment'>// and dedicated to itertools https://github.com/rust-lang/rust/pull/19283</span>
 
 <span class='doccomment'>/// An iterator which iterates two other iterators simultaneously</span>
-<span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='attribute'>#[<span class='ident'>must_use</span> <span class='op'>=</span> <span class='string'>&quot;iterator adaptors are lazy and do nothing unless consumed&quot;</span>]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> {
     <span class='ident'>a</span>: <span class='ident'>T</span>,
@@ -254,7 +256,7 @@ tweak rustdoc css
 <span class='doccomment'>/// A value yielded by `ZipLongest`.</span>
 <span class='doccomment'>/// Contains one or two values,</span>
 <span class='doccomment'>/// depending on which of the input iterators are exhausted.</span>
-<span class='attribute'>#[<span class='ident'>deriving</span>(<span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Eq</span>, <span class='ident'>Show</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Eq</span>, <span class='ident'>Show</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>EitherOrBoth</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Neither input iterator is exhausted yet, yielding two values.</span>
     <span class='ident'>Both</span>(<span class='ident'>A</span>, <span class='ident'>B</span>),
