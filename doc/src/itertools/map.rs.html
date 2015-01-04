@@ -100,6 +100,8 @@ tweak rustdoc css
 <span id='46'>46</span>
 <span id='47'>47</span>
 <span id='48'>48</span>
+<span id='49'>49</span>
+<span id='50'>50</span>
 </pre><pre class='rust '>
 
 <span class='doccomment'>/// Clonable iterator adaptor to map elementwise</span>
@@ -120,8 +122,9 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>MapMut</span><span class='op'>&lt;</span><span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>MapMut</span><span class='op'>&lt;</span><span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
 {
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>B</span>;
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> {
         <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>next</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>a</span><span class='op'>|</span> (<span class='self'>self</span>.<span class='ident'>map</span>)(<span class='ident'>a</span>))
@@ -132,8 +135,9 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span>
 <span class='kw'>for</span> <span class='ident'>MapMut</span><span class='op'>&lt;</span><span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+    <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>next_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> {
