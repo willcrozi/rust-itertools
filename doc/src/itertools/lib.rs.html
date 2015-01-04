@@ -525,9 +525,23 @@ tweak rustdoc css
 <span id='471'>471</span>
 <span id='472'>472</span>
 <span id='473'>473</span>
+<span id='474'>474</span>
+<span id='475'>475</span>
+<span id='476'>476</span>
+<span id='477'>477</span>
+<span id='478'>478</span>
+<span id='479'>479</span>
+<span id='480'>480</span>
+<span id='481'>481</span>
+<span id='482'>482</span>
+<span id='483'>483</span>
+<span id='484'>484</span>
+<span id='485'>485</span>
+<span id='486'>486</span>
+<span id='487'>487</span>
+<span id='488'>488</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>associated_types</span>)]</span>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>old_orphan_check</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>unboxed_closures</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>macro_rules</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
@@ -535,17 +549,20 @@ tweak rustdoc css
 
 <span class='doccomment'>//! Itertools — extra iterator adaptors, functions and macros</span>
 <span class='doccomment'>//!</span>
+<span class='doccomment'>//! To use the iterator methods in this crate, import the [**Itertools** trait](./trait.Itertools.html):</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! ```ignore</span>
+<span class='doccomment'>//! use itertools::Itertools;</span>
+<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Some adaptors are just used directly like regular structs,</span>
+<span class='doccomment'>//! for example [**PutBack**](./struct.PutBack.html), [**Zip**](./struct.Zip.html), [**Stride**](./struct.Stride.html), [**StrideMut**](./struct.StrideMut.html).</span>
+<span class='doccomment'>//!</span>
 <span class='doccomment'>//! To use the macros in this crate, use the `phase(plugin)` attribute:</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```ignore</span>
 <span class='doccomment'>//! #![feature(phase)]</span>
 <span class='doccomment'>//! #[phase(plugin, link)] extern crate itertools;</span>
-<span class='doccomment'>//! ```</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! To use the iterator methods in this crate, import the [**Itertools** trait](./trait.Itertools.html):</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! ```ignore</span>
-<span class='doccomment'>//! use itertools::Itertools;</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! You can shorten the crate name with something like:</span>
@@ -583,6 +600,7 @@ tweak rustdoc css
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>linspace</span>::{<span class='ident'>linspace</span>, <span class='ident'>Linspace</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip</span>::{<span class='ident'>ZipLongest</span>, <span class='ident'>EitherOrBoth</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::<span class='ident'>Zip</span>;
 <span class='kw'>mod</span> <span class='ident'>adaptors</span>;
 <span class='kw'>mod</span> <span class='ident'>intersperse</span>;
 <span class='kw'>mod</span> <span class='ident'>linspace</span>;
@@ -592,9 +610,11 @@ tweak rustdoc css
 <span class='kw'>mod</span> <span class='ident'>tee</span>;
 <span class='kw'>mod</span> <span class='ident'>times</span>;
 <span class='kw'>mod</span> <span class='ident'>zip</span>;
+<span class='kw'>mod</span> <span class='ident'>ziptuple</span>;
 
 <span class='doccomment'>/// A helper trait for (x,y,z) ++ w =&gt; (x,y,z,w),</span>
 <span class='doccomment'>/// used for implementing `iproduct!` and `izip!`</span>
+<span class='attribute'>#[<span class='ident'>deprecated</span>]</span>
 <span class='kw'>trait</span> <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>X</span>, <span class='ident'>Y</span><span class='op'>&gt;</span> {
     <span class='kw'>fn</span> <span class='ident'>append</span>(<span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>X</span>) <span class='op'>-&gt;</span> <span class='ident'>Y</span>;
 }
@@ -627,6 +647,7 @@ tweak rustdoc css
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Used by the `izip!()` and `iproduct!()` macros.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
+<span class='attribute'>#[<span class='ident'>deprecated</span>]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FlatTuples</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
     <span class='kw'>pub</span> <span class='ident'>iter</span>: <span class='ident'>I</span>,
 }
@@ -689,7 +710,10 @@ tweak rustdoc css
     );
 );
 
+<span class='attribute'>#[<span class='ident'>deprecated</span><span class='op'>=</span><span class='string'>&quot;izip!() is deprecated, use Zip::new instead&quot;</span>]</span>
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
+<span class='doccomment'>/// *This macro is deprecated, use* **Zip::new** *instead.*</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// Create an iterator running multiple iterators in lockstep.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// The izip! iterator yields elements until any subiterator</span>
@@ -715,11 +739,7 @@ tweak rustdoc css
     );
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>:<span class='ident'>expr</span> $(, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>:<span class='ident'>expr</span>)<span class='op'>*</span>) <span class='op'>=&gt;</span> (
         {
-            <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>.<span class='ident'>zip</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>);
-            $(
-                <span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> ::<span class='ident'>itertools</span>::<span class='ident'>FlatTuples</span>{<span class='ident'>iter</span>: <span class='ident'>it</span>.<span class='ident'>zip</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>)};
-            )<span class='op'>*</span>
-            <span class='ident'>it</span>
+            ::<span class='ident'>itertools</span>::<span class='ident'>Zip</span>::<span class='ident'>new</span>((<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span> $(, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>K</span>)<span class='op'>*</span>))
         }
     );
 );
@@ -831,7 +851,7 @@ tweak rustdoc css
         <span class='ident'>Dedup</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
     }
 
-    <span class='doccomment'>/// An advanced iterator adaptor. The closure recives a reference to the iterator</span>
+    <span class='doccomment'>/// A “meta iterator adaptor”. Its closure recives a reference to the iterator</span>
     <span class='doccomment'>/// and may pick off as many elements as it likes, to produce the next iterator element.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is `B`.</span>
@@ -861,10 +881,10 @@ tweak rustdoc css
         <span class='ident'>Batching</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>f</span>)
     }
 
-    <span class='doccomment'>/// Group iterator elements. Consecutive elements that map to the same key (&quot;runs&quot;),</span>
-    <span class='doccomment'>/// are returned as the iterator elements of `GroupBy`.</span>
+    <span class='doccomment'>/// Group iterator elements. Consecutive elements that map to the same key (“runs”),</span>
+    <span class='doccomment'>/// are returned as the iterator elements of **GroupBy**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Iterator element type is `(K, Vec&lt;Self::Item&gt;)`</span>
+    <span class='doccomment'>/// Iterator element type is **(K, Vec\&lt;Self::Item\&gt;)**</span>
     <span class='kw'>fn</span> <span class='ident'>group_by</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span> <span class='op'>&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>K</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>key</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span> <span class='op'>&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span>, <span class='ident'>K</span>, <span class='ident'>Self</span>, <span class='ident'>F</span><span class='op'>&gt;</span>
     {
         <span class='ident'>GroupBy</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>key</span>)
@@ -896,12 +916,12 @@ tweak rustdoc css
         <span class='ident'>tee</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
     }
 
-    <span class='doccomment'>/// Return the iterator wrapped in a `Rc&lt;RefCell&lt;_&gt;&gt;` wrapper.</span>
+    <span class='doccomment'>/// Return an iterator inside a **Rc\&lt;RefCell\&lt;_\&gt;\&gt;** wrapper.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// The returned `RcIter` can be cloned, and each clone will refer back to the</span>
+    <span class='doccomment'>/// The returned **RcIter** can be cloned, and each clone will refer back to the</span>
     <span class='doccomment'>/// same original iterator.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// `RcIter` allows doing interesting things like using `.zip` on an iterator with</span>
+    <span class='doccomment'>/// **RcIter** allows doing interesting things like using **.zip()** on an iterator with</span>
     <span class='doccomment'>/// itself, at the cost of runtime borrow checking.</span>
     <span class='doccomment'>/// (If it is not obvious: this has a performance penalty.)</span>
     <span class='doccomment'>///</span>
@@ -923,10 +943,10 @@ tweak rustdoc css
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// **Panics** in iterator methods if a borrow error is encountered,</span>
-    <span class='doccomment'>/// but it can only happen if the RcIter is reentered in for example `.next()`,</span>
+    <span class='doccomment'>/// but it can only happen if the RcIter is reentered in for example **.next()**,</span>
     <span class='doccomment'>/// i.e. if it somehow participates in an &quot;iterator knot&quot; where it is an adaptor of itself.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Iterator element type is `Self::Item`.</span>
+    <span class='doccomment'>/// Iterator element type is **Self::Item**.</span>
     <span class='kw'>fn</span> <span class='ident'>into_rc</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>RcIter</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span>
     {
         <span class='ident'>RcIter</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
@@ -934,7 +954,7 @@ tweak rustdoc css
 
     <span class='comment'>// non-adaptor methods</span>
 
-    <span class='doccomment'>/// Consume `n` elements of the iterator eagerly</span>
+    <span class='doccomment'>/// Consume the first **n** elements of the iterator eagerly.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Return actual number of elements consumed,</span>
     <span class='doccomment'>/// until done or reaching the end.</span>
@@ -947,6 +967,16 @@ tweak rustdoc css
             }
         }
         <span class='ident'>start</span> <span class='op'>-</span> <span class='ident'>n</span>
+    }
+
+    <span class='doccomment'>/// Consume the first **n** elements from the iterator eagerly,</span>
+    <span class='doccomment'>/// and return the same iterator again.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// It works similarly to **.skip(n)** except it is eager and</span>
+    <span class='doccomment'>/// preserves the iterator type.</span>
+    <span class='kw'>fn</span> <span class='ident'>dropping</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>uint</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span> {
+        <span class='self'>self</span>.<span class='ident'>dropn</span>(<span class='ident'>n</span>);
+        <span class='self'>self</span>
     }
 
     <span class='doccomment'>/// Run the iterator, eagerly, to the end and consume all its elements.</span>
@@ -964,14 +994,14 @@ tweak rustdoc css
         <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='op'>*</span><span class='self'>self</span> { <span class='comment'>/* nothing */</span> }
     }
 
-    <span class='doccomment'>/// Run the closure `f` eagerly on each element of the iterator.</span>
+    <span class='doccomment'>/// Run the closure **f** eagerly on each element of the iterator.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Consumes the iterator until its end.</span>
-    <span class='kw'>fn</span> <span class='ident'>apply</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>f</span>: <span class='op'>|</span> <span class='op'>&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>|</span>) {
+    <span class='kw'>fn</span> <span class='ident'>apply</span><span class='op'>&lt;</span><span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='op'>&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>F</span>) {
         <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='op'>*</span><span class='self'>self</span> { <span class='ident'>f</span>(<span class='ident'>elt</span>) }
     }
 
-    <span class='doccomment'>/// `.collec_vec()` is simply a type specialization of `.collect()`,</span>
+    <span class='doccomment'>/// **.collec_vec()** is simply a type specialization of **.collect()**,</span>
     <span class='doccomment'>/// for convenience.</span>
     <span class='kw'>fn</span> <span class='ident'>collect_vec</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span> <span class='op'>&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>
     {

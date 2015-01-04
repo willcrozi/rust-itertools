@@ -56,18 +56,21 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-473'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-488'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
+
+<p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
+<pre class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+</pre>
+
+<p>Some adaptors are just used directly like regular structs,
+for example <a href="./struct.PutBack.html"><strong>PutBack</strong></a>, <a href="./struct.Zip.html"><strong>Zip</strong></a>, <a href="./struct.Stride.html"><strong>Stride</strong></a>, <a href="./struct.StrideMut.html"><strong>StrideMut</strong></a>.</p>
 
 <p>To use the macros in this crate, use the <code>phase(plugin)</code> attribute:</p>
 <pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>phase</span>)]</span>
 <span class='attribute'>#[<span class='ident'>phase</span>(<span class='ident'>plugin</span>, <span class='ident'>link</span>)]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
-</pre>
-
-<p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
-<pre class='rust '>
-<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
 </pre>
 
 <p>You can shorten the crate name with something like:</p>
@@ -109,7 +112,7 @@ and directly inspired by Python. Supports an optional filter clause.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.izip!.html'
                                title='itertools::izip!'>izip!</a></td>
-                        <td class='docblock short'><p>Create an iterator running multiple iterators in lockstep.</p>
+                        <td class='docblock short'><p><em>This macro is deprecated, use</em> <strong>Zip::new</strong> <em>instead.</em></p>
 </td>
                     </tr>
                 </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
@@ -117,7 +120,7 @@ and directly inspired by Python. Supports an optional filter clause.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Batching.html'
                                title='itertools::Batching'>Batching</a></td>
-                        <td class='docblock short'><p>An advanced iterator adaptor. The closure recives a reference to the iterator
+                        <td class='docblock short'><p>A “meta iterator adaptor”. Its closure recives a reference to the iterator
 and may pick off as many elements as it likes, to produce the next iterator element.</p>
 </td>
                     </tr>
@@ -131,7 +134,7 @@ If the iterator is sorted, all elements will be unique.</p>
                     </tr>
                 
                     <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.FlatTuples.html'
+                        <td><a class='stability Deprecated' title='Deprecated'></a><a class='struct' href='struct.FlatTuples.html'
                                title='itertools::FlatTuples'>FlatTuples</a></td>
                         <td class='docblock short'><p>A helper iterator that maps an iterator of tuples like
 <code>((A, B), C)</code> to an iterator of <code>(A, B, C)</code>.</p>
@@ -139,7 +142,7 @@ If the iterator is sorted, all elements will be unique.</p>
                     </tr>
                 
                     <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.FnMap.html'
+                        <td><a class='stability Deprecated' title='Deprecated'></a><a class='struct' href='struct.FnMap.html'
                                title='itertools::FnMap'>FnMap</a></td>
                         <td class='docblock short'><p>Clonable iterator adaptor to map elementwise
 from <code>Iterator&lt;A&gt;</code> to <code>Iterator&lt;B&gt;</code></p>
@@ -171,7 +174,7 @@ between each element of the adapted iterator.</p>
                     </tr>
                 
                     <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.MapMut.html'
+                        <td><a class='stability Deprecated' title='Deprecated'></a><a class='struct' href='struct.MapMut.html'
                                title='itertools::MapMut'>MapMut</a></td>
                         <td class='docblock short'><p>Clonable iterator adaptor to map elementwise
 from <code>Iterator&lt;A&gt;</code> to <code>Iterator&lt;B&gt;</code></p>
@@ -179,7 +182,7 @@ from <code>Iterator&lt;A&gt;</code> to <code>Iterator&lt;B&gt;</code></p>
                     </tr>
                 
                     <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Product.html'
+                        <td><a class='stability Deprecated' title='Deprecated: Will be replaced by generic tuple version'></a><a class='struct' href='struct.Product.html'
                                title='itertools::Product'>Product</a></td>
                         <td class='docblock short'><p>An iterator adaptor that iterates over the cartesian product of
 the element sets of two iterators <code>I</code> and <code>J</code>.</p>
@@ -227,6 +230,13 @@ item to the front of the iterator.</p>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Times.html'
                                title='itertools::Times'>Times</a></td>
                         <td class='docblock short'><p>Iterator to repeat a simple number of times</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Zip.html'
+                               title='itertools::Zip'>Zip</a></td>
+                        <td class='docblock short'><p>Create an iterator running multiple iterators in lockstep.</p>
 </td>
                     </tr>
                 

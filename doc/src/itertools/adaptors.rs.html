@@ -416,6 +416,8 @@ tweak rustdoc css
 <span id='362'>362</span>
 <span id='363'>363</span>
 <span id='364'>364</span>
+<span id='365'>365</span>
+<span id='366'>366</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -471,6 +473,7 @@ tweak rustdoc css
 <span class='doccomment'>/// Created with `.fn_map(..)` on an iterator</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Iterator element type is `B`</span>
+<span class='attribute'>#[<span class='ident'>deprecated</span>]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
     <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
@@ -566,6 +569,7 @@ tweak rustdoc css
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Iterator element type is `(A, B)` if `I: Iterator&lt;A&gt;` and `J: Iterator&lt;B&gt;`</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
+<span class='attribute'>#[<span class='ident'>deprecated</span><span class='op'>=</span><span class='string'>&quot;Will be replaced by generic tuple version&quot;</span>]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
     <span class='ident'>a</span>: <span class='ident'>I</span>,
     <span class='ident'>a_cur</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>,
@@ -686,10 +690,10 @@ tweak rustdoc css
 }
 
 
-<span class='doccomment'>/// An advanced iterator adaptor. The closure recives a reference to the iterator</span>
+<span class='doccomment'>/// A “meta iterator adaptor”. Its closure recives a reference to the iterator</span>
 <span class='doccomment'>/// and may pick off as many elements as it likes, to produce the next iterator element.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `B`, if the return type of `F` is `Option&lt;B&gt;`.</span>
+<span class='doccomment'>/// Iterator element type is **B**, if the return type of **F** is **Option\&lt;B\&gt;**.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Batching</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {
     <span class='ident'>f</span>: <span class='ident'>F</span>,
