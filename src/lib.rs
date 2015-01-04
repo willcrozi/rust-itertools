@@ -1,5 +1,4 @@
 #![feature(associated_types)]
-#![feature(old_orphan_check)]
 #![feature(unboxed_closures)]
 #![feature(macro_rules)]
 #![crate_name="itertools"]
@@ -7,17 +6,20 @@
 
 //! Itertools — extra iterator adaptors, functions and macros
 //!
+//! To use the iterator methods in this crate, import the [**Itertools** trait](./trait.Itertools.html):
+//!
+//! ```ignore
+//! use itertools::Itertools;
+//! ```
+//!
+//! Some adaptors are just used directly like regular structs,
+//! for example [**PutBack**](./struct.PutBack.html), [**Zip**](./struct.Zip.html), [**Stride**](./struct.Stride.html), [**StrideMut**](./struct.StrideMut.html).
+//!
 //! To use the macros in this crate, use the `phase(plugin)` attribute:
 //!
 //! ```ignore
 //! #![feature(phase)]
 //! #[phase(plugin, link)] extern crate itertools;
-//! ```
-//!
-//! To use the iterator methods in this crate, import the [**Itertools** trait](./trait.Itertools.html):
-//!
-//! ```ignore
-//! use itertools::Itertools;
 //! ```
 //!
 //! You can shorten the crate name with something like:
@@ -55,6 +57,7 @@ pub use times::Times;
 pub use times::times;
 pub use linspace::{linspace, Linspace};
 pub use zip::{ZipLongest, EitherOrBoth};
+pub use ziptuple::Zip;
 mod adaptors;
 mod intersperse;
 mod linspace;
@@ -64,9 +67,11 @@ mod stride;
 mod tee;
 mod times;
 mod zip;
+mod ziptuple;
 
 /// A helper trait for (x,y,z) ++ w => (x,y,z,w),
 /// used for implementing `iproduct!` and `izip!`
+#[deprecated]
 trait AppendTuple<X, Y> {
     fn append(self, x: X) -> Y;
 }
@@ -99,6 +104,7 @@ impl_append_tuple!(A, B, C, D, E, F, G, H, I, J, K, L);
 ///
 /// Used by the `izip!()` and `iproduct!()` macros.
 #[derive(Clone)]
+#[deprecated]
 pub struct FlatTuples<I> {
     pub iter: I,
 }
@@ -161,7 +167,10 @@ pub macro_rules! iproduct(
     );
 );
 
+#[deprecated="izip!() is deprecated, use Zip::new instead"]
 #[macro_export]
+/// *This macro is deprecated, use* **Zip::new** *instead.*
+///
 /// Create an iterator running multiple iterators in lockstep.
 ///
 /// The izip! iterator yields elements until any subiterator
@@ -187,11 +196,7 @@ pub macro_rules! izip(
     );
     ($I:expr, $J:expr $(, $K:expr)*) => (
         {
-            let it = $I.zip($J);
-            $(
-                let it = ::itertools::FlatTuples{iter: it.zip($K)};
-            )*
-            it
+            ::itertools::Zip::new(($I, $J $(, $K)*))
         }
     );
 );
@@ -303,7 +308,7 @@ pub trait Itertools : Iterator + Sized {
         Dedup::new(self)
     }
 
-    /// An advanced iterator adaptor. The closure recives a reference to the iterator
+    /// A “meta iterator adaptor”. Its closure recives a reference to the iterator
     /// and may pick off as many elements as it likes, to produce the next iterator element.
     ///
     /// Iterator element type is `B`.
@@ -333,10 +338,10 @@ pub trait Itertools : Iterator + Sized {
         Batching::new(self, f)
     }
 
-    /// Group iterator elements. Consecutive elements that map to the same key ("runs"),
-    /// are returned as the iterator elements of `GroupBy`.
+    /// Group iterator elements. Consecutive elements that map to the same key (“runs”),
+    /// are returned as the iterator elements of **GroupBy**.
     ///
-    /// Iterator element type is `(K, Vec<Self::Item>)`
+    /// Iterator element type is **(K, Vec\<Self::Item\>)**
     fn group_by<K, F: FnMut(& <Self as Iterator>::Item) -> K>(self, key: F) -> GroupBy< <Self as Iterator>::Item, K, Self, F>
     {
         GroupBy::new(self, key)
@@ -368,12 +373,12 @@ pub trait Itertools : Iterator + Sized {
         tee::new(self)
     }
 
-    /// Return the iterator wrapped in a `Rc<RefCell<_>>` wrapper.
+    /// Return an iterator inside a **Rc\<RefCell\<_\>\>** wrapper.
     ///
-    /// The returned `RcIter` can be cloned, and each clone will refer back to the
+    /// The returned **RcIter** can be cloned, and each clone will refer back to the
     /// same original iterator.
     ///
-    /// `RcIter` allows doing interesting things like using `.zip` on an iterator with
+    /// **RcIter** allows doing interesting things like using **.zip()** on an iterator with
     /// itself, at the cost of runtime borrow checking.
     /// (If it is not obvious: this has a performance penalty.)
     ///
@@ -395,10 +400,10 @@ pub trait Itertools : Iterator + Sized {
     /// ```
     ///
     /// **Panics** in iterator methods if a borrow error is encountered,
-    /// but it can only happen if the RcIter is reentered in for example `.next()`,
+    /// but it can only happen if the RcIter is reentered in for example **.next()**,
     /// i.e. if it somehow participates in an "iterator knot" where it is an adaptor of itself.
     ///
-    /// Iterator element type is `Self::Item`.
+    /// Iterator element type is **Self::Item**.
     fn into_rc(self) -> RcIter<Self>
     {
         RcIter::new(self)
@@ -406,7 +411,7 @@ pub trait Itertools : Iterator + Sized {
 
     // non-adaptor methods
 
-    /// Consume `n` elements of the iterator eagerly
+    /// Consume the first **n** elements of the iterator eagerly.
     ///
     /// Return actual number of elements consumed,
     /// until done or reaching the end.
@@ -419,6 +424,16 @@ pub trait Itertools : Iterator + Sized {
             }
         }
         start - n
+    }
+
+    /// Consume the first **n** elements from the iterator eagerly,
+    /// and return the same iterator again.
+    ///
+    /// It works similarly to **.skip(n)** except it is eager and
+    /// preserves the iterator type.
+    fn dropping(mut self, n: uint) -> Self {
+        self.dropn(n);
+        self
     }
 
     /// Run the iterator, eagerly, to the end and consume all its elements.
@@ -436,14 +451,14 @@ pub trait Itertools : Iterator + Sized {
         for _ in *self { /* nothing */ }
     }
 
-    /// Run the closure `f` eagerly on each element of the iterator.
+    /// Run the closure **f** eagerly on each element of the iterator.
     ///
     /// Consumes the iterator until its end.
-    fn apply(&mut self, f: | <Self as Iterator>::Item|) {
+    fn apply<F: FnMut(<Self as Iterator>::Item)>(&mut self, mut f: F) {
         for elt in *self { f(elt) }
     }
 
-    /// `.collec_vec()` is simply a type specialization of `.collect()`,
+    /// **.collec_vec()** is simply a type specialization of **.collect()**,
     /// for convenience.
     fn collect_vec(self) -> Vec< <Self as Iterator>::Item>
     {
