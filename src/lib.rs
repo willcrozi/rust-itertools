@@ -49,7 +49,7 @@ pub use adaptors::{
     Step,
 };
 pub use intersperse::Intersperse;
-pub use islice::{GenericRange, ISlice};
+pub use islice::{ISlice};
 pub use map::MapMut;
 pub use rciter::RcIter;
 pub use stride::Stride;
@@ -65,6 +65,7 @@ mod intersperse;
 mod islice;
 mod linspace;
 mod map;
+pub mod misc;
 mod rciter;
 mod stride;
 mod tee;
@@ -72,88 +73,24 @@ mod times;
 mod zip;
 mod ziptuple;
 
-/// A helper trait for (x,y,z) ++ w => (x,y,z,w),
-/// used for implementing `iproduct!` and `izip!`
-#[deprecated]
-trait AppendTuple<X, Y> {
-    fn append(self, x: X) -> Y;
-}
-
-macro_rules! impl_append_tuple(
-    () => (
-        impl<T> AppendTuple<T, (T, )> for () {
-            fn append(self, x: T) -> (T, ) {
-                (x, )
-            }
-        }
-    );
-
-    ($A:ident $(,$B:ident)*) => (
-        impl_append_tuple!($($B),*);
-        #[allow(non_snake_case)]
-        impl<$A, $($B,)* T> AppendTuple<T, ($A, $($B,)* T)> for ($A, $($B),*) {
-            fn append(self, x: T) -> ($A, $($B,)* T) {
-                let ($A, $($B),*) = self;
-                ($A, $($B,)* x)
-            }
-        }
-    );
-);
-
-impl_append_tuple!(A, B, C, D, E, F, G, H, I, J, K, L);
-
-/// A helper iterator that maps an iterator of tuples like
-/// `((A, B), C)` to an iterator of `(A, B, C)`.
-///
-/// Used by the `izip!()` and `iproduct!()` macros.
-#[derive(Clone)]
-#[deprecated]
-pub struct FlatTuples<I> {
-    pub iter: I,
-}
-
-impl<X, Y, T: AppendTuple<X, Y>, I>
-Iterator for FlatTuples<I>
-    where I: Iterator<Item=(T, X)>
-{
-    type Item = Y;
-    #[inline]
-    fn next(&mut self) -> Option<Y>
-    {
-        self.iter.next().map(|(t, x)| t.append(x))
-    }
-
-    fn size_hint(&self) -> (uint, Option<uint>) {
-        self.iter.size_hint()
-    }
-}
-
-impl<X, Y, T: AppendTuple<X, Y>, I: DoubleEndedIterator>
-DoubleEndedIterator for FlatTuples<I>
-    where I: Iterator<Item=(T, X)>
-{
-    #[inline]
-    fn next_back(&mut self) -> Option<Y>
-    {
-        self.iter.next_back().map(|(t, x)| t.append(x))
-    }
-}
-
 #[macro_export]
 /// Create an iterator over the “cartesian product” of iterators.
 ///
-/// Iterator element type is like `(A, B, ..., E)` if formed
-/// from iterators `(I, J, ..., M)` implementing `I: Iterator<A>`,
-/// `J: Iterator<B>`, ..., `M: Iterator<E>`
+/// Iterator element type is like **(A, B, ..., E)** if formed
+/// from iterators **(I, J, ..., M)** with element types **I::Item = A**, **J::Item = B**, etc.
 ///
 /// ## Example
 ///
-/// ```ignore
-/// // Iterate over the coordinates of a 4 x 4 grid
-/// // from (0, 0), (0, 1), .. etc until (3, 3)
-/// for (i, j) in iproduct!(range(0, 4i), range(0, 4i)) {
+/// ```
+/// #![feature(phase)]
+/// #[phase(plugin, link)] extern crate itertools;
+/// # fn main() {
+/// // Iterate over the coordinates of a 4 x 4 x 4 grid
+/// // from (0, 0, 0), (0, 0, 1), .., (0, 1, 0), (0, 1, 1), .. etc until (3, 3, 3)
+/// for (i, j, k) in iproduct!(range(0, 4i), range(0, 4i), range(0, 4i)) {
 ///    // ..
 /// }
+/// # }
 /// ```
 pub macro_rules! iproduct(
     ($I:expr) => (
@@ -163,7 +100,7 @@ pub macro_rules! iproduct(
         {
             let it = ::itertools::Product::new($I, $J);
             $(
-                let it = ::itertools::FlatTuples{iter: ::itertools::Product::new(it, $K)};
+                let it = ::itertools::misc::FlatTuples::new(::itertools::Product::new(it, $K));
             )*
             it
         }
@@ -393,7 +330,7 @@ pub trait Itertools : Iterator + Sized {
     /// assert_eq!(it.count(), 3);
     /// # }
     /// ```
-    fn slice<R: GenericRange>(self, range: R) -> ISlice<Self>
+    fn slice<R: misc::GenericRange>(self, range: R) -> ISlice<Self>
     {
         ISlice::new(self, range)
     }
