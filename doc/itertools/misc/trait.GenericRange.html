@@ -7,9 +7,9 @@
     <meta name="description" content="API documentation for the Rust `GenericRange` trait in crate `itertools`.">
     <meta name="keywords" content="rust, rustlang, rust-lang, GenericRange">
 
-    <title>itertools::GenericRange - Rust</title>
+    <title>itertools::misc::GenericRange - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
 
     
     
@@ -38,7 +38,7 @@ tweak rustdoc css
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.Batching.html'>Batching</a><a class='struct ' href='struct.Dedup.html'>Dedup</a><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a><a class='struct ' href='struct.FnMap.html'>FnMap</a><a class='struct ' href='struct.GroupBy.html'>GroupBy</a><a class='struct ' href='struct.ISlice.html'>ISlice</a><a class='struct ' href='struct.Interleave.html'>Interleave</a><a class='struct ' href='struct.Intersperse.html'>Intersperse</a><a class='struct ' href='struct.MapMut.html'>MapMut</a><a class='struct ' href='struct.Product.html'>Product</a><a class='struct ' href='struct.PutBack.html'>PutBack</a><a class='struct ' href='struct.RcIter.html'>RcIter</a><a class='struct ' href='struct.Step.html'>Step</a><a class='struct ' href='struct.Stride.html'>Stride</a><a class='struct ' href='struct.StrideMut.html'>StrideMut</a><a class='struct ' href='struct.Tee.html'>Tee</a><a class='struct ' href='struct.Times.html'>Times</a><a class='struct ' href='struct.Zip.html'>Zip</a><a class='struct ' href='struct.ZipLongest.html'>ZipLongest</a></div><div class='block enum'><h2>Enums</h2><a class='enum ' href='enum.EitherOrBoth.html'>EitherOrBoth</a></div><div class='block trait'><h2>Traits</h2><a class='trait current' href='trait.GenericRange.html'>GenericRange</a><a class='trait ' href='trait.Itertools.html'>Itertools</a></div><div class='block fn'><h2>Functions</h2><a class='fn ' href='fn.linspace.html'>linspace</a><a class='fn ' href='fn.times.html'>times</a><a class='fn ' href='fn.write.html'>write</a></div><div class='block macro'><h2>Macros</h2><a class='macro ' href='macro.icompr!.html'>icompr!</a><a class='macro ' href='macro.iproduct!.html'>iproduct!</a><a class='macro ' href='macro.izip!.html'>izip!</a></div>
+        <p class='location'><a href='../index.html'>itertools</a>::<wbr><a href='index.html'>misc</a></p><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.FlatTuples.html'>FlatTuples</a></div><div class='block trait'><h2>Traits</h2><a class='trait ' href='trait.AppendTuple.html'>AppendTuple</a><a class='trait current' href='trait.GenericRange.html'>GenericRange</a></div>
     </section>
 
     <nav class="sub">
@@ -53,10 +53,10 @@ tweak rustdoc css
     </nav>
 
     <section id='main' class="content trait">
-<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>GenericRange</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>itertools</a>::<wbr><a href='index.html'>misc</a>::<wbr><a class='trait' href=''>GenericRange</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-2247' href='../src/itertools/islice.rs.html#75-80'>[src]</a></span></h1>
+        </span><a id='src-3822' href='../../src/itertools/misc.rs.html#97-102'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait GenericRange {
     fn <a href='#method.start' class='fnname'>start</a>(&amp;self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt; { ... }
     fn <a href='#method.end' class='fnname'>end</a>(&amp;self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt; { ... }
@@ -70,12 +70,12 @@ by range syntax like <code>a..</code>, <code>..b</code> or <code>c..d</code>.</p
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../itertools/trait.GenericRange.html' title='itertools::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.FullRange.html' title='core::ops::FullRange'>FullRange</a></code></li>
-<li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../itertools/trait.GenericRange.html' title='itertools::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.RangeFrom.html' title='core::ops::RangeFrom'>RangeFrom</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt;</code></li>
-<li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../itertools/trait.GenericRange.html' title='itertools::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.RangeTo.html' title='core::ops::RangeTo'>RangeTo</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt;</code></li>
-<li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../itertools/trait.GenericRange.html' title='itertools::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.Range.html' title='core::ops::Range'>Range</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt;</code></li>
+    <li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../../itertools/misc/trait.GenericRange.html' title='itertools::misc::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.FullRange.html' title='core::ops::FullRange'>FullRange</a></code></li>
+<li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../../itertools/misc/trait.GenericRange.html' title='itertools::misc::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.RangeFrom.html' title='core::ops::RangeFrom'>RangeFrom</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt;</code></li>
+<li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../../itertools/misc/trait.GenericRange.html' title='itertools::misc::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.RangeTo.html' title='core::ops::RangeTo'>RangeTo</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt;</code></li>
+<li><a class='stability Unmarked' title='No stability level'></a><code>impl <a class='trait' href='../../itertools/misc/trait.GenericRange.html' title='itertools::misc::GenericRange'>GenericRange</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/core/ops/struct.Range.html' title='core::ops::Range'>Range</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>&gt;</code></li>
 </ul><script type="text/javascript" async
-                              src="../implementors/itertools/trait.GenericRange.js">
+                              src="../../implementors/itertools/misc/trait.GenericRange.js">
                       </script></section>
     <section id='search' class="content hidden"></section>
 
@@ -115,13 +115,13 @@ by range syntax like <code>a..</code>, <code>..b</code> or <code>c..d</code>.</p
     
 
     <script>
-        window.rootPath = "../";
+        window.rootPath = "../../";
         window.currentCrate = "itertools";
         window.playgroundUrl = "";
     </script>
-    <script src="../jquery.js"></script>
-    <script src="../main.js"></script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
     
-    <script async src="../search-index.js"></script>
+    <script async src="../../search-index.js"></script>
 </body>
 </html>

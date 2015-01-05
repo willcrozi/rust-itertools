@@ -56,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-549'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-486'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -87,7 +87,16 @@ for example <a href="./struct.PutBack.html"><strong>PutBack</strong></a>, <a hre
 <a href="http://opensource.org/licenses/MIT">http://opensource.org/licenses/MIT</a>, at your
 option. This file may not be copied, modified, or distributed
 except according to those terms.</p>
-</div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='mod' href='misc/index.html'
+                               title='itertools::misc'>misc</a></td>
+                        <td class='docblock short'><p>A module of helper traits and iterators that are not intended to be used
+directly.</p>
+</td>
+                    </tr>
+                </table><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
 <table>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.icompr!.html'
@@ -130,14 +139,6 @@ and may pick off as many elements as it likes, to produce the next iterator elem
                                title='itertools::Dedup'>Dedup</a></td>
                         <td class='docblock short'><p>Remove duplicates from sections of consecutive identical elements.
 If the iterator is sorted, all elements will be unique.</p>
-</td>
-                    </tr>
-                
-                    <tr>
-                        <td><a class='stability Deprecated' title='Deprecated'></a><a class='struct' href='struct.FlatTuples.html'
-                               title='itertools::FlatTuples'>FlatTuples</a></td>
-                        <td class='docblock short'><p>A helper iterator that maps an iterator of tuples like
-<code>((A, B), C)</code> to an iterator of <code>(A, B, C)</code>.</p>
 </td>
                     </tr>
                 
@@ -273,14 +274,6 @@ depending on which of the input iterators are exhausted.</p>
                     </tr>
                 </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.GenericRange.html'
-                               title='itertools::GenericRange'>GenericRange</a></td>
-                        <td class='docblock short'><p><strong>GenericRange</strong> is implemented by Rust&#39;s built-in range types, produced
-by range syntax like <code>a..</code>, <code>..b</code> or <code>c..d</code>.</p>
-</td>
-                    </tr>
-                
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.Itertools.html'
                                title='itertools::Itertools'>Itertools</a></td>
