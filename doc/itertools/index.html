@@ -56,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-488'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-549'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -158,6 +158,13 @@ are returned as the iterator elements of <code>GroupBy</code>.</p>
                     </tr>
                 
                     <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.ISlice.html'
+                               title='itertools::ISlice'>ISlice</a></td>
+                        <td class='docblock short'><p>A sliced iterator.</p>
+</td>
+                    </tr>
+                
+                    <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Interleave.html'
                                title='itertools::Interleave'>Interleave</a></td>
                         <td class='docblock short'><p>Alternate elements from two iterators until both
@@ -201,6 +208,14 @@ item to the front of the iterator.</p>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.RcIter.html'
                                title='itertools::RcIter'>RcIter</a></td>
                         <td class='docblock short'><p>A wrapper for <code>Rc&lt;RefCell&lt;I&gt;&gt;</code>, that implements the <code>Iterator</code> trait.</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Step.html'
+                               title='itertools::Step'>Step</a></td>
+                        <td class='docblock short'><p>An iterator adaptor that steps a number elements in the base iterator
+for each iteration.</p>
 </td>
                     </tr>
                 
@@ -258,6 +273,14 @@ depending on which of the input iterators are exhausted.</p>
                     </tr>
                 </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.GenericRange.html'
+                               title='itertools::GenericRange'>GenericRange</a></td>
+                        <td class='docblock short'><p><strong>GenericRange</strong> is implemented by Rust&#39;s built-in range types, produced
+by range syntax like <code>a..</code>, <code>..b</code> or <code>c..d</code>.</p>
+</td>
+                    </tr>
+                
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.Itertools.html'
                                title='itertools::Itertools'>Itertools</a></td>
