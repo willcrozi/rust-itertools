@@ -4,6 +4,7 @@
 //! option. This file may not be copied, modified, or distributed
 //! except according to those terms.
 
+#![feature(slicing_syntax)]
 #![feature(unboxed_closures)]
 #![feature(phase)]
 
@@ -272,4 +273,22 @@ fn rciter() {
     assert_eq!(z.next(), Some((2, 1)));
     assert_eq!(z.next(), Some((3, 5)));
     assert_eq!(z.next(), None);
+}
+
+#[test]
+fn slice() {
+
+    let it = 0i..10;
+    assert_iters_equal(it.slice(..3), 0..3);
+    assert_iters_equal(it.slice(3..7), 3..7);
+    assert_iters_equal(it.slice(3..27), 3..10);
+    assert_iters_equal(it.slice(44..), 0..0);
+}
+
+#[test]
+fn step() {
+    let it = 0i..10;
+    assert_iters_equal(it.step(1), it);
+    assert_iters_equal(it.step(2), it.filter(|x| *x % 2 == 0));
+    assert_iters_equal(it.step(10), 0i..1);
 }

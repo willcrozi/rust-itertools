@@ -46,8 +46,10 @@ pub use adaptors::{
     Dedup,
     Batching,
     GroupBy,
+    Step,
 };
 pub use intersperse::Intersperse;
+pub use islice::{GenericRange, ISlice};
 pub use map::MapMut;
 pub use rciter::RcIter;
 pub use stride::Stride;
@@ -60,6 +62,7 @@ pub use zip::{ZipLongest, EitherOrBoth};
 pub use ziptuple::Zip;
 mod adaptors;
 mod intersperse;
+mod islice;
 mod linspace;
 mod map;
 mod rciter;
@@ -373,6 +376,28 @@ pub trait Itertools : Iterator + Sized {
         tee::new(self)
     }
 
+    /// Return a sliced iterator.
+    ///
+    /// **Note:** slicing an iterator is not constant time, and much less efficient than
+    /// slicing for example a vector.
+    ///
+    /// ## Example
+    /// ```
+    /// # #![feature(slicing_syntax)]
+    /// # extern crate itertools;
+    /// # fn main() {
+    /// use std::iter::repeat;
+    /// # use itertools::Itertools;
+    ///
+    /// let mut it = repeat('a').slice(..3);
+    /// assert_eq!(it.count(), 3);
+    /// # }
+    /// ```
+    fn slice<R: GenericRange>(self, range: R) -> ISlice<Self>
+    {
+        ISlice::new(self, range)
+    }
+
     /// Return an iterator inside a **Rc\<RefCell\<_\>\>** wrapper.
     ///
     /// The returned **RcIter** can be cloned, and each clone will refer back to the
@@ -386,9 +411,7 @@ pub trait Itertools : Iterator + Sized {
     ///
     /// ```
     /// # use itertools::Itertools;
-    ///
     /// let xs = [0i, 1, 1, 1, 2, 1, 3, 5, 6, 7];
-
     /// let mut rit = xs.iter().cloned().into_rc();
     /// let mut z = rit.clone().zip(rit.clone());
     /// assert_eq!(z.next(), Some((0, 1)));
@@ -409,7 +432,45 @@ pub trait Itertools : Iterator + Sized {
         RcIter::new(self)
     }
 
+    /// Return an iterator adaptor that steps **n** elements in the base iterator
+    /// for each iteration.
+    ///
+    /// The iterator steps by yielding the next element from the base iterator,
+    /// then skipping forward **n - 1** elements.
+    ///
+    /// **Panics** if the step is 0.
+    ///
+    /// ## Example
+    /// ```
+    /// # #![feature(slicing_syntax)]
+    /// # extern crate itertools;
+    /// # fn main() {
+    /// # use itertools::Itertools;
+    /// let mut it = (0..8u).step(3);
+    /// assert_eq!(it.next(), Some(0));
+    /// assert_eq!(it.next(), Some(3));
+    /// assert_eq!(it.next(), Some(6));
+    /// assert_eq!(it.next(), None);
+    /// # }
+    /// ```
+    fn step(self, n: uint) -> Step<Self>
+    {
+        Step::new(self, n)
+    }
+
     // non-adaptor methods
+
+    /// Find the position and value of the first element satisfying a predicate.
+    fn find_position<P>(&mut self, mut pred: P) -> Option<(uint, <Self as Iterator>::Item)>
+        where P: FnMut(&<Self as Iterator>::Item) -> bool
+    {
+        for (index, elt) in self.by_ref().enumerate() {
+            if pred(&elt) {
+                return Some((index, elt))
+            }
+        }
+        None
+    }
 
     /// Consume the first **n** elements of the iterator eagerly.
     ///
