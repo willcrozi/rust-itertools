@@ -15,10 +15,10 @@ use std::cmp;
 /// use itertools::Zip;
 ///
 /// // Iterate over three sequences side-by-side
-/// let mut xs = [0u, 0, 0];
-/// let ys = [69u, 107, 101];
+/// let mut xs = [0, 0, 0];
+/// let ys = [69, 107, 101];
 ///
-/// for (i, a, b) in Zip::new((range(0, 100u), xs.iter_mut(), ys.iter())) {
+/// for (i, a, b) in Zip::new((0..100, xs.iter_mut(), ys.iter())) {
 ///    *a = i ^ *b;
 /// }
 /// 
@@ -28,7 +28,7 @@ pub struct Zip<T> {
     t: T
 }
 
-impl<T> Zip<T>
+impl<T> Zip<T> where Zip<T>: Iterator
 {
     /// Create a new **Zip** from a tuple of iterators.
     pub fn new(t: T) -> Zip<T>
@@ -66,9 +66,9 @@ macro_rules! impl_zip_iter(
                 Some(($($B,)*))
             }
 
-            fn size_hint(&self) -> (uint, Option<uint>)
+            fn size_hint(&self) -> (usize, Option<usize>)
             {
-                let mut low = ::std::uint::MAX;
+                let mut low = ::std::usize::MAX;
                 let mut high = None;
                 $(
                     // update estimate
