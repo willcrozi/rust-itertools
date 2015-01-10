@@ -56,7 +56,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-479'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-466'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -102,7 +102,7 @@ and directly inspired by Python. Supports an optional filter clause.</p>
 
 <p>Syntax:</p>
 
-<p><code>icompr!(&lt;expression&gt; for &lt;pattern&gt; in &lt;iterator&gt;)</code></p>
+<p><code>icompr!(&lt;expression&gt;, &lt;pattern&gt;, &lt;iterator&gt;)</code></p>
 </td>
                     </tr>
                 
@@ -177,15 +177,7 @@ between each element of the adapted iterator.</p>
                     </tr>
                 
                     <tr>
-                        <td><a class='stability Deprecated' title='Deprecated'></a><a class='struct' href='struct.MapMut.html'
-                               title='itertools::MapMut'>MapMut</a></td>
-                        <td class='docblock short'><p>Clonable iterator adaptor to map elementwise
-from <code>Iterator&lt;A&gt;</code> to <code>Iterator&lt;B&gt;</code></p>
-</td>
-                    </tr>
-                
-                    <tr>
-                        <td><a class='stability Deprecated' title='Deprecated: Will be replaced by generic tuple version'></a><a class='struct' href='struct.Product.html'
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Product.html'
                                title='itertools::Product'>Product</a></td>
                         <td class='docblock short'><p>An iterator adaptor that iterates over the cartesian product of
 the element sets of two iterators <code>I</code> and <code>J</code>.</p>

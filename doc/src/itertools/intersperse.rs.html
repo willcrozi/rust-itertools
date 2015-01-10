@@ -145,7 +145,7 @@ tweak rustdoc css
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>uint</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>uint</span><span class='op'>&gt;</span>)
+    <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
     {
         <span class='kw'>let</span> (<span class='kw-2'>mut</span> <span class='ident'>low</span>, <span class='kw-2'>mut</span> <span class='ident'>hi</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
         <span class='kw'>if</span> <span class='ident'>low</span> <span class='op'>&gt;</span> <span class='number'>0</span> {

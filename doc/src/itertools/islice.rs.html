@@ -140,8 +140,8 @@ tweak rustdoc css
 <span class='doccomment'>/// ```</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ISlice</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
-    <span class='ident'>start</span>: <span class='ident'>uint</span>,
-    <span class='ident'>end</span>: <span class='ident'>uint</span>,
+    <span class='ident'>start</span>: <span class='ident'>usize</span>,
+    <span class='ident'>end</span>: <span class='ident'>usize</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
 }
 
@@ -152,7 +152,7 @@ tweak rustdoc css
     {
         <span class='ident'>ISlice</span> {
             <span class='ident'>start</span>: <span class='ident'>range</span>.<span class='ident'>start</span>().<span class='ident'>unwrap_or</span>(<span class='number'>0</span>),
-            <span class='ident'>end</span>: <span class='ident'>range</span>.<span class='ident'>end</span>().<span class='ident'>unwrap_or</span>(::<span class='ident'>std</span>::<span class='ident'>uint</span>::<span class='ident'>MAX</span>),
+            <span class='ident'>end</span>: <span class='ident'>range</span>.<span class='ident'>end</span>().<span class='ident'>unwrap_or</span>(::<span class='ident'>std</span>::<span class='ident'>usize</span>::<span class='ident'>MAX</span>),
             <span class='ident'>iter</span>: <span class='ident'>iter</span>,
         }
     }

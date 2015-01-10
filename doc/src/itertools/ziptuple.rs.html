@@ -166,10 +166,10 @@ tweak rustdoc css
 <span class='doccomment'>/// use itertools::Zip;</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// // Iterate over three sequences side-by-side</span>
-<span class='doccomment'>/// let mut xs = [0u, 0, 0];</span>
-<span class='doccomment'>/// let ys = [69u, 107, 101];</span>
+<span class='doccomment'>/// let mut xs = [0, 0, 0];</span>
+<span class='doccomment'>/// let ys = [69, 107, 101];</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// for (i, a, b) in Zip::new((range(0, 100u), xs.iter_mut(), ys.iter())) {</span>
+<span class='doccomment'>/// for (i, a, b) in Zip::new((0..100, xs.iter_mut(), ys.iter())) {</span>
 <span class='doccomment'>///    *a = i ^ *b;</span>
 <span class='doccomment'>/// }</span>
 <span class='doccomment'>/// </span>
@@ -179,7 +179,7 @@ tweak rustdoc css
     <span class='ident'>t</span>: <span class='ident'>T</span>
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>Zip</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>Zip</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>Zip</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>: <span class='ident'>Iterator</span>
 {
     <span class='doccomment'>/// Create a new **Zip** from a tuple of iterators.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>t</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>Zip</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>
@@ -217,9 +217,9 @@ tweak rustdoc css
                 <span class='prelude-val'>Some</span>(($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span>))
             }
 
-            <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>uint</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>uint</span><span class='op'>&gt;</span>)
+            <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
             {
-                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>low</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>uint</span>::<span class='ident'>MAX</span>;
+                <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>low</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>usize</span>::<span class='ident'>MAX</span>;
                 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>high</span> <span class='op'>=</span> <span class='prelude-val'>None</span>;
                 $(
                     <span class='comment'>// update estimate</span>
