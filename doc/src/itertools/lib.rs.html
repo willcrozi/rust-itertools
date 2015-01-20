@@ -542,6 +542,17 @@ tweak rustdoc css
 <span id="488">488</span>
 <span id="489">489</span>
 <span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>old_impl_check</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>unboxed_closures</span>)]</span>
@@ -587,6 +598,7 @@ tweak rustdoc css
     <span class='ident'>Batching</span>,
     <span class='ident'>GroupBy</span>,
     <span class='ident'>Step</span>,
+    <span class='ident'>Merge</span>,
 };
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>intersperse</span>::<span class='ident'>Intersperse</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>islice</span>::{<span class='ident'>ISlice</span>};
@@ -1010,6 +1022,16 @@ tweak rustdoc css
         <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='self'>self</span>.<span class='ident'>collect</span>()
+    }
+
+    <span class='doccomment'>/// Given two sorted iterators (this and `other`), return an iterator adapter yeilds elements</span>
+    <span class='doccomment'>/// from both iterators in sorted order.</span>
+    <span class='kw'>fn</span> <span class='ident'>merge</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>Self</span>::<span class='ident'>Item</span>, <span class='ident'>Self</span>, <span class='ident'>B</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+        <span class='ident'>B</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
+        <span class='ident'>Self</span>::<span class='ident'>Item</span>: <span class='ident'>PartialOrd</span>,
+    {
+        <span class='ident'>Merge</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>other</span>)
     }
 }
 
