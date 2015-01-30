@@ -4,15 +4,14 @@
 //! option. This file may not be copied, modified, or distributed
 //! except according to those terms.
 
-#![feature(slicing_syntax)]
-#![feature(unboxed_closures)]
+#![feature(core, collections, test)]
 
 #[macro_use]
 extern crate itertools;
 
 extern crate test;
 
-use std::fmt::Show;
+use std::fmt::Debug;
 use std::iter::order;
 use itertools::Itertools;
 use itertools::Interleave;
@@ -21,7 +20,7 @@ use itertools::Zip;
 use itertools as it;
 
 fn assert_iters_equal<
-    A: PartialEq + Show,
+    A: PartialEq + Debug,
     I: Iterator<Item=A>,
     J: Iterator<Item=A>>(mut it: I, mut jt: J)
 {
@@ -121,10 +120,10 @@ fn drain() {
 }
 
 #[test]
-fn apply() {
+fn foreach() {
     let xs = [1i32, 2, 3];
     let mut sum = 0;
-    xs.iter().apply(|elt| sum += *elt);
+    xs.iter().foreach(|elt| sum += *elt);
     assert!(sum == 6);
 }
 
@@ -158,7 +157,7 @@ fn intersperse() {
     assert_eq!(text, "a, , b, c".to_string());
 
     let ys = [0, 1, 2, 3];
-    let mut it = ys.slice_to(0).iter().map(|x| *x).intersperse(1);
+    let mut it = ys[..0].iter().map(|x| *x).intersperse(1);
     assert!(it.next() == None);
 }
 
@@ -289,7 +288,7 @@ fn slice() {
 fn step() {
     let it = 0..10;
     assert_iters_equal(it.step(1), it);
-    assert_iters_equal(it.step(2), it.filter(|x| *x % 2 == 0));
+    assert_iters_equal(it.step(2), it.filter(|x: &i32| *x % 2 == 0));
     assert_iters_equal(it.step(10), 0..1);
 }
 
