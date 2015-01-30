@@ -1,1 +1,1 @@
-{"name":"itertools","counts":{"deprecated":2,"experimental":0,"unstable":8,"stable":60,"frozen":0,"locked":0,"unmarked":100},"submodules":[{"name":"misc","counts":{"deprecated":0,"experimental":0,"unstable":0,"stable":3,"frozen":0,"locked":0,"unmarked":10},"submodules":[]}]}
+{"name":"itertools","counts":{"unstable":4,"stable":64,"unmarked":103},"submodules":[{"name":"misc","counts":{"unstable":0,"stable":3,"unmarked":10},"submodules":[]}]}

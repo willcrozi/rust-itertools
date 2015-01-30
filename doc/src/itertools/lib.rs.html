@@ -572,12 +572,19 @@ tweak rustdoc css
 <span id="522">522</span>
 <span id="523">523</span>
 <span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
 </pre><pre class='rust '>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>old_impl_check</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>std_misc</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>unboxed_closures</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_type</span><span class='op'>=</span><span class='string'>&quot;dylib&quot;</span>]</span>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>allow</span>(<span class='ident'>unstable</span>)]</span>
 
 <span class='doccomment'>//! Itertools — extra iterator adaptors, functions and macros</span>
 <span class='doccomment'>//!</span>
@@ -1060,10 +1067,19 @@ tweak rustdoc css
         <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='op'>*</span><span class='self'>self</span> { <span class='comment'>/* nothing */</span> }
     }
 
+    <span class='attribute'>#[<span class='ident'>deprecated</span><span class='op'>=</span><span class='string'>&quot;Use .foreach() instead&quot;</span>]</span>
     <span class='doccomment'>/// Run the closure **f** eagerly on each element of the iterator.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Consumes the iterator until its end.</span>
-    <span class='kw'>fn</span> <span class='ident'>apply</span><span class='op'>&lt;</span><span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>F</span>)
+    <span class='kw'>fn</span> <span class='ident'>apply</span><span class='op'>&lt;</span><span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>f</span>: <span class='ident'>F</span>)
+    {
+        <span class='self'>self</span>.<span class='ident'>foreach</span>(<span class='ident'>f</span>)
+    }
+
+    <span class='doccomment'>/// Run the closure **f** eagerly on each element of the iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Consumes the iterator until its end.</span>
+    <span class='kw'>fn</span> <span class='ident'>foreach</span><span class='op'>&lt;</span><span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>F</span>)
     {
         <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='op'>*</span><span class='self'>self</span> { <span class='ident'>f</span>(<span class='ident'>elt</span>) }
     }

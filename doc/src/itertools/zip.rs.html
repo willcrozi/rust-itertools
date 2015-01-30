@@ -274,7 +274,7 @@ tweak rustdoc css
 <span class='doccomment'>/// A value yielded by `ZipLongest`.</span>
 <span class='doccomment'>/// Contains one or two values,</span>
 <span class='doccomment'>/// depending on which of the input iterators are exhausted.</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Eq</span>, <span class='ident'>Show</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>PartialEq</span>, <span class='ident'>Eq</span>, <span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>EitherOrBoth</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// Neither input iterator is exhausted yet, yielding two values.</span>
     <span class='ident'>Both</span>(<span class='ident'>A</span>, <span class='ident'>B</span>),
