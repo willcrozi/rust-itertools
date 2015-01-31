@@ -169,7 +169,7 @@ tweak rustdoc css
 <span class='doccomment'>//! directly.</span>
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::{
-    <span class='ident'>FullRange</span>,
+    <span class='ident'>RangeFull</span>,
     <span class='ident'>Range</span>,
     <span class='ident'>RangeTo</span>,
     <span class='ident'>RangeFrom</span>
@@ -266,7 +266,7 @@ tweak rustdoc css
 }
 
 
-<span class='kw'>impl</span> <span class='ident'>GenericRange</span> <span class='kw'>for</span> <span class='ident'>FullRange</span> {}
+<span class='kw'>impl</span> <span class='ident'>GenericRange</span> <span class='kw'>for</span> <span class='ident'>RangeFull</span> {}
 
 <span class='kw'>impl</span> <span class='ident'>GenericRange</span> <span class='kw'>for</span> <span class='ident'>RangeFrom</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span> {
     <span class='kw'>fn</span> <span class='ident'>start</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span> { <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>start</span>) }

@@ -317,8 +317,6 @@ tweak rustdoc css
 <span id="267">267</span>
 <span id="268">268</span>
 <span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -359,7 +357,6 @@ tweak rustdoc css
     <span class='ident'>end</span>: <span class='ident'>isize</span>,
     <span class='ident'>stride</span>: <span class='ident'>isize</span>,
     <span class='ident'>life</span>: <span class='ident'>marker</span>::<span class='ident'>ContravariantLifetime</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>,
-    <span class='ident'>nocopy</span>: <span class='ident'>marker</span>::<span class='ident'>NoCopy</span>
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span>
@@ -388,7 +385,6 @@ tweak rustdoc css
             <span class='ident'>end</span>: <span class='ident'>stride</span> <span class='op'>*</span> <span class='ident'>nelem</span> <span class='kw'>as</span> <span class='ident'>isize</span>,
             <span class='ident'>stride</span>: <span class='ident'>stride</span>,
             <span class='ident'>life</span>: <span class='ident'>marker</span>::<span class='ident'>ContravariantLifetime</span>,
-            <span class='ident'>nocopy</span>: <span class='ident'>marker</span>::<span class='ident'>NoCopy</span>,
         }
     }
 }
