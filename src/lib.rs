@@ -106,9 +106,8 @@ pub macro_rules! iproduct {
     );
 }
 
-#[deprecated="izip!() is deprecated, use Zip::new instead"]
 #[macro_export]
-/// *This macro is deprecated, use* **Zip::new** *instead.*
+/// **Note: This macro is deprecated, use* **Zip::new** *instead.**
 ///
 /// Create an iterator running multiple iterators in lockstep.
 ///
@@ -184,8 +183,7 @@ pub trait Itertools : Iterator {
     /// so that the resulting **FnMap** iterator value can be cloned.
     ///
     /// Iterator element type is **B**.
-    #[deprecated="Use libstd .map() instead"]
-    fn fn_map<B>(self, map: fn(Self::Item) -> B) -> FnMap<Self::Item, B, Self> where
+    fn fn_map<B>(self, map: fn(Self::Item) -> B) -> FnMap<B, Self> where
         Self: Sized
     {
         FnMap::new(self, map)
@@ -205,7 +203,7 @@ pub trait Itertools : Iterator {
     /// between each element of the adapted iterator.
     ///
     /// Iterator element type is **Item**.
-    fn intersperse(self, element: Self::Item) -> Intersperse<Self::Item, Self> where
+    fn intersperse(self, element: Self::Item) -> Intersperse<Self> where
         Self: Sized,
         Self::Item: Clone
     {
@@ -240,7 +238,7 @@ pub trait Itertools : Iterator {
     /// If the iterator is sorted, all elements will be unique.
     ///
     /// Iterator element type is **Item**.
-    fn dedup(self) -> Dedup<Self::Item, Self> where
+    fn dedup(self) -> Dedup<Self> where
         Self: Sized,
     {
         Dedup::new(self)
@@ -280,7 +278,7 @@ pub trait Itertools : Iterator {
     /// are returned as the iterator elements of **GroupBy**.
     ///
     /// Iterator element type is **(K, Vec\<Item\>)**
-    fn group_by<K, F: FnMut(&Self::Item) -> K>(self, key: F) -> GroupBy<Self::Item, K, Self, F> where
+    fn group_by<K, F: FnMut(&Self::Item) -> K>(self, key: F) -> GroupBy<K, Self, F> where
         Self: Sized,
     {
         GroupBy::new(self, key)
@@ -305,7 +303,7 @@ pub trait Itertools : Iterator {
     /// assert_eq!(t1.next(), None);
     /// assert_eq!(t2.next(), Some(1));
     /// ```
-    fn tee(self) -> (Tee<Self::Item, Self>, Tee<Self::Item, Self>) where
+    fn tee(self) -> (Tee<Self>, Tee<Self>) where
         Self: Sized,
         Self::Item: Clone
     {
@@ -417,7 +415,7 @@ pub trait Itertools : Iterator {
     /// assert_eq!(it.next(), Some(4));
     /// assert_eq!(it.next(), Some(6));
     /// ```
-    fn merge<J>(self, other: J) -> Merge<Self::Item, Self, J> where
+    fn merge<J>(self, other: J) -> Merge<Self, J> where
         Self: Sized,
         Self::Item: PartialOrd,
         J: Iterator<Item=Self::Item>,
@@ -430,9 +428,10 @@ pub trait Itertools : Iterator {
     /// Find the position and value of the first element satisfying a predicate.
     fn find_position<P>(&mut self, mut pred: P) -> Option<(usize, Self::Item)> where
         P: FnMut(&Self::Item) -> bool,
+        Self: Sized,
     {
         let mut index = 0us;
-        for elt in *self {
+        for elt in IteratorExt::by_ref(self) {
             if pred(&elt) {
                 return Some((index, elt))
             }
@@ -479,16 +478,19 @@ pub trait Itertools : Iterator {
     /// "hi".chars().map(|c| cnt += 1).drain();
     /// ```
     ///
-    fn drain(&mut self)
+    fn drain(&mut self) where
+        Self: Sized
     {
-        for _ in *self { /* nothing */ }
+        for _ in self.by_ref() { /* nothing */ }
     }
 
-    #[deprecated="Use .foreach() instead"]
     /// Run the closure **f** eagerly on each element of the iterator.
     ///
     /// Consumes the iterator until its end.
-    fn apply<F: FnMut(Self::Item)>(&mut self, f: F)
+    ///
+    /// **Note: This method is deprecated, use .foreach() instead.**
+    fn apply<F: FnMut(Self::Item)>(&mut self, f: F) where
+        Self: Sized
     {
         self.foreach(f)
     }
@@ -496,9 +498,10 @@ pub trait Itertools : Iterator {
     /// Run the closure **f** eagerly on each element of the iterator.
     ///
     /// Consumes the iterator until its end.
-    fn foreach<F: FnMut(Self::Item)>(&mut self, mut f: F)
+    fn foreach<F: FnMut(Self::Item)>(&mut self, mut f: F) where
+        Self: Sized
     {
-        for elt in *self { f(elt) }
+        for elt in self.by_ref() { f(elt) }
     }
 
     /// **.collec_vec()** is simply a type specialization of **.collect()**,
@@ -518,7 +521,7 @@ impl<T: ?Sized> Itertools for T where T: Iterator { }
 /// Return the number of elements written.
 #[inline]
 pub fn write<'a, A: 'a, I: Iterator<Item=&'a mut A>, J: Iterator<Item=A>>
-    (mut to: I, mut from: J) -> usize
+    (mut to: I, from: J) -> usize
 {
     let mut count = 0;
     for elt in from {
