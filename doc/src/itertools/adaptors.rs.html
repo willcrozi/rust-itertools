@@ -525,6 +525,74 @@ tweak rustdoc css
 <span id="475">475</span>
 <span id="476">476</span>
 <span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -537,6 +605,17 @@ tweak rustdoc css
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>usize</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::{<span class='ident'>Fuse</span>, <span class='ident'>Peekable</span>};
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>Itertools</span>;
+
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>clone_fields</span> {
+    (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>base</span>:<span class='ident'>expr</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>field</span>:<span class='ident'>ident</span>),<span class='op'>+</span>) <span class='op'>=&gt;</span> (
+        <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span> {
+            $(
+                <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>field</span> : <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>base</span> . <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>field</span> .<span class='ident'>clone</span>()
+            ),<span class='op'>*</span>
+        }
+    );
+}
+
 
 <span class='doccomment'>/// Alternate elements from two iterators until both</span>
 <span class='doccomment'>/// are run out</span>
@@ -556,12 +635,12 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Interleave</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>, <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Interleave</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>
 {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>A</span>;
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>I</span>::<span class='ident'>Item</span>;
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
         <span class='self'>self</span>.<span class='ident'>flag</span> <span class='op'>=</span> <span class='op'>!</span><span class='self'>self</span>.<span class='ident'>flag</span>;
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>flag</span> {
             <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>next</span>() {
@@ -583,24 +662,26 @@ tweak rustdoc css
 <span class='doccomment'>/// Created with `.fn_map(..)` on an iterator</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Iterator element type is `B`</span>
-<span class='attribute'>#[<span class='ident'>deprecated</span>]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
-    <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>,
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span>
+{
+    <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
 {
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
         <span class='ident'>FnMap</span>{<span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>map</span>: <span class='ident'>map</span>}
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
 {
     <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>B</span>;
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span>
+    {
         <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>next</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>a</span><span class='op'>|</span> (<span class='self'>self</span>.<span class='ident'>map</span>)(<span class='ident'>a</span>))
     }
 
@@ -609,8 +690,8 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span>
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>next_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> {
@@ -618,9 +699,11 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span>,
 {
-    <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
         <span class='ident'>FnMap</span>::<span class='ident'>new</span>(<span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>clone</span>(), <span class='self'>self</span>.<span class='ident'>map</span>)
     }
 }
@@ -628,17 +711,19 @@ tweak rustdoc css
 <span class='doccomment'>/// An iterator adaptor that allows putting back a single</span>
 <span class='doccomment'>/// item to the front of the iterator.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `A`</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
-    <span class='ident'>top</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>,
+<span class='doccomment'>/// Iterator element type is **I::Item**.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span>
+{
+    <span class='ident'>top</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
+{
     <span class='doccomment'>/// Iterator element type is `A`</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>it</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>it</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
         <span class='ident'>PutBack</span>{<span class='ident'>top</span>: <span class='prelude-val'>None</span>, <span class='ident'>iter</span>: <span class='ident'>it</span>}
     }
 
@@ -646,17 +731,17 @@ tweak rustdoc css
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// If a value is already in the put back slot, it is overwritten.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>put_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>A</span>) {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>put_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>I</span>::<span class='ident'>Item</span>)
+    {
         <span class='self'>self</span>.<span class='ident'>top</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>x</span>)
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
 {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>A</span>;
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>I</span>::<span class='ident'>Item</span>;
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>top</span> {
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>next</span>(),
             <span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='ident'>some</span> <span class='op'>=&gt;</span> <span class='ident'>some</span>.<span class='ident'>take</span>(),
@@ -672,26 +757,44 @@ tweak rustdoc css
     }
 }
 
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>Clone</span>,
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>
+{
+    <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
+        <span class='macro'>clone_fields</span><span class='macro'>!</span>(<span class='ident'>PutBack</span>, <span class='self'>self</span>, <span class='ident'>top</span>, <span class='ident'>iter</span>)
+    }
+}
+
 
 <span class='doccomment'>/// An iterator adaptor that iterates over the cartesian product of</span>
-<span class='doccomment'>/// the element sets of two iterators `I` and `J`.</span>
+<span class='doccomment'>/// the element sets of two iterators **I** and **J**.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `(A, B)` if `I: Iterator&lt;A&gt;` and `J: Iterator&lt;B&gt;`</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
+<span class='doccomment'>/// Iterator element type is **(I::Item, J::Item)**.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
     <span class='ident'>a</span>: <span class='ident'>I</span>,
-    <span class='ident'>a_cur</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>,
+    <span class='ident'>a_cur</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
     <span class='ident'>b</span>: <span class='ident'>J</span>,
     <span class='ident'>b_orig</span>: <span class='ident'>J</span>,
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>B</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>, <span class='ident'>J</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>B</span><span class='op'>&gt;&gt;</span>
-    <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> 
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>Clone</span>, <span class='ident'>J</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>,
+{
+    <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
+        <span class='macro'>clone_fields</span><span class='macro'>!</span>(<span class='ident'>Product</span>, <span class='self'>self</span>, <span class='ident'>a</span>, <span class='ident'>a_cur</span>, <span class='ident'>b</span>, <span class='ident'>b_orig</span>)
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>,
 {
     <span class='doccomment'>/// Create a new cartesian product iterator</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Iterator element type is `(A, B)` if `I: Iterator&lt;A&gt;` and `J: Iterator&lt;B&gt;`</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>i</span>: <span class='ident'>I</span>, <span class='ident'>j</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span>
+    <span class='doccomment'>/// Iterator element type is **(I::Item, J::Item)**.</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>i</span>: <span class='ident'>I</span>, <span class='ident'>j</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
     {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>i</span> <span class='op'>=</span> <span class='ident'>i</span>;
         <span class='ident'>Product</span>{<span class='ident'>a_cur</span>: <span class='ident'>i</span>.<span class='ident'>next</span>(), <span class='ident'>a</span>: <span class='ident'>i</span>, <span class='ident'>b</span>: <span class='ident'>j</span>.<span class='ident'>clone</span>(), <span class='ident'>b_orig</span>: <span class='ident'>j</span>}
@@ -699,11 +802,11 @@ tweak rustdoc css
 }
 
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>, <span class='ident'>B</span>, <span class='ident'>J</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>B</span><span class='op'>&gt;&gt;</span>
-<span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>,
 {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> (<span class='ident'>A</span>, <span class='ident'>B</span>);
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>A</span>, <span class='ident'>B</span>)<span class='op'>&gt;</span>
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> (<span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>J</span>::<span class='ident'>Item</span>);
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>J</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span>
     {
         <span class='kw'>let</span> <span class='ident'>elt_b</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>next</span>() {
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {
@@ -745,29 +848,42 @@ tweak rustdoc css
 <span class='doccomment'>/// Remove duplicates from sections of consecutive identical elements.</span>
 <span class='doccomment'>/// If the iterator is sorted, all elements will be unique.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `A` if `I: Iterator&lt;A&gt;`</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> {
-    <span class='ident'>last</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>,
+<span class='doccomment'>/// Iterator element type is **I::Item**.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span>
+{
+    <span class='ident'>last</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>,
+{
+    <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
+        <span class='ident'>Dedup</span> {
+            <span class='ident'>last</span>: <span class='self'>self</span>.<span class='ident'>last</span>.<span class='ident'>clone</span>(),
+            <span class='ident'>iter</span>: <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>clone</span>(),
+        }
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span>
 {
     <span class='doccomment'>/// Create a new Dedup Iterator.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
     {
         <span class='ident'>Dedup</span>{<span class='ident'>last</span>: <span class='prelude-val'>None</span>, <span class='ident'>iter</span>: <span class='ident'>iter</span>}
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>: <span class='ident'>PartialEq</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>I</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>PartialEq</span>
 {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>A</span>;
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>I</span>::<span class='ident'>Item</span>;
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>
     {
-        <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>iter</span> {
+        <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>by_ref</span>() {
             <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>last</span> {
                 <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='ident'>x</span>) <span class='kw'>if</span> <span class='ident'>x</span> <span class='op'>==</span> <span class='kw-2'>&amp;</span><span class='ident'>elt</span> <span class='op'>=&gt;</span> <span class='kw'>continue</span>,
                 <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {
@@ -801,7 +917,7 @@ tweak rustdoc css
 <span class='doccomment'>/// A “meta iterator adaptor”. Its closure recives a reference to the iterator</span>
 <span class='doccomment'>/// and may pick off as many elements as it likes, to produce the next iterator element.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is **B**, if the return type of **F** is **Option\&lt;B\&gt;**.</span>
+<span class='doccomment'>/// Iterator element type is *X*, if the return type of **F** is *Option\&lt;X\&gt;*.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Batching</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {
     <span class='ident'>f</span>: <span class='ident'>F</span>,
@@ -816,8 +932,8 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Batching</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>,
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Batching</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
     <span class='ident'>F</span>: <span class='kw'>for</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>FnMut</span><span class='op'>&lt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>I</span>, ), <span class='ident'>Output</span><span class='op'>=</span><span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;&gt;</span>
 {
     <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>B</span>;
@@ -838,30 +954,40 @@ tweak rustdoc css
 <span class='doccomment'>/// Group iterator elements. Consecutive elements that map to the same key (&quot;runs&quot;),</span>
 <span class='doccomment'>/// are returned as the iterator elements of `GroupBy`.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `(K, Vec&lt;A&gt;)`</span>
-<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {
+<span class='doccomment'>/// Iterator element type is **(K, Vec\&lt;A\&gt;)**</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {
     <span class='ident'>key</span>: <span class='ident'>F</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
     <span class='ident'>current_key</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>K</span><span class='op'>&gt;</span>,
-    <span class='ident'>elts</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>,
+    <span class='ident'>elts</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>K</span>, <span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>: <span class='ident'>Clone</span>, <span class='ident'>I</span>: <span class='ident'>Clone</span>  <span class='op'>+</span> <span class='ident'>Iterator</span>, <span class='ident'>F</span>: <span class='ident'>Clone</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>,
+{
+    <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
+        <span class='macro'>clone_fields</span><span class='macro'>!</span>(<span class='ident'>GroupBy</span>, <span class='self'>self</span>, <span class='ident'>key</span>, <span class='ident'>iter</span>, <span class='ident'>current_key</span>, <span class='ident'>elts</span>)
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
+{
     <span class='doccomment'>/// Create a new GroupBy iterator.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>key</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>key</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
     {
         <span class='ident'>GroupBy</span>{<span class='ident'>key</span>: <span class='ident'>key</span>, <span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>current_key</span>: <span class='prelude-val'>None</span>, <span class='ident'>elts</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>()}
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>K</span>: <span class='ident'>PartialEq</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>K</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span>
-    <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>: <span class='ident'>PartialEq</span>, <span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>K</span><span class='op'>&gt;</span>
+    <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span>
 {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> (<span class='ident'>K</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>);
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>K</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>)<span class='op'>&gt;</span>
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> (<span class='ident'>K</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>);
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>K</span>, <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>)<span class='op'>&gt;</span>
     {
-        <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>iter</span> {
+        <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>by_ref</span>() {
             <span class='kw'>let</span> <span class='ident'>key</span> <span class='op'>=</span> (<span class='self'>self</span>.<span class='ident'>key</span>)(<span class='kw-2'>&amp;</span><span class='ident'>elt</span>);
             <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>current_key</span>.<span class='ident'>take</span>() {
                 <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {}
@@ -946,22 +1072,33 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>T</span>: <span class='ident'>PartialOrd</span>,
-    <span class='ident'>A</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
-    <span class='ident'>B</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
+<span class='doccomment'>/// An iterator adaptor that merges the two base iterators in ascending order.</span>
+<span class='doccomment'>/// If both base iterators are sorted (ascending), the result is sorted.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Iterator element type is **I::Item**.</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
 {
-    <span class='ident'>a</span>: <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>A</span><span class='op'>&gt;</span>,
-    <span class='ident'>b</span>: <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>B</span><span class='op'>&gt;</span>,
+    <span class='ident'>a</span>: <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>I</span><span class='op'>&gt;</span>,
+    <span class='ident'>b</span>: <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>J</span><span class='op'>&gt;</span>,
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>T</span>: <span class='ident'>PartialOrd</span>,
-    <span class='ident'>A</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
-    <span class='ident'>B</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
+    <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>I</span><span class='op'>&gt;</span>: <span class='ident'>Clone</span>,
+    <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>J</span><span class='op'>&gt;</span>: <span class='ident'>Clone</span>,
+{
+    <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
+    {
+        <span class='macro'>clone_fields</span><span class='macro'>!</span>(<span class='ident'>Merge</span>, <span class='self'>self</span>, <span class='ident'>a</span>, <span class='ident'>b</span>)
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
 {
     <span class='doccomment'>/// Create a **Merge** iterator.</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>a</span>: <span class='ident'>A</span>, <span class='ident'>b</span>: <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>a</span>: <span class='ident'>I</span>, <span class='ident'>b</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>
     {
         <span class='ident'>Merge</span> {
             <span class='ident'>a</span>: <span class='ident'>a</span>.<span class='ident'>peekable</span>(),
@@ -970,12 +1107,24 @@ tweak rustdoc css
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>T</span>: <span class='ident'>PartialOrd</span>,
-    <span class='ident'>A</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
-    <span class='ident'>B</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>PartialOrd</span>,
+    <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
 {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>T</span>;
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>I</span>::<span class='ident'>Item</span>;
+
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
+        <span class='kw'>if</span> <span class='kw'>match</span> (<span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>peek</span>(), <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>peek</span>()) {
+            (<span class='prelude-val'>Some</span>(<span class='ident'>a</span>), <span class='prelude-val'>Some</span>(<span class='ident'>b</span>)) <span class='op'>=&gt;</span> <span class='ident'>a</span> <span class='op'>&lt;=</span> <span class='ident'>b</span>,
+            (<span class='prelude-val'>Some</span>(_), <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='boolval'>true</span>,
+            (<span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(_)) <span class='op'>=&gt;</span> <span class='boolval'>false</span>,
+            (<span class='prelude-val'>None</span>, <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>None</span>,
+        } {
+            <span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>next</span>()
+        } <span class='kw'>else</span> {
+            <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>next</span>()
+        }
+    }
 
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>) {
         <span class='kw'>let</span> (<span class='ident'>a_min</span>, <span class='ident'>a_max</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>size_hint</span>();
@@ -988,19 +1137,6 @@ tweak rustdoc css
         };
 
         (<span class='ident'>min</span>, <span class='ident'>max</span>)
-    }
-
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
-        <span class='kw'>if</span> <span class='kw'>match</span> (<span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>peek</span>(), <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>peek</span>()) {
-            (<span class='prelude-val'>Some</span>(<span class='ident'>a</span>), <span class='prelude-val'>Some</span>(<span class='ident'>b</span>)) <span class='op'>=&gt;</span> <span class='ident'>a</span> <span class='op'>&lt;=</span> <span class='ident'>b</span>,
-            (<span class='prelude-val'>Some</span>(_), <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='boolval'>true</span>,
-            (<span class='prelude-val'>None</span>, <span class='prelude-val'>Some</span>(_)) <span class='op'>=&gt;</span> <span class='boolval'>false</span>,
-            (<span class='prelude-val'>None</span>, <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>None</span>,
-        } {
-            <span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>next</span>()
-        } <span class='kw'>else</span> {
-            <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>next</span>()
-        }
     }
 }
 </pre>
