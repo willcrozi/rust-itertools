@@ -115,14 +115,6 @@ tweak rustdoc css
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cell</span>::<span class='ident'>RefCell</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>RingBuf</span>;
@@ -161,15 +153,7 @@ tweak rustdoc css
     {
         <span class='comment'>// .borrow_mut may fail here -- but only if the user has tied some kind of weird</span>
         <span class='comment'>// knot where the iterator refers back to itself.</span>
-        <span class='comment'>//</span>
-        <span class='comment'>// Avoid panic!() in release code here for better code gen.</span>
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>buffer</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>rcbuffer</span>.<span class='ident'>try_borrow_mut</span>() {
-            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {
-                <span class='macro'>debug_assert</span><span class='macro'>!</span>(<span class='boolval'>false</span>, <span class='string'>&quot;Tee::next: Cycle in tee iterator.&quot;</span>);
-                <span class='kw'>return</span> <span class='prelude-val'>None</span>;
-            }
-            <span class='prelude-val'>Some</span>(<span class='ident'>bufref</span>) <span class='op'>=&gt;</span> <span class='ident'>bufref</span>,
-        };
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>buffer</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>rcbuffer</span>.<span class='ident'>borrow_mut</span>();
         <span class='kw'>if</span> <span class='ident'>buffer</span>.<span class='ident'>owner</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>id</span> {
             <span class='kw'>match</span> <span class='ident'>buffer</span>.<span class='ident'>backlog</span>.<span class='ident'>pop_front</span>() {
                 <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> {}
