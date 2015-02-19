@@ -1,5 +1,4 @@
 #![feature(core, std_misc)]
-#![feature(unboxed_closures)]
 #![crate_name="itertools"]
 #![crate_type="dylib"]
 
@@ -21,7 +20,7 @@
 //! extern crate itertools;
 //! ```
 //!
-//! ## License 
+//! ## License
 //! Dual-licensed to be compatible with the Rust project.
 //!
 //! Licensed under the Apache License, Version 2.0
@@ -42,6 +41,7 @@ pub use adaptors::{
     GroupBy,
     Step,
     Merge,
+    EnumerateFrom,
 };
 pub use intersperse::Intersperse;
 pub use islice::{ISlice};
@@ -85,7 +85,7 @@ mod ziptuple;
 /// }
 /// # }
 /// ```
-pub macro_rules! iproduct {
+macro_rules! iproduct {
     ($I:expr) => (
         ($I)
     );
@@ -124,11 +124,11 @@ pub macro_rules! iproduct {
 /// // Iterate over three sequences side-by-side
 /// let mut xs = [0, 0, 0];
 /// let ys = [72, 73, 74];
-/// for (i, a, b) in izip!(range(0, 100), xs.mut_iter(), ys.iter()) {
+/// for (i, a, b) in izip!(0..100, xs.mut_iter(), ys.iter()) {
 ///    *a = i ^ *b;
 /// }
 /// ```
-pub macro_rules! izip {
+macro_rules! izip {
     ($I:expr) => (
         ($I)
     );
@@ -142,9 +142,9 @@ pub macro_rules! izip {
 /// `icompr` as in “iterator comprehension” allows creating a
 /// mapped iterator with simple syntax, similar to set builder notation,
 /// and directly inspired by Python. Supports an optional filter clause.
-/// 
+///
 /// Syntax:
-/// 
+///
 ///  `icompr!(<expression>, <pattern>, <iterator>)`
 ///
 /// or
@@ -160,13 +160,13 @@ pub macro_rules! izip {
 /// ## Example
 ///
 /// ```ignore
-/// let mut squares = icompr!(x * x, x, range(1, 100));
+/// let mut squares = icompr!(x * x, x, 1..100);
 /// ```
 ///
 /// **Note:** A Python like syntax of `<expression> for <pattern> in <iterator>` is
 /// **not possible** with the stable macro rules since Rust 1.0.0-alpha.
 #[macro_export]
-pub macro_rules! icompr {
+macro_rules! icompr {
     ($r:expr, $x:pat, $J:expr, $pred:expr) => (
         ($J).filter_map(|$x| if $pred { Some($r) } else { None })
     );
@@ -346,7 +346,7 @@ pub trait Itertools : Iterator {
     ///
     /// ```
     /// use itertools::Itertools;
-    ///  
+    ///
     /// let mut rit = (0..9).into_rc();
     /// let mut z = rit.clone().zip(rit.clone());
     /// assert_eq!(z.next(), Some((0, 1)));
@@ -446,6 +446,25 @@ pub trait Itertools : Iterator {
         Product::new(self, other)
     }
 
+    /// Return an iterator adaptor that enumerates the iterator elements,
+    /// starting from **start** and incrementing by one.
+    ///
+    /// Iterator element type is **(K, Self::Item)**.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// assert_eq!(
+    ///     "αβγ".chars().enumerate_from(-10i8).collect_vec(),
+    ///     [(-10, 'α'), (-9, 'β'), (-8, 'γ')]
+    /// );
+    /// ```
+    fn enumerate_from<K>(self, start: K) -> EnumerateFrom<Self, K> where
+        Self: Sized,
+    {
+        EnumerateFrom::new(self, start)
+    }
+
     // non-adaptor methods
 
     /// Find the position and value of the first element satisfying a predicate.
@@ -490,6 +509,8 @@ pub trait Itertools : Iterator {
         self
     }
 
+    /// **Deprecated:** because of a name clash, use .count() or .foreach() instead as appropriate.
+    ///
     /// Run the iterator, eagerly, to the end and consume all its elements.
     ///
     /// ## Example
@@ -534,10 +555,41 @@ pub trait Itertools : Iterator {
     {
         self.collect()
     }
+
+    /// Assign to each reference in **self** from the **from** iterator,
+    /// stopping at the shortest of the two iterators.
+    ///
+    /// Return the number of elements written.
+    ///
+    /// ## Example
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let mut xs = [0; 4];
+    /// xs.iter_mut().set_from(1..);
+    /// assert_eq!(xs, [1, 2, 3, 4]);
+    /// ```
+    #[inline]
+    fn set_from<'a, A: 'a, J>(&mut self, from: J) -> usize where
+        Self: Iterator<Item=&'a mut A>,
+        J: Iterator<Item=A>,
+    {
+        let mut count = 0;
+        for elt in from {
+            match self.next() {
+                None => break,
+                Some(ptr) => *ptr = elt
+            }
+            count += 1;
+        }
+        count
+    }
 }
 
 impl<T: ?Sized> Itertools for T where T: Iterator { }
 
+/// **Deprecated: Use *.set_from()* instead**.
+///
 /// Assign to each reference in `to` from `from`, stopping
 /// at the shortest of the two iterators.
 ///
