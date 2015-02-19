@@ -606,9 +606,60 @@ tweak rustdoc css
 <span id="556">556</span>
 <span id="557">557</span>
 <span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>std_misc</span>)]</span>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>unboxed_closures</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_type</span><span class='op'>=</span><span class='string'>&quot;dylib&quot;</span>]</span>
 
@@ -630,7 +681,7 @@ tweak rustdoc css
 <span class='doccomment'>//! extern crate itertools;</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! ## License </span>
+<span class='doccomment'>//! ## License</span>
 <span class='doccomment'>//! Dual-licensed to be compatible with the Rust project.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
@@ -651,6 +702,7 @@ tweak rustdoc css
     <span class='ident'>GroupBy</span>,
     <span class='ident'>Step</span>,
     <span class='ident'>Merge</span>,
+    <span class='ident'>EnumerateFrom</span>,
 };
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>intersperse</span>::<span class='ident'>Intersperse</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>islice</span>::{<span class='ident'>ISlice</span>};
@@ -694,7 +746,7 @@ tweak rustdoc css
 <span class='doccomment'>/// }</span>
 <span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
-<span class='kw'>pub</span> <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>iproduct</span> {
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>iproduct</span> {
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
         (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>)
     );
@@ -733,11 +785,11 @@ tweak rustdoc css
 <span class='doccomment'>/// // Iterate over three sequences side-by-side</span>
 <span class='doccomment'>/// let mut xs = [0, 0, 0];</span>
 <span class='doccomment'>/// let ys = [72, 73, 74];</span>
-<span class='doccomment'>/// for (i, a, b) in izip!(range(0, 100), xs.mut_iter(), ys.iter()) {</span>
+<span class='doccomment'>/// for (i, a, b) in izip!(0..100, xs.mut_iter(), ys.iter()) {</span>
 <span class='doccomment'>///    *a = i ^ *b;</span>
 <span class='doccomment'>/// }</span>
 <span class='doccomment'>/// ```</span>
-<span class='kw'>pub</span> <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>izip</span> {
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>izip</span> {
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
         (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>)
     );
@@ -751,9 +803,9 @@ tweak rustdoc css
 <span class='doccomment'>/// `icompr` as in “iterator comprehension” allows creating a</span>
 <span class='doccomment'>/// mapped iterator with simple syntax, similar to set builder notation,</span>
 <span class='doccomment'>/// and directly inspired by Python. Supports an optional filter clause.</span>
-<span class='doccomment'>/// </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// Syntax:</span>
-<span class='doccomment'>/// </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>///  `icompr!(&lt;expression&gt;, &lt;pattern&gt;, &lt;iterator&gt;)`</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// or</span>
@@ -769,13 +821,13 @@ tweak rustdoc css
 <span class='doccomment'>/// ## Example</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```ignore</span>
-<span class='doccomment'>/// let mut squares = icompr!(x * x, x, range(1, 100));</span>
+<span class='doccomment'>/// let mut squares = icompr!(x * x, x, 1..100);</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// **Note:** A Python like syntax of `&lt;expression&gt; for &lt;pattern&gt; in &lt;iterator&gt;` is</span>
 <span class='doccomment'>/// **not possible** with the stable macro rules since Rust 1.0.0-alpha.</span>
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
-<span class='kw'>pub</span> <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>icompr</span> {
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>icompr</span> {
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>r</span>:<span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>x</span>:<span class='ident'>pat</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>:<span class='ident'>expr</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>pred</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
         (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>J</span>).<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>x</span><span class='op'>|</span> <span class='kw'>if</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>pred</span> { <span class='prelude-val'>Some</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>r</span>) } <span class='kw'>else</span> { <span class='prelude-val'>None</span> })
     );
@@ -792,8 +844,8 @@ tweak rustdoc css
     <span class='doccomment'>/// so that the resulting **FnMap** iterator value can be cloned.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **B**.</span>
-    <span class='kw'>fn</span> <span class='ident'>fn_map</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>
+    <span class='kw'>fn</span> <span class='ident'>fn_map</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>
     {
         <span class='ident'>FnMap</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>map</span>)
     }
@@ -802,8 +854,8 @@ tweak rustdoc css
     <span class='doccomment'>/// are run out</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Item**.</span>
-    <span class='kw'>fn</span> <span class='ident'>interleave</span><span class='op'>&lt;</span><span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Interleave</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>
+    <span class='kw'>fn</span> <span class='ident'>interleave</span><span class='op'>&lt;</span><span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Interleave</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>
     {
         <span class='ident'>Interleave</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>other</span>)
     }
@@ -812,8 +864,8 @@ tweak rustdoc css
     <span class='doccomment'>/// between each element of the adapted iterator.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Item**.</span>
-    <span class='kw'>fn</span> <span class='ident'>intersperse</span>(<span class='self'>self</span>, <span class='ident'>element</span>: <span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>intersperse</span>(<span class='self'>self</span>, <span class='ident'>element</span>: <span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
         <span class='ident'>Self</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>
     {
         <span class='ident'>Intersperse</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>element</span>)
@@ -837,8 +889,8 @@ tweak rustdoc css
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **EitherOrBoth\&lt;Item, B\&gt;**.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>zip_longest</span><span class='op'>&lt;</span><span class='ident'>U</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>U</span>) <span class='op'>-&gt;</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>zip_longest</span><span class='op'>&lt;</span><span class='ident'>U</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>U</span>) <span class='op'>-&gt;</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='ident'>ZipLongest</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>other</span>)
     }
@@ -847,8 +899,8 @@ tweak rustdoc css
     <span class='doccomment'>/// If the iterator is sorted, all elements will be unique.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Item**.</span>
-    <span class='kw'>fn</span> <span class='ident'>dedup</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>dedup</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='ident'>Dedup</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
     }
@@ -877,8 +929,8 @@ tweak rustdoc css
     <span class='doccomment'>/// assert_eq!(pit.next(), None);</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>///</span>
-    <span class='kw'>fn</span> <span class='ident'>batching</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>Self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>Batching</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>batching</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;&gt;</span>(<span class='self'>self</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>Batching</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='ident'>Batching</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>f</span>)
     }
@@ -887,8 +939,8 @@ tweak rustdoc css
     <span class='doccomment'>/// are returned as the iterator elements of **GroupBy**.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **(K, Vec\&lt;Item\&gt;)**</span>
-    <span class='kw'>fn</span> <span class='ident'>group_by</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>K</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>key</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>Self</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>group_by</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>K</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>key</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='kw'>Self</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='ident'>GroupBy</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>key</span>)
     }
@@ -912,8 +964,8 @@ tweak rustdoc css
     <span class='doccomment'>/// assert_eq!(t1.next(), None);</span>
     <span class='doccomment'>/// assert_eq!(t2.next(), Some(1));</span>
     <span class='doccomment'>/// ```</span>
-    <span class='kw'>fn</span> <span class='ident'>tee</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>Tee</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span>, <span class='ident'>Tee</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span>) <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>tee</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>Tee</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>, <span class='ident'>Tee</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>) <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
         <span class='ident'>Self</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>
     {
         <span class='ident'>tee</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
@@ -934,8 +986,8 @@ tweak rustdoc css
     <span class='doccomment'>/// let mut it = repeat(&#39;a&#39;).slice(..3);</span>
     <span class='doccomment'>/// assert_eq!(it.count(), 3);</span>
     <span class='doccomment'>/// ```</span>
-    <span class='kw'>fn</span> <span class='ident'>slice</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>misc</span>::<span class='ident'>GenericRange</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>range</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>ISlice</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>slice</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>misc</span>::<span class='ident'>GenericRange</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>range</span>: <span class='ident'>R</span>) <span class='op'>-&gt;</span> <span class='ident'>ISlice</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='ident'>ISlice</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>range</span>)
     }
@@ -955,7 +1007,7 @@ tweak rustdoc css
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
-    <span class='doccomment'>///  </span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// let mut rit = (0..9).into_rc();</span>
     <span class='doccomment'>/// let mut z = rit.clone().zip(rit.clone());</span>
     <span class='doccomment'>/// assert_eq!(z.next(), Some((0, 1)));</span>
@@ -969,8 +1021,8 @@ tweak rustdoc css
     <span class='doccomment'>/// **Panics** in iterator methods if a borrow error is encountered,</span>
     <span class='doccomment'>/// but it can only happen if the RcIter is reentered in for example **.next()**,</span>
     <span class='doccomment'>/// i.e. if it somehow participates in an &quot;iterator knot&quot; where it is an adaptor of itself.</span>
-    <span class='kw'>fn</span> <span class='ident'>into_rc</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>RcIter</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>into_rc</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>RcIter</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='ident'>RcIter</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
     }
@@ -999,8 +1051,8 @@ tweak rustdoc css
     <span class='doccomment'>/// assert_eq!(it.next(), None);</span>
     <span class='doccomment'>/// # }</span>
     <span class='doccomment'>/// ```</span>
-    <span class='kw'>fn</span> <span class='ident'>step</span>(<span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Step</span><span class='op'>&lt;</span><span class='ident'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>step</span>(<span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Step</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='ident'>Step</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>n</span>)
     }
@@ -1024,8 +1076,8 @@ tweak rustdoc css
     <span class='doccomment'>/// assert_eq!(it.next(), Some(4));</span>
     <span class='doccomment'>/// assert_eq!(it.next(), Some(6));</span>
     <span class='doccomment'>/// ```</span>
-    <span class='kw'>fn</span> <span class='ident'>merge</span><span class='op'>&lt;</span><span class='ident'>J</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>merge</span><span class='op'>&lt;</span><span class='ident'>J</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
         <span class='ident'>Self</span>::<span class='ident'>Item</span>: <span class='ident'>PartialOrd</span>,
         <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
     {
@@ -1047,12 +1099,31 @@ tweak rustdoc css
     <span class='doccomment'>/// assert_eq!(it.next(), Some((1, &#39;β&#39;)));</span>
     <span class='doccomment'>/// assert_eq!(it.next(), None);</span>
     <span class='doccomment'>/// ```</span>
-    <span class='kw'>fn</span> <span class='ident'>cartesian_product</span><span class='op'>&lt;</span><span class='ident'>J</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>Self</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>cartesian_product</span><span class='op'>&lt;</span><span class='ident'>J</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>other</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
         <span class='ident'>Self</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>,
         <span class='ident'>J</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span>,
     {
         <span class='ident'>Product</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>other</span>)
+    }
+
+    <span class='doccomment'>/// Return an iterator adaptor that enumerates the iterator elements,</span>
+    <span class='doccomment'>/// starting from **start** and incrementing by one.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Iterator element type is **(K, Self::Item)**.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// assert_eq!(</span>
+    <span class='doccomment'>///     &quot;αβγ&quot;.chars().enumerate_from(-10i8).collect_vec(),</span>
+    <span class='doccomment'>///     [(-10, &#39;α&#39;), (-9, &#39;β&#39;), (-8, &#39;γ&#39;)]</span>
+    <span class='doccomment'>/// );</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>enumerate_from</span><span class='op'>&lt;</span><span class='ident'>K</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>start</span>: <span class='ident'>K</span>) <span class='op'>-&gt;</span> <span class='ident'>EnumerateFrom</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>K</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
+    {
+        <span class='ident'>EnumerateFrom</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>start</span>)
     }
 
     <span class='comment'>// non-adaptor methods</span>
@@ -1060,7 +1131,7 @@ tweak rustdoc css
     <span class='doccomment'>/// Find the position and value of the first element satisfying a predicate.</span>
     <span class='kw'>fn</span> <span class='ident'>find_position</span><span class='op'>&lt;</span><span class='ident'>P</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>pred</span>: <span class='ident'>P</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span>(<span class='ident'>usize</span>, <span class='ident'>Self</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span> <span class='kw'>where</span>
         <span class='ident'>P</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>,
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>index</span> <span class='op'>=</span> <span class='number'>0us</span>;
         <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='ident'>IteratorExt</span>::<span class='ident'>by_ref</span>(<span class='self'>self</span>) {
@@ -1092,13 +1163,15 @@ tweak rustdoc css
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// It works similarly to **.skip(n)** except it is eager and</span>
     <span class='doccomment'>/// preserves the iterator type.</span>
-    <span class='kw'>fn</span> <span class='ident'>dropping</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+    <span class='kw'>fn</span> <span class='ident'>dropping</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='self'>self</span>.<span class='ident'>dropn</span>(<span class='ident'>n</span>);
         <span class='self'>self</span>
     }
 
+    <span class='doccomment'>/// **Deprecated:** because of a name clash, use .count() or .foreach() instead as appropriate.</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// Run the iterator, eagerly, to the end and consume all its elements.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ## Example</span>
@@ -1111,7 +1184,7 @@ tweak rustdoc css
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>///</span>
     <span class='kw'>fn</span> <span class='ident'>drain</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>
     {
         <span class='kw'>for</span> _ <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>by_ref</span>() { <span class='comment'>/* nothing */</span> }
     }
@@ -1122,7 +1195,7 @@ tweak rustdoc css
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// **Note: This method is deprecated, use *.foreach()* instead.**</span>
     <span class='kw'>fn</span> <span class='ident'>apply</span><span class='op'>&lt;</span><span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>
     {
         <span class='self'>self</span>.<span class='ident'>foreach</span>(<span class='ident'>f</span>)
     }
@@ -1131,7 +1204,7 @@ tweak rustdoc css
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Consumes the iterator until its end.</span>
     <span class='kw'>fn</span> <span class='ident'>foreach</span><span class='op'>&lt;</span><span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>)<span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>
     {
         <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>by_ref</span>() { <span class='ident'>f</span>(<span class='ident'>elt</span>) }
     }
@@ -1139,14 +1212,45 @@ tweak rustdoc css
     <span class='doccomment'>/// **.collect_vec()** is simply a type specialization of **.collect()**,</span>
     <span class='doccomment'>/// for convenience.</span>
     <span class='kw'>fn</span> <span class='ident'>collect_vec</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-        <span class='ident'>Self</span>: <span class='ident'>Sized</span>,
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
         <span class='self'>self</span>.<span class='ident'>collect</span>()
+    }
+
+    <span class='doccomment'>/// Assign to each reference in **self** from the **from** iterator,</span>
+    <span class='doccomment'>/// stopping at the shortest of the two iterators.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Return the number of elements written.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ## Example</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let mut xs = [0; 4];</span>
+    <span class='doccomment'>/// xs.iter_mut().set_from(1..);</span>
+    <span class='doccomment'>/// assert_eq!(xs, [1, 2, 3, 4]);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>set_from</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span>, <span class='ident'>J</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>from</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>A</span><span class='op'>&gt;</span>,
+        <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>,
+    {
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>count</span> <span class='op'>=</span> <span class='number'>0</span>;
+        <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='ident'>from</span> {
+            <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>next</span>() {
+                <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>break</span>,
+                <span class='prelude-val'>Some</span>(<span class='ident'>ptr</span>) <span class='op'>=&gt;</span> <span class='op'>*</span><span class='ident'>ptr</span> <span class='op'>=</span> <span class='ident'>elt</span>
+            }
+            <span class='ident'>count</span> <span class='op'>+=</span> <span class='number'>1</span>;
+        }
+        <span class='ident'>count</span>
     }
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>: ?<span class='ident'>Sized</span><span class='op'>&gt;</span> <span class='ident'>Itertools</span> <span class='kw'>for</span> <span class='ident'>T</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Iterator</span> { }
 
+<span class='doccomment'>/// **Deprecated: Use *.set_from()* instead**.</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// Assign to each reference in `to` from `from`, stopping</span>
 <span class='doccomment'>/// at the shortest of the two iterators.</span>
 <span class='doccomment'>///</span>

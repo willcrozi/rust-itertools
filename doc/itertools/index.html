@@ -52,7 +52,7 @@ tweak rustdoc css
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-558'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-610'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -95,10 +95,6 @@ directly.</p>
                         <td class='docblock short'><p><code>icompr</code> as in “iterator comprehension” allows creating a
 mapped iterator with simple syntax, similar to set builder notation,
 and directly inspired by Python. Supports an optional filter clause.</p>
-
-<p>Syntax:</p>
-
-<p><code>icompr!(&lt;expression&gt;, &lt;pattern&gt;, &lt;iterator&gt;)</code></p>
 </td>
                     </tr>
                 
@@ -131,6 +127,12 @@ and may pick off as many elements as it likes, to produce the next iterator elem
                         <td class='docblock short'><p>Remove duplicates from sections of consecutive identical elements.
 If the iterator is sorted, all elements will be unique.</p>
 </td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.EnumerateFrom.html'
+                               title='itertools::EnumerateFrom'>EnumerateFrom</a></td>
+                        <td class='docblock short'></td>
                     </tr>
                 
                     <tr>
@@ -283,8 +285,6 @@ depending on which of the input iterators are exhausted.</p>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='trait' href='trait.TrustedIterator.html'
                                title='itertools::TrustedIterator'>TrustedIterator</a></td>
                         <td class='docblock short'><p>A <strong>TrustedIterator</strong> has exact size, always.</p>
-
-<p><strong>Note:</strong> TrustedIterator is <em>Experimental.</em></p>
 </td>
                     </tr>
                 </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
@@ -308,8 +308,7 @@ a particular number of times. The iterator yields a counter.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='fn' href='fn.write.html'
                                title='itertools::write'>write</a></td>
-                        <td class='docblock short'><p>Assign to each reference in <code>to</code> from <code>from</code>, stopping
-at the shortest of the two iterators.</p>
+                        <td class='docblock short'><p><strong>Deprecated: Use <em>.set_from()</em> instead</strong>.</p>
 </td>
                     </tr>
                 </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
@@ -318,8 +317,6 @@ at the shortest of the two iterators.</p>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='type' href='type.Linspace.html'
                                title='itertools::Linspace'>Linspace</a></td>
                         <td class='docblock short'><p>An iterator of <code>n</code> evenly spaced floats.</p>
-
-<p>Iterator element type is <code>F</code>.</p>
 </td>
                     </tr>
                 </table></section>

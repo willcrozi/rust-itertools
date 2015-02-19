@@ -297,9 +297,15 @@ tweak rustdoc css
 <span id="247">247</span>
 <span id="248">248</span>
 <span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>slice</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>vec</span>;
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>;
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
@@ -323,7 +329,7 @@ tweak rustdoc css
 <span class='doccomment'>/// for (i, a, b) in Zip::new((0i32..100, xs.iter_mut(), ys.iter())) {</span>
 <span class='doccomment'>///    *a = i ^ *b;</span>
 <span class='doccomment'>/// }</span>
-<span class='doccomment'>/// </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// assert_eq!(xs, [69, 106, 103]);</span>
 <span class='doccomment'>/// ```</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Zip</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
@@ -398,25 +404,30 @@ tweak rustdoc css
 
 
 <span class='doccomment'>/// A **TrustedIterator** has exact size, always.</span>
-<span class='doccomment'>/// </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// **Note:** TrustedIterator is *Experimental.*</span>
 <span class='kw'>pub</span> <span class='kw'>unsafe</span> <span class='kw'>trait</span> <span class='ident'>TrustedIterator</span> : <span class='ident'>ExactSizeIterator</span>
 {
     <span class='comment'>/* no methods */</span>
 }
 
-<span class='comment'>/* Not safe yet!
-unsafe impl TrustedIterator for ::std::ops::Range&lt;usize&gt; { }
-unsafe impl TrustedIterator for ::std::ops::Range&lt;u32&gt; { }
-unsafe impl TrustedIterator for ::std::ops::Range&lt;i32&gt; { }
-unsafe impl TrustedIterator for ::std::ops::Range&lt;u16&gt; { }
-unsafe impl TrustedIterator for ::std::ops::Range&lt;i16&gt; { }
-unsafe impl TrustedIterator for ::std::ops::Range&lt;u8&gt; { }
-unsafe impl TrustedIterator for ::std::ops::Range&lt;i8&gt; { }
-*/</span>
+<span class='kw'>unsafe</span> <span class='kw'>impl</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> ::<span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Range</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span> { }
+<span class='kw'>unsafe</span> <span class='kw'>impl</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> ::<span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Range</span><span class='op'>&lt;</span><span class='ident'>u32</span><span class='op'>&gt;</span> { }
+<span class='kw'>unsafe</span> <span class='kw'>impl</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> ::<span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Range</span><span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span> { }
+<span class='kw'>unsafe</span> <span class='kw'>impl</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> ::<span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Range</span><span class='op'>&lt;</span><span class='ident'>u16</span><span class='op'>&gt;</span> { }
+<span class='kw'>unsafe</span> <span class='kw'>impl</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> ::<span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Range</span><span class='op'>&lt;</span><span class='ident'>i16</span><span class='op'>&gt;</span> { }
+<span class='kw'>unsafe</span> <span class='kw'>impl</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> ::<span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Range</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span> { }
+<span class='kw'>unsafe</span> <span class='kw'>impl</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> ::<span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Range</span><span class='op'>&lt;</span><span class='ident'>i8</span><span class='op'>&gt;</span> { }
 <span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> <span class='ident'>slice</span>::<span class='ident'>Iter</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span><span class='op'>&gt;</span> { }
 <span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> <span class='ident'>slice</span>::<span class='ident'>IterMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span><span class='op'>&gt;</span> { }
 <span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> <span class='ident'>vec</span>::<span class='ident'>IntoIter</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> { }
+
+<span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> <span class='ident'>iter</span>::<span class='ident'>Rev</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>DoubleEndedIterator</span> <span class='op'>+</span> <span class='ident'>TrustedIterator</span>,
+{ }
+<span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>TrustedIterator</span> <span class='kw'>for</span> <span class='ident'>iter</span>::<span class='ident'>Take</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>TrustedIterator</span>,
+{ }
 
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
@@ -440,12 +451,11 @@ unsafe impl TrustedIterator for ::std::ops::Range&lt;i8&gt; { }
 <span class='doccomment'>/// // Iterate over three sequences side-by-side</span>
 <span class='doccomment'>/// let mut xs = [0, 0, 0];</span>
 <span class='doccomment'>/// let ys = [69, 107, 101];</span>
-<span class='doccomment'>/// let index = [0, 1, 2, 3];</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// for (&amp;i, a, b) in ZipTrusted::new((index.iter(), xs.iter_mut(), ys.iter())) {</span>
+<span class='doccomment'>/// for (i, a, b) in ZipTrusted::new((0..100, xs.iter_mut(), ys.iter())) {</span>
 <span class='doccomment'>///    *a = i ^ *b;</span>
 <span class='doccomment'>/// }</span>
-<span class='doccomment'>/// </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// assert_eq!(xs, [69, 106, 103]);</span>
 <span class='doccomment'>/// ```</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ZipTrusted</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
@@ -504,7 +514,7 @@ unsafe impl TrustedIterator for ::std::ops::Range&lt;i8&gt; { }
         {
             <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> ($(<span class='op'>&lt;</span><span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span>,)<span class='op'>*</span>);
 
-            <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;&lt;</span><span class='ident'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>
+            <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;&lt;</span><span class='kw'>Self</span> <span class='kw'>as</span> <span class='ident'>Iterator</span><span class='op'>&gt;</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>
             {
                 <span class='kw'>let</span> ($(<span class='kw-2'>ref</span> <span class='kw-2'>mut</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>B</span>,)<span class='op'>*</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>t</span>;
 
