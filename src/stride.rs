@@ -15,7 +15,7 @@ use std::ops::{Index, IndexMut};
 /// Stride does not support zero-sized types for `A`.
 ///
 /// Iterator element type is `&'a A`.
-pub struct Stride<'a, A> {
+pub struct Stride<'a, A: 'a> {
     /// base pointer -- does not change during iteration
     begin: *const A,
     /// current offset from begin
@@ -23,21 +23,26 @@ pub struct Stride<'a, A> {
     /// offset where we end (exclusive end).
     end: isize,
     stride: isize,
-    life: marker::ContravariantLifetime<'a>,
+    life: marker::PhantomData<&'a A>,
 }
 
 impl<'a, A> Copy for Stride<'a, A> {}
+unsafe impl<'a, A> Send for Stride<'a, A> where A: Send {}
+unsafe impl<'a, A> Sync for Stride<'a, A> where A: Sync {}
 
 /// StrideMut is like Stride, but with mutable elements.
 ///
 /// Iterator element type is `&'a mut A`.
-pub struct StrideMut<'a, A> {
+pub struct StrideMut<'a, A: 'a> {
     begin: *mut A,
     offset: isize,
     end: isize,
     stride: isize,
-    life: marker::ContravariantLifetime<'a>,
+    life: marker::PhantomData<&'a mut A>,
 }
+
+unsafe impl<'a, A> Send for StrideMut<'a, A> where A: Send {}
+unsafe impl<'a, A> Sync for StrideMut<'a, A> where A: Sync {}
 
 impl<'a, A> Stride<'a, A>
 {
@@ -49,7 +54,7 @@ impl<'a, A> Stride<'a, A>
             offset: 0,
             end: stride * nelem as isize,
             stride: stride,
-            life: marker::ContravariantLifetime,
+            life: marker::PhantomData,
         }
     }
 }
@@ -64,7 +69,7 @@ impl<'a, A> StrideMut<'a, A>
             offset: 0,
             end: stride * nelem as isize,
             stride: stride,
-            life: marker::ContravariantLifetime,
+            life: marker::PhantomData,
         }
     }
 }
@@ -224,7 +229,8 @@ macro_rules! stride_impl {
             }
         }
 
-        impl<'a, A: fmt::Debug> fmt::Debug for $name<'a, A>
+        impl<'a, A> fmt::Debug for $name<'a, A>
+            where A: fmt::Debug
         {
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
             {

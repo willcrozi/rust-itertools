@@ -1,33 +1,36 @@
 use std::cell::RefCell;
-use std::collections::RingBuf;
+use std::collections::VecDeque;
 use std::rc::Rc;
 use std::num::Int;
 
 /// Common buffer object for the two tee halves
 struct TeeBuffer<A, I>
 {
-    backlog: RingBuf<A>,
+    backlog: VecDeque<A>,
     iter: I,
     /// The owner field indicates which id should read from the backlog
     owner: bool,
 }
 
 /// One half of an iterator pair where both return the same elements.
-pub struct Tee<I: Iterator>
+pub struct Tee<I> where
+    I: Iterator
 {
     rcbuffer: Rc<RefCell<TeeBuffer<I::Item, I>>>,
     id: bool,
 }
 
-pub fn new<I: Iterator>(iter: I) -> (Tee<I>, Tee<I>)
+pub fn new<I>(iter: I) -> (Tee<I>, Tee<I>) where
+    I: Iterator
 {
-    let buffer = TeeBuffer{backlog: RingBuf::new(), iter: iter, owner: false};
+    let buffer = TeeBuffer{backlog: VecDeque::new(), iter: iter, owner: false};
     let t1 = Tee{rcbuffer: Rc::new(RefCell::new(buffer)), id: true};
     let t2 = Tee{rcbuffer: t1.rcbuffer.clone(), id: false};
     (t1, t2)
 }
 
-impl<I: Iterator> Iterator for Tee<I> where
+impl<I> Iterator for Tee<I> where
+    I: Iterator,
     I::Item: Clone,
 {
     type Item = I::Item;

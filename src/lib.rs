@@ -42,6 +42,7 @@ pub use adaptors::{
     Step,
     Merge,
     EnumerateFrom,
+    MultiPeek,
 };
 pub use intersperse::Intersperse;
 pub use islice::{ISlice};
@@ -193,7 +194,8 @@ pub trait Itertools : Iterator {
     /// are run out
     ///
     /// Iterator element type is **Item**.
-    fn interleave<J: Iterator<Item=Self::Item>>(self, other: J) -> Interleave<Self, J> where
+    fn interleave<J>(self, other: J) -> Interleave<Self, J> where
+        J: Iterator<Item=Self::Item>,
         Self: Sized
     {
         Interleave::new(self, other)
@@ -228,7 +230,8 @@ pub trait Itertools : Iterator {
     ///
     /// Iterator element type is **EitherOrBoth\<Item, B\>**.
     #[inline]
-    fn zip_longest<U: Iterator>(self, other: U) -> ZipLongest<Self, U> where
+    fn zip_longest<U>(self, other: U) -> ZipLongest<Self, U> where
+        U: Iterator,
         Self: Sized,
     {
         ZipLongest::new(self, other)
@@ -325,7 +328,8 @@ pub trait Itertools : Iterator {
     /// let mut it = repeat('a').slice(..3);
     /// assert_eq!(it.count(), 3);
     /// ```
-    fn slice<R: misc::GenericRange>(self, range: R) -> ISlice<Self> where
+    fn slice<R>(self, range: R) -> ISlice<Self> where
+        R: misc::GenericRange,
         Self: Sized,
     {
         ISlice::new(self, range)
@@ -472,7 +476,7 @@ pub trait Itertools : Iterator {
         P: FnMut(&Self::Item) -> bool,
         Self: Sized,
     {
-        let mut index = 0us;
+        let mut index = 0usize;
         for elt in IteratorExt::by_ref(self) {
             if pred(&elt) {
                 return Some((index, elt))
@@ -515,10 +519,10 @@ pub trait Itertools : Iterator {
     ///
     /// ## Example
     ///
-    /// ```rust
+    /// ```
     /// use itertools::Itertools;
     ///
-    /// let mut cnt = 0us;
+    /// let mut cnt = 0;
     /// "hi".chars().map(|c| cnt += 1).drain();
     /// ```
     ///
@@ -584,6 +588,76 @@ pub trait Itertools : Iterator {
         }
         count
     }
+
+    /// Combine all iterator elements into one String, seperated by **sep**.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// assert_eq!(["a", "b", "c"].iter().join(", "), "a, b, c");
+    /// ```
+    fn join(&mut self, sep: &str) -> String where
+        Self::Item: Str,
+    {
+        // estimate capacity
+        match self.next() {
+            None => String::new(),
+            Some(first_elt) => {
+                let (lower, _) = self.size_hint();
+                let s = first_elt.as_slice();
+                let mut res = String::with_capacity(s.len() + sep.len() * lower);
+                res.push_str(s);
+
+                for elt in self {
+                    res.push_str(sep);
+                    res.push_str(elt.as_slice());
+                }
+                res
+            }
+        }
+    }
+
+    /// Convert all iterators to String before joining them all together.
+    ///
+    /// Like *.join()*, but converts each element to **String** explicitly first.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// assert_eq!([1, 2, 3].iter().to_string_join(", "), "1, 2, 3");
+    /// ```
+    fn to_string_join(&mut self, sep: &str) -> String where
+        Self::Item: ToString,
+    {
+        self.map(|elt| elt.to_string()).join(sep)
+    }
+
+    /// Returns an iterator adapter that allows peeking multiple values.
+    ///
+    /// After a call to *.next()* the peeking cursor gets resetted.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let nums = vec![1u8,2,3,4,5];
+    /// let mut peekable = nums.into_iter().multipeek();
+    /// assert_eq!(peekable.peek(), Some(&1));
+    /// assert_eq!(peekable.peek(), Some(&2));
+    /// assert_eq!(peekable.peek(), Some(&3));
+    /// assert_eq!(peekable.next(), Some(1));
+    /// assert_eq!(peekable.peek(), Some(&2));
+    /// ```
+    fn multipeek(self) -> MultiPeek<Self> where
+        Self: Sized
+    {
+        MultiPeek::new(self)
+    }
 }
 
 impl<T: ?Sized> Itertools for T where T: Iterator { }
@@ -595,8 +669,9 @@ impl<T: ?Sized> Itertools for T where T: Iterator { }
 ///
 /// Return the number of elements written.
 #[inline]
-pub fn write<'a, A: 'a, I: Iterator<Item=&'a mut A>, J: Iterator<Item=A>>
-    (mut to: I, from: J) -> usize
+pub fn write<'a, A: 'a, I, J>(mut to: I, from: J) -> usize where
+    I: Iterator<Item=&'a mut A>,
+    J: Iterator<Item=A>
 {
     let mut count = 0;
     for elt in from {
