@@ -51,7 +51,7 @@ tweak rustdoc css
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-685'>[src]</a></span></h1>
+        </span><a id='src-0' href='../src/itertools/lib.rs.html#1-690'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -107,7 +107,7 @@ and directly inspired by Python. Supports an optional filter clause.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='macro' href='macro.izip!.html'
                                title='itertools::izip!'>izip!</a></td>
-                        <td class='docblock short'><p><strong>Note: This macro is deprecated, use <em>Zip::new</em> instead.</strong></p>
+                        <td class='docblock short'><p><strong>Deprecated: use <em>Zip::new</em> instead.</strong></p>
 </td>
                     </tr>
                 </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
@@ -131,7 +131,9 @@ If the iterator is sorted, all elements will be unique.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.EnumerateFrom.html'
                                title='itertools::EnumerateFrom'>EnumerateFrom</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>An iterator adaptor that enumerates the iterator elements,
+with a custom starting value and integer type.</p>
+</td>
                     </tr>
                 
                     <tr>
