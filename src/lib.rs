@@ -31,6 +31,8 @@
 //!
 //!
 
+use std::fmt::Write;
+
 pub use adaptors::{
     Interleave,
     Product,
@@ -108,7 +110,7 @@ macro_rules! iproduct {
 }
 
 #[macro_export]
-/// **Note: This macro is deprecated, use *Zip::new* instead.**
+/// **Deprecated: use *Zip::new* instead.**
 ///
 /// Create an iterator running multiple iterators in lockstep.
 ///
@@ -193,7 +195,7 @@ pub trait Itertools : Iterator {
     /// Alternate elements from two iterators until both
     /// are run out
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     fn interleave<J>(self, other: J) -> Interleave<Self, J> where
         J: Iterator<Item=Self::Item>,
         Self: Sized
@@ -204,7 +206,7 @@ pub trait Itertools : Iterator {
     /// An iterator adaptor to insert a particular value
     /// between each element of the adapted iterator.
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     fn intersperse(self, element: Self::Item) -> Intersperse<Self> where
         Self: Sized,
         Self::Item: Clone
@@ -228,7 +230,7 @@ pub trait Itertools : Iterator {
     /// assert_eq!(it.next(), None);
     /// ```
     ///
-    /// Iterator element type is **EitherOrBoth\<Item, B\>**.
+    /// Iterator element type is **EitherOrBoth\<Self::Item, B\>**.
     #[inline]
     fn zip_longest<U>(self, other: U) -> ZipLongest<Self, U> where
         U: Iterator,
@@ -240,7 +242,7 @@ pub trait Itertools : Iterator {
     /// Remove duplicates from sections of consecutive identical elements.
     /// If the iterator is sorted, all elements will be unique.
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     fn dedup(self) -> Dedup<Self> where
         Self: Sized,
     {
@@ -280,7 +282,7 @@ pub trait Itertools : Iterator {
     /// Group iterator elements. Consecutive elements that map to the same key (“runs”),
     /// are returned as the iterator elements of **GroupBy**.
     ///
-    /// Iterator element type is **(K, Vec\<Item\>)**
+    /// Iterator element type is **(K, Vec\<Self::Item\>)**
     fn group_by<K, F: FnMut(&Self::Item) -> K>(self, key: F) -> GroupBy<K, Self, F> where
         Self: Sized,
     {
@@ -290,7 +292,7 @@ pub trait Itertools : Iterator {
     /// Split into an iterator pair that both yield all elements from
     /// the original iterator.
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     ///
     /// ## Example
     /// ```
@@ -318,7 +320,7 @@ pub trait Itertools : Iterator {
     /// **Note:** slicing an iterator is not constant time, and much less efficient than
     /// slicing for example a vector.
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     ///
     /// ## Example
     /// ```
@@ -344,7 +346,7 @@ pub trait Itertools : Iterator {
     /// itself, at the cost of runtime borrow checking.
     /// (If it is not obvious: this has a performance penalty.)
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     ///
     /// ## Example
     ///
@@ -376,7 +378,7 @@ pub trait Itertools : Iterator {
     /// The iterator steps by yielding the next element from the base iterator,
     /// then skipping forward **n - 1** elements.
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     ///
     /// **Panics** if the step is 0.
     ///
@@ -403,7 +405,7 @@ pub trait Itertools : Iterator {
     /// Return an iterator adaptor that merges the two base iterators in ascending order.
     /// If both base iterators are sorted (ascending), the result is sorted.
     ///
-    /// Iterator element type is **Item**.
+    /// Iterator element type is **Self::Item**.
     ///
     /// ## Example
     /// ```
@@ -430,7 +432,7 @@ pub trait Itertools : Iterator {
     /// Return an iterator adaptor that iterates over the cartesian product of
     /// the element sets of two iterators **self** and **J**.
     ///
-    /// Iterator element type is **(Item, J::Item)**.
+    /// Iterator element type is **(Self::Item, J::Item)**.
     ///
     /// ```
     /// use itertools::Itertools;
@@ -513,7 +515,7 @@ pub trait Itertools : Iterator {
         self
     }
 
-    /// **Deprecated:** because of a name clash, use .count() or .foreach() instead as appropriate.
+    /// **Deprecated: because of a name clash, use .count() or .foreach() instead as appropriate.**
     ///
     /// Run the iterator, eagerly, to the end and consume all its elements.
     ///
@@ -532,11 +534,11 @@ pub trait Itertools : Iterator {
         for _ in self.by_ref() { /* nothing */ }
     }
 
+    /// **Deprecated: Use *.foreach()* instead.**
+    ///
     /// Run the closure **f** eagerly on each element of the iterator.
     ///
     /// Consumes the iterator until its end.
-    ///
-    /// **Note: This method is deprecated, use *.foreach()* instead.**
     fn apply<F: FnMut(Self::Item)>(&mut self, f: F) where
         Self: Sized
     {
@@ -589,37 +591,9 @@ pub trait Itertools : Iterator {
         count
     }
 
-    /// Combine all iterator elements into one String, seperated by **sep**.
+    /// **Deprecated: Use *.join()* instead, it's more efficient.**.
     ///
-    /// ## Example
-    ///
-    /// ```
-    /// use itertools::Itertools;
-    ///
-    /// assert_eq!(["a", "b", "c"].iter().join(", "), "a, b, c");
-    /// ```
-    fn join(&mut self, sep: &str) -> String where
-        Self::Item: Str,
-    {
-        // estimate capacity
-        match self.next() {
-            None => String::new(),
-            Some(first_elt) => {
-                let (lower, _) = self.size_hint();
-                let s = first_elt.as_slice();
-                let mut res = String::with_capacity(s.len() + sep.len() * lower);
-                res.push_str(s);
-
-                for elt in self {
-                    res.push_str(sep);
-                    res.push_str(elt.as_slice());
-                }
-                res
-            }
-        }
-    }
-
-    /// Convert all iterators to String before joining them all together.
+    /// Convert each element to String before joining them all together.
     ///
     /// Like *.join()*, but converts each element to **String** explicitly first.
     ///
@@ -634,6 +608,37 @@ pub trait Itertools : Iterator {
         Self::Item: ToString,
     {
         self.map(|elt| elt.to_string()).join(sep)
+    }
+
+    /// Combine all iterator elements into one String, seperated by **sep**.
+    ///
+    /// Use the **Display** implementation of each element.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// assert_eq!(["a", "b", "c"].iter().join(", "), "a, b, c");
+    /// assert_eq!([1, 2, 3].iter().join(", "), "1, 2, 3");
+    /// ```
+    fn join(&mut self, sep: &str) -> String where
+        Self::Item: std::fmt::Display,
+    {
+        match self.next() {
+            None => String::new(),
+            Some(first_elt) => {
+                // estimate lower bound of capacity needed
+                let (lower, _) = self.size_hint();
+                let mut result = String::with_capacity(sep.len() * lower);
+                write!(&mut result, "{}", first_elt).unwrap();
+                for elt in self {
+                    result.push_str(sep);
+                    write!(&mut result, "{}", elt).unwrap();
+                }
+                result
+            }
+        }
     }
 
     /// Returns an iterator adapter that allows peeking multiple values.
