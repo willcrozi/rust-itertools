@@ -164,8 +164,13 @@ tweak rustdoc css
 <span id="114">114</span>
 <span id="115">115</span>
 <span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>EitherOrBoth</span>::{<span class='ident'>Right</span>, <span class='ident'>Left</span>, <span class='ident'>Both</span>};
 
@@ -220,6 +225,7 @@ tweak rustdoc css
     }
 }
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>T</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>ExactSizeIterator</span>,
     <span class='ident'>U</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>B</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>ExactSizeIterator</span>,
@@ -241,6 +247,7 @@ tweak rustdoc css
     }
 }
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>RandomAccessIterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>T</span>: <span class='ident'>RandomAccessIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>,
     <span class='ident'>U</span>: <span class='ident'>RandomAccessIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>B</span><span class='op'>&gt;</span>,
@@ -261,6 +268,7 @@ tweak rustdoc css
     }
 }
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>ExactSizeIterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>T</span>: <span class='ident'>ExactSizeIterator</span>,
     <span class='ident'>U</span>: <span class='ident'>ExactSizeIterator</span>,

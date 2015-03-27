@@ -302,6 +302,18 @@ tweak rustdoc css
 <span id="252">252</span>
 <span id="253">253</span>
 <span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>slice</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>vec</span>;
@@ -430,6 +442,7 @@ tweak rustdoc css
 { }
 
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='doccomment'>/// Create an iterator running multiple iterators in lockstep.</span>
 <span class='doccomment'>///</span>
@@ -463,10 +476,12 @@ tweak rustdoc css
     <span class='ident'>t</span>: <span class='ident'>T</span>
 }
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>trait</span> <span class='ident'>SetLength</span> {
     <span class='kw'>fn</span> <span class='ident'>set_length</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>);
 }
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='ident'>ZipTrusted</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>ZipTrusted</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>: <span class='ident'>SetLength</span>
 {
     <span class='doccomment'>/// Create a new **ZipTrusted** from a tuple of iterators.</span>
@@ -547,14 +562,23 @@ tweak rustdoc css
     );
 }
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>, <span class='ident'>G</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>, <span class='ident'>G</span>, <span class='ident'>H</span>);
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='macro'>impl_zip_trusted</span><span class='macro'>!</span>(<span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>C</span>, <span class='ident'>D</span>, <span class='ident'>E</span>, <span class='ident'>F</span>, <span class='ident'>G</span>, <span class='ident'>H</span>, <span class='ident'>I</span>);
 
 </pre>

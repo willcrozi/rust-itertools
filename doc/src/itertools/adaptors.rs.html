@@ -721,6 +721,8 @@ tweak rustdoc css
 <span id="671">671</span>
 <span id="672">672</span>
 <span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -729,6 +731,7 @@ tweak rustdoc css
 <span class='doccomment'>//! except according to those terms.</span>
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>num</span>::<span class='ident'>Int</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>usize</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::{<span class='ident'>Fuse</span>, <span class='ident'>Peekable</span>};
@@ -1314,6 +1317,7 @@ tweak rustdoc css
     }
 }
 
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>EnumerateFrom</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>K</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>K</span>: <span class='ident'>Int</span>,
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,

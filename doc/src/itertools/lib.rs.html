@@ -740,12 +740,12 @@ tweak rustdoc css
 <span id="690">690</span>
 <span id="691">691</span>
 <span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
 </pre><pre class='rust '>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>core</span>,
-           <span class='ident'>step_by</span>,
-           <span class='ident'>std_misc</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>step_by</span>, <span class='ident'>core</span>, <span class='ident'>std_misc</span>))]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_name</span><span class='op'>=</span><span class='string'>&quot;itertools&quot;</span>]</span>
-<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>crate_type</span><span class='op'>=</span><span class='string'>&quot;dylib&quot;</span>]</span>
 
 <span class='doccomment'>//! Itertools — extra iterator adaptors, functions and macros</span>
 <span class='doccomment'>//!</span>
@@ -788,9 +788,10 @@ tweak rustdoc css
     <span class='ident'>GroupBy</span>,
     <span class='ident'>Step</span>,
     <span class='ident'>Merge</span>,
-    <span class='ident'>EnumerateFrom</span>,
     <span class='ident'>MultiPeek</span>,
 };
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>EnumerateFrom</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>intersperse</span>::<span class='ident'>Intersperse</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>islice</span>::{<span class='ident'>ISlice</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>rciter</span>::<span class='ident'>RcIter</span>;
@@ -799,12 +800,16 @@ tweak rustdoc css
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>tee</span>::<span class='ident'>Tee</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>Times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>times</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>linspace</span>::{<span class='ident'>linspace</span>, <span class='ident'>Linspace</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip</span>::{<span class='ident'>ZipLongest</span>, <span class='ident'>EitherOrBoth</span>};
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::{<span class='ident'>Zip</span>, <span class='ident'>ZipTrusted</span>, <span class='ident'>TrustedIterator</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::{<span class='ident'>Zip</span>, <span class='ident'>TrustedIterator</span>};
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::<span class='ident'>ZipTrusted</span>;
 <span class='kw'>mod</span> <span class='ident'>adaptors</span>;
 <span class='kw'>mod</span> <span class='ident'>intersperse</span>;
 <span class='kw'>mod</span> <span class='ident'>islice</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>linspace</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>misc</span>;
 <span class='kw'>mod</span> <span class='ident'>rciter</span>;
@@ -1210,6 +1215,7 @@ tweak rustdoc css
     <span class='doccomment'>///     [(-10, &#39;α&#39;), (-9, &#39;β&#39;), (-8, &#39;γ&#39;)]</span>
     <span class='doccomment'>/// );</span>
     <span class='doccomment'>/// ```</span>
+    <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
     <span class='kw'>fn</span> <span class='ident'>enumerate_from</span><span class='op'>&lt;</span><span class='ident'>K</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>start</span>: <span class='ident'>K</span>) <span class='op'>-&gt;</span> <span class='ident'>EnumerateFrom</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>K</span><span class='op'>&gt;</span> <span class='kw'>where</span>
         <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
