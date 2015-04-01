@@ -1,4 +1,4 @@
-#![cfg_attr(feature = "unstable", feature(step_by, core, std_misc))]
+#![cfg_attr(feature = "unstable", feature(core))]
 #![crate_name="itertools"]
 
 //! Itertools — extra iterator adaptors, functions and macros
@@ -54,7 +54,6 @@ pub use stride::StrideMut;
 pub use tee::Tee;
 pub use times::Times;
 pub use times::times;
-#[cfg(feature = "unstable")]
 pub use linspace::{linspace, Linspace};
 pub use zip::{ZipLongest, EitherOrBoth};
 pub use ziptuple::{Zip, TrustedIterator};
@@ -63,7 +62,6 @@ pub use ziptuple::ZipTrusted;
 mod adaptors;
 mod intersperse;
 mod islice;
-#[cfg(feature = "unstable")]
 mod linspace;
 pub mod misc;
 mod rciter;
@@ -484,7 +482,7 @@ pub trait Itertools : Iterator {
         Self: Sized,
     {
         let mut index = 0usize;
-        for elt in IteratorExt::by_ref(self) {
+        for elt in self.by_ref() {
             if pred(&elt) {
                 return Some((index, elt))
             }
