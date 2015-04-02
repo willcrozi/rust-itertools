@@ -103,39 +103,8 @@ tweak rustdoc css
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
-<span id="56">56</span>
-<span id="57">57</span>
-<span id="58">58</span>
-<span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
-<span id="62">62</span>
-<span id="63">63</span>
-<span id="64">64</span>
-<span id="65">65</span>
-<span id="66">66</span>
-<span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
 </pre><pre class='rust '>
-<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>clone_fields</span> {
-    (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>:<span class='ident'>ident</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>field</span>:<span class='ident'>ident</span>),<span class='op'>+</span>) <span class='op'>=&gt;</span> (
-        <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
-        {
-            <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span> {
-                $(
-                    <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>field</span> : <span class='self'>self</span> . <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>field</span> .<span class='ident'>clone</span>()
-                ),<span class='op'>*</span>
-            }
-        }
-    );
-}
-
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='doccomment'>/// An iterator adaptor to insert a particular value</span>
 <span class='doccomment'>/// between each element of the adapted iterator.</span>
 <span class='doccomment'>///</span>
@@ -146,13 +115,6 @@ tweak rustdoc css
     <span class='ident'>element</span>: <span class='ident'>I</span>::<span class='ident'>Item</span>,
     <span class='ident'>iter</span>: <span class='ident'>I</span>,
     <span class='ident'>peek</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
-}
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>I</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>Clone</span>,
-    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>,
-{
-    <span class='macro'>clone_fields</span><span class='macro'>!</span>(<span class='ident'>Intersperse</span>, <span class='ident'>element</span>, <span class='ident'>iter</span>, <span class='ident'>peek</span>);
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
