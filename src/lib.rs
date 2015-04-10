@@ -1,4 +1,4 @@
-#![cfg_attr(feature = "unstable", feature(core))]
+#![cfg_attr(feature = "unstable", feature(core, zero_one))]
 #![crate_name="itertools"]
 
 //! Itertools — extra iterator adaptors, functions and macros
@@ -56,9 +56,9 @@ pub use times::Times;
 pub use times::times;
 pub use linspace::{linspace, Linspace};
 pub use zip::{ZipLongest, EitherOrBoth};
-pub use ziptuple::{Zip, TrustedIterator};
+pub use ziptuple::{Zip};
 #[cfg(feature = "unstable")]
-pub use ziptuple::ZipTrusted;
+pub use ziptrusted::{ZipTrusted, TrustedIterator};
 mod adaptors;
 mod intersperse;
 mod islice;
@@ -70,6 +70,8 @@ mod tee;
 mod times;
 mod zip;
 mod ziptuple;
+#[cfg(feature = "unstable")]
+mod ziptrusted;
 
 #[macro_export]
 /// Create an iterator over the “cartesian product” of iterators.
@@ -473,6 +475,29 @@ pub trait Itertools : Iterator {
         EnumerateFrom::new(self, start)
     }
 
+    /// Returns an iterator adapter that allows peeking multiple values.
+    ///
+    /// After a call to *.next()* the peeking cursor gets resetted.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let nums = vec![1u8,2,3,4,5];
+    /// let mut peekable = nums.into_iter().multipeek();
+    /// assert_eq!(peekable.peek(), Some(&1));
+    /// assert_eq!(peekable.peek(), Some(&2));
+    /// assert_eq!(peekable.peek(), Some(&3));
+    /// assert_eq!(peekable.next(), Some(1));
+    /// assert_eq!(peekable.peek(), Some(&2));
+    /// ```
+    fn multipeek(self) -> MultiPeek<Self> where
+        Self: Sized
+    {
+        MultiPeek::new(self)
+    }
+
     // non-adaptor methods
 
     /// Find the position and value of the first element satisfying a predicate.
@@ -643,28 +668,46 @@ pub trait Itertools : Iterator {
         }
     }
 
-    /// Returns an iterator adapter that allows peeking multiple values.
+    /// Fold **Result** values from an iterator.
     ///
-    /// After a call to *.next()* the peeking cursor gets resetted.
+    /// Only **Ok** values are folded. If no error is encountered, the folded
+    /// value is returned inside **Ok**. Otherwise and the operation terminates
+    /// and returns the first error it encounters. No iterator elements are 
+    /// consumed after the first error.
     ///
     /// ## Example
     ///
     /// ```
+    /// use std::ops::Add;
     /// use itertools::Itertools;
     ///
-    /// let nums = vec![1u8,2,3,4,5];
-    /// let mut peekable = nums.into_iter().multipeek();
-    /// assert_eq!(peekable.peek(), Some(&1));
-    /// assert_eq!(peekable.peek(), Some(&2));
-    /// assert_eq!(peekable.peek(), Some(&3));
-    /// assert_eq!(peekable.next(), Some(1));
-    /// assert_eq!(peekable.peek(), Some(&2));
+    /// let values = [1, 2, -2, -1, 2, 1];
+    /// assert_eq!(
+    ///     values.iter()
+    ///         .map(Ok::<_, ()>)
+    ///         .fold_results(0, Add::add),
+    ///     Ok(3)
+    /// );
+    /// assert!(
+    ///     values.iter()
+    ///         .map(|&x| if x >= 0 { Ok(x) } else { Err("Negative number") })
+    ///         .fold_results(0, Add::add)
+    ///         .is_err()
+    /// );
     /// ```
-    fn multipeek(self) -> MultiPeek<Self> where
-        Self: Sized
+    fn fold_results<A, E, B, F>(&mut self, mut start: B, mut f: F) -> Result<B, E> where
+        Self: Iterator<Item=Result<A, E>>,
+        F: FnMut(B, A) -> B,
     {
-        MultiPeek::new(self)
+        for elt in self {
+            match elt {
+                Ok(v) => start = f(start, v),
+                Err(u) => return Err(u),
+            }
+        }
+        Ok(start)
     }
+
 }
 
 impl<T: ?Sized> Itertools for T where T: Iterator { }
