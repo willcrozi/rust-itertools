@@ -81,6 +81,7 @@ pub struct FnMap<B, I> where
 impl<B, I> FnMap<B, I> where
     I: Iterator
 {
+    /// Create a new **FnMap**.
     pub fn new(iter: I, map: fn(I::Item) -> B) -> Self
     {
         FnMap{iter: iter, map: map}
@@ -469,7 +470,6 @@ impl<I> Iterator for Step<I>
 pub struct Merge<I, J, F> where
     I: Iterator,
     J: Iterator<Item=I::Item>,
-    F: Fn(&I::Item, &I::Item) -> Ordering
 {
     a: Peekable<I>,
     b: Peekable<J>,
@@ -479,7 +479,7 @@ pub struct Merge<I, J, F> where
 impl<I, J, F> Merge<I, J, F> where
     I: Iterator,
     J: Iterator<Item=I::Item>,
-    F: Fn(&I::Item, &I::Item) -> Ordering
+    F: FnMut(&I::Item, &I::Item) -> Ordering
 {
     /// Create a **Merge** iterator.
     pub fn new(a: I, b: J, cmp: F) -> Self
@@ -498,7 +498,6 @@ impl<I, J, F> Clone for Merge<I, J, F> where
     Peekable<I>: Clone,
     Peekable<J>: Clone,
     F: Clone,
-    F: Fn(&I::Item, &I::Item) -> Ordering
 {
     fn clone(&self) -> Self {
         clone_fields!(Merge, self, a, b, cmp)
@@ -507,9 +506,8 @@ impl<I, J, F> Clone for Merge<I, J, F> where
 
 impl<I, J, F> Iterator for Merge<I, J, F> where
     I: Iterator,
-    I::Item: PartialOrd,
     J: Iterator<Item=I::Item>,
-    F: Fn(&I::Item, &I::Item) -> Ordering
+    F: FnMut(&I::Item, &I::Item) -> Ordering
 {
     type Item = I::Item;
 
@@ -559,6 +557,7 @@ pub struct EnumerateFrom<I, K>
 impl<K, I> EnumerateFrom<I, K> where
     I: Iterator,
 {
+    /// Create a new **EnumerateFrom**.
     pub fn new(iter: I, start: K) -> Self
     {
         EnumerateFrom{index: start, iter: iter}

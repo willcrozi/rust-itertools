@@ -1,3 +1,4 @@
+#![warn(missing_docs)]
 #![cfg_attr(feature = "unstable", feature(core, zero_one))]
 #![crate_name="itertools"]
 
@@ -49,6 +50,7 @@ pub use adaptors::{
 pub use adaptors::EnumerateFrom;
 pub use intersperse::Intersperse;
 pub use islice::{ISlice};
+pub use repeatn::RepeatN;
 pub use rciter::RcIter;
 pub use stride::Stride;
 pub use stride::StrideMut;
@@ -66,6 +68,7 @@ mod islice;
 mod linspace;
 pub mod misc;
 mod rciter;
+mod repeatn;
 mod stride;
 mod tee;
 mod times;
@@ -447,21 +450,20 @@ pub trait Itertools : Iterator {
     /// ```
     /// use itertools::Itertools;
     ///
-    /// let a = (0..10).step(2);
-    /// let b = (1..10).step(3);
-    /// let mut it = a.merge_by(b, |x, y|{x.cmp(&y)});
-    /// assert_eq!(it.next(), Some(0));
-    /// assert_eq!(it.next(), Some(1));
-    /// assert_eq!(it.next(), Some(2));
-    /// assert_eq!(it.next(), Some(4));
-    /// assert_eq!(it.next(), Some(4));
-    /// assert_eq!(it.next(), Some(6));
+    /// let a = (0..).zip("bc".chars());
+    /// let b = (0..).zip("ad".chars());
+    /// let mut it = a.merge_by(b, |x, y| x.1.cmp(&y.1));
+    /// assert_eq!(it.next(), Some((0, 'a')));
+    /// assert_eq!(it.next(), Some((0, 'b')));
+    /// assert_eq!(it.next(), Some((1, 'c')));
+    /// assert_eq!(it.next(), Some((1, 'd')));
+    /// assert_eq!(it.next(), None);
     /// ```
 
     fn merge_by<J, F>(self, other: J, cmp: F) -> Merge<Self, J, F> where
         Self: Sized,
         J: Iterator<Item=Self::Item>,
-        F: Fn(&Self::Item, &Self::Item) -> Ordering
+        F: FnMut(&Self::Item, &Self::Item) -> Ordering
     {
         Merge::new(self, other, cmp)
     }
@@ -623,6 +625,9 @@ pub trait Itertools : Iterator {
 
     /// Assign to each reference in **self** from the **from** iterator,
     /// stopping at the shortest of the two iterators.
+    ///
+    /// The **from** iterator is queried for its next element before the **self**
+    /// iterator, and if either is exhausted the method is done.
     ///
     /// Return the number of elements written.
     ///
