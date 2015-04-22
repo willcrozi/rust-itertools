@@ -679,7 +679,6 @@
 <span id="637">637</span>
 <span id="638">638</span>
 <span id="639">639</span>
-<span id="640">640</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -764,6 +763,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>
 {
+    <span class='doccomment'>/// Create a new **FnMap**.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>map</span>: <span class='kw'>fn</span>(<span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>FnMap</span>{<span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>map</span>: <span class='ident'>map</span>}
@@ -1152,7 +1152,6 @@
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
     <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
-    <span class='ident'>F</span>: <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span>
 {
     <span class='ident'>a</span>: <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>,
     <span class='ident'>b</span>: <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>J</span><span class='op'>&gt;</span>,
@@ -1162,7 +1161,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
     <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
-    <span class='ident'>F</span>: <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span>
+    <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span>
 {
     <span class='doccomment'>/// Create a **Merge** iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>a</span>: <span class='ident'>I</span>, <span class='ident'>b</span>: <span class='ident'>J</span>, <span class='ident'>cmp</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
@@ -1181,7 +1180,6 @@
     <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>: <span class='ident'>Clone</span>,
     <span class='ident'>Peekable</span><span class='op'>&lt;</span><span class='ident'>J</span><span class='op'>&gt;</span>: <span class='ident'>Clone</span>,
     <span class='ident'>F</span>: <span class='ident'>Clone</span>,
-    <span class='ident'>F</span>: <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span>
 {
     <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
         <span class='macro'>clone_fields</span><span class='macro'>!</span>(<span class='ident'>Merge</span>, <span class='self'>self</span>, <span class='ident'>a</span>, <span class='ident'>b</span>, <span class='ident'>cmp</span>)
@@ -1190,9 +1188,8 @@
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
-    <span class='ident'>I</span>::<span class='ident'>Item</span>: <span class='ident'>PartialOrd</span>,
     <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
-    <span class='ident'>F</span>: <span class='ident'>Fn</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span>
+    <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span>
 {
     <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>I</span>::<span class='ident'>Item</span>;
 
@@ -1242,6 +1239,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>EnumerateFrom</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>K</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
+    <span class='doccomment'>/// Create a new **EnumerateFrom**.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>start</span>: <span class='ident'>K</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>EnumerateFrom</span>{<span class='ident'>index</span>: <span class='ident'>start</span>, <span class='ident'>iter</span>: <span class='ident'>iter</span>}

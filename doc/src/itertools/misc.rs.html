@@ -165,6 +165,10 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! A module of helper traits and iterators that are not intended to be used</span>
 <span class='doccomment'>//! directly.</span>
@@ -177,10 +181,12 @@
 };
 
 
-<span class='doccomment'>/// A helper trait for (x,y,z) ++ w =&gt; (x,y,z,w),</span>
-<span class='doccomment'>/// used for implementing `iproduct!` and `izip!`</span>
+<span class='doccomment'>/// A helper trait for (x, y, z) ++ w =&gt; (x, y, z, w),</span>
+<span class='doccomment'>/// used for implementing `iproduct!`.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>AppendTuple</span><span class='op'>&lt;</span><span class='ident'>X</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// Resulting tuple type</span>
     <span class='kw'>type</span> <span class='prelude-ty'>Result</span>;
+    <span class='doccomment'>/// “Append” value **x** to a tuple.</span>
     <span class='kw'>fn</span> <span class='ident'>append</span>(<span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>X</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>::<span class='prelude-ty'>Result</span>;
 }
 
@@ -279,7 +285,9 @@
     <span class='kw'>fn</span> <span class='ident'>end</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span> { <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>end</span>) }
 }
 
+<span class='doccomment'>/// Helper trait to convert usize to floating point type.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>ToFloat</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> : <span class='ident'>Copy</span> {
+    <span class='doccomment'>/// Convert usize to float.</span>
     <span class='kw'>fn</span> <span class='ident'>to_float</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>F</span>;
 }
 
