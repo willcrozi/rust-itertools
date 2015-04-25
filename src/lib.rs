@@ -2,7 +2,7 @@
 #![cfg_attr(feature = "unstable", feature(core, zero_one))]
 #![crate_name="itertools"]
 
-//! Itertools — extra iterator adaptors, functions and macros
+//! Itertools — extra iterator adaptors, functions and macros.
 //!
 //! To use the iterator methods in this crate, import the [**Itertools** trait](./trait.Itertools.html):
 //!
@@ -10,8 +10,9 @@
 //! use itertools::Itertools;
 //! ```
 //!
-//! Some adaptors are just used directly like regular structs,
-//! for example [**PutBack**](./struct.PutBack.html), [**Zip**](./struct.Zip.html), [**Stride**](./struct.Stride.html), [**StrideMut**](./struct.StrideMut.html).
+//! Some iterators or adaptors are used directly like regular structs, for example
+//! [**PutBack**](./struct.PutBack.html), [**Zip**](./struct.Zip.html),
+//! [**Stride**](./struct.Stride.html), [**StrideMut**](./struct.StrideMut.html).
 //!
 //! To use the macros in this crate, use the `#[macro_use]` attribute:
 //!
@@ -31,6 +32,7 @@
 //!
 //!
 
+use std::iter::IntoIterator;
 use std::fmt::Write;
 use std::cmp::Ordering;
 
@@ -77,6 +79,9 @@ mod ziptuple;
 #[cfg(feature = "unstable")]
 mod ziptrusted;
 
+/// An ascending order merge iterator created with *.merge()*.
+pub type MergeAscend<I, J, A> = Merge<I, J, fn(&A, &A) -> Ordering>;
+
 #[macro_export]
 /// Create an iterator over the “cartesian product” of iterators.
 ///
@@ -85,7 +90,7 @@ mod ziptrusted;
 ///
 /// ## Example
 ///
-/// ```ignore
+/// ```
 /// #[macro_use]
 /// extern crate itertools;
 /// # fn main() {
@@ -98,19 +103,16 @@ mod ziptrusted;
 /// ```
 macro_rules! iproduct {
     ($I:expr) => (
-        ($I)
+        (::std::iter::IntoIterator::into_iter($I))
     );
     ($I:expr, $J:expr) => (
-        {
-            let it = $crate::Product::new($I, $J);
-            it
-        }
+        $crate::Product::new(iproduct!($I), iproduct!($J))
     );
     ($I:expr, $J:expr, $($K:expr),+) => (
         {
-            let it = $crate::Product::new($I, $J);
+            let it = iproduct!($I, $J);
             $(
-                let it = $crate::misc::FlatTuples::new($crate::Product::new(it, $K));
+                let it = $crate::misc::FlatTuples::new(iproduct!(it, $K));
             )*
             it
         }
@@ -118,8 +120,6 @@ macro_rules! iproduct {
 }
 
 #[macro_export]
-/// **Deprecated: use *Zip::new* instead.**
-///
 /// Create an iterator running multiple iterators in lockstep.
 ///
 /// The izip! iterator yields elements until any subiterator
@@ -131,21 +131,25 @@ macro_rules! iproduct {
 ///
 /// ## Example
 ///
-/// ```ignore
+/// ```
+/// #[macro_use]
+/// extern crate itertools;
+/// # fn main() {
 /// // Iterate over three sequences side-by-side
 /// let mut xs = [0, 0, 0];
 /// let ys = [72, 73, 74];
-/// for (i, a, b) in izip!(0..100, xs.mut_iter(), ys.iter()) {
+/// for (i, a, b) in izip!(0..100, &mut xs, &ys) {
 ///    *a = i ^ *b;
 /// }
+/// # }
 /// ```
 macro_rules! izip {
     ($I:expr) => (
-        ($I)
+        (::std::iter::IntoIterator::into_iter($I))
     );
-    (($I:expr),*) => (
+    ($($I:expr),*) => (
         {
-            $crate::Zip::new(($I),*)
+            $crate::Zip::new(($(izip!($I)),*))
         }
     );
 }
@@ -201,14 +205,23 @@ pub trait Itertools : Iterator {
     }
 
     /// Alternate elements from two iterators until both
-    /// are run out
+    /// run out.
     ///
     /// Iterator element type is **Self::Item**.
-    fn interleave<J>(self, other: J) -> Interleave<Self, J> where
-        J: Iterator<Item=Self::Item>,
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let it = (0..3).interleave(vec![7, 7]);
+    /// assert!(itertools::equal(it, vec![0, 7, 1, 7, 2]));
+    /// ```
+    fn interleave<J>(self, other: J) -> Interleave<Self, J::IntoIter> where
+        J: IntoIterator<Item=Self::Item>,
         Self: Sized
     {
-        Interleave::new(self, other)
+        Interleave::new(self, other.into_iter())
     }
 
     /// An iterator adaptor to insert a particular value
@@ -222,8 +235,8 @@ pub trait Itertools : Iterator {
         Intersperse::new(self, element)
     }
 
-    /// Creates an iterator which iterates over both this and the specified
-    /// iterators simultaneously, yielding pairs of two optional elements.
+    /// Create an iterator which iterates over both this and the specified
+    /// iterator simultaneously, yielding pairs of two optional elements.
     /// When both iterators return None, all further invocations of next() will
     /// return None.
     ///
@@ -232,19 +245,17 @@ pub trait Itertools : Iterator {
     /// ```rust
     /// use itertools::EitherOrBoth::{Both, Right};
     /// use itertools::Itertools;
-    /// let mut it = (0..1).zip_longest(1..3);
-    /// assert_eq!(it.next(), Some(Both(0, 1)));
-    /// assert_eq!(it.next(), Some(Right(2)));
-    /// assert_eq!(it.next(), None);
+    /// let it = (0..1).zip_longest(1..3);
+    /// assert!(itertools::equal(it, vec![Both(0, 1), Right(2)]));
     /// ```
     ///
     /// Iterator element type is **EitherOrBoth\<Self::Item, B\>**.
     #[inline]
-    fn zip_longest<U>(self, other: U) -> ZipLongest<Self, U> where
-        U: Iterator,
+    fn zip_longest<J>(self, other: J) -> ZipLongest<Self, J::IntoIter> where
+        J: IntoIterator,
         Self: Sized,
     {
-        ZipLongest::new(self, other)
+        ZipLongest::new(self, other.into_iter())
     }
 
     /// Remove duplicates from sections of consecutive identical elements.
@@ -266,8 +277,9 @@ pub trait Itertools : Iterator {
     ///
     /// ```
     /// use itertools::Itertools;
+    ///
     /// // An adaptor that gathers elements up in pairs
-    /// let mut pit = (0..4).batching(|mut it| {
+    /// let pit = (0..4).batching(|mut it| {
     ///            match it.next() {
     ///                None => None,
     ///                Some(x) => match it.next() {
@@ -276,9 +288,8 @@ pub trait Itertools : Iterator {
     ///                }
     ///            }
     ///        });
-    /// assert_eq!(pit.next(), Some((0, 1)));
-    /// assert_eq!(pit.next(), Some((2, 3)));
-    /// assert_eq!(pit.next(), None);
+    ///
+    /// assert!(itertools::equal(pit, vec![(0, 1), (2, 3)]));
     /// ```
     ///
     fn batching<B, F: FnMut(&mut Self) -> Option<B>>(self, f: F) -> Batching<Self, F> where
@@ -392,16 +403,10 @@ pub trait Itertools : Iterator {
     ///
     /// ## Example
     /// ```
-    /// # extern crate itertools;
-    /// # fn main() {
     /// use itertools::Itertools;
     ///
-    /// let mut it = (0..8).step(3);
-    /// assert_eq!(it.next(), Some(0));
-    /// assert_eq!(it.next(), Some(3));
-    /// assert_eq!(it.next(), Some(6));
-    /// assert_eq!(it.next(), None);
-    /// # }
+    /// let it = (0..8).step(3);
+    /// assert!(itertools::equal(it, vec![0, 3, 6]));
     /// ```
     fn step(self, n: usize) -> Step<Self> where
         Self: Sized,
@@ -418,21 +423,15 @@ pub trait Itertools : Iterator {
     /// ```
     /// use itertools::Itertools;
     ///
-    /// let a = (0..10).step(2);
-    /// let b = (1..10).step(3);
-    /// let mut it = a.merge(b);
-    /// assert_eq!(it.next(), Some(0));
-    /// assert_eq!(it.next(), Some(1));
-    /// assert_eq!(it.next(), Some(2));
-    /// assert_eq!(it.next(), Some(4));
-    /// assert_eq!(it.next(), Some(4));
-    /// assert_eq!(it.next(), Some(6));
+    /// let a = (0..11).step(3);
+    /// let b = (0..11).step(5);
+    /// let it = a.merge(b);
+    /// assert!(itertools::equal(it, vec![0, 0, 3, 5, 6, 9, 10]));
     /// ```
-    fn merge<J>(self, other: J)
-        -> Merge<Self, J, fn(&Self::Item, &Self::Item) -> Ordering> where
+    fn merge<J>(self, other: J) -> MergeAscend<Self, J::IntoIter, Self::Item> where
         Self: Sized,
         Self::Item: PartialOrd,
-        J: Iterator<Item=Self::Item>,
+        J: IntoIterator<Item=Self::Item>,
     {
         fn wrapper<A: PartialOrd>(a: &A, b: &A) -> Ordering { 
             a.partial_cmp(b).unwrap_or(Ordering::Less) 
@@ -440,9 +439,10 @@ pub trait Itertools : Iterator {
         self.merge_by(other, wrapper)
     }
 
-    /// Return an iterator adaptor that merges the two base iterators in an order.
-    /// This is much like merge_by but allows for descending orders or sorting tuples.
-    /// This can be especially useful walking a BTreeMap structure.
+    /// Return an iterator adaptor that merges the two base iterators in order.
+    /// This is much like *.merge()* but allows for a custom ordering.
+    ///
+    /// This can be especially useful for sequences of tuples.
     ///
     /// Iterator element type is **Self::Item**.
     ///
@@ -452,20 +452,16 @@ pub trait Itertools : Iterator {
     ///
     /// let a = (0..).zip("bc".chars());
     /// let b = (0..).zip("ad".chars());
-    /// let mut it = a.merge_by(b, |x, y| x.1.cmp(&y.1));
-    /// assert_eq!(it.next(), Some((0, 'a')));
-    /// assert_eq!(it.next(), Some((0, 'b')));
-    /// assert_eq!(it.next(), Some((1, 'c')));
-    /// assert_eq!(it.next(), Some((1, 'd')));
-    /// assert_eq!(it.next(), None);
+    /// let it = a.merge_by(b, |x, y| x.1.cmp(&y.1));
+    /// assert!(itertools::equal(it, vec![(0, 'a'), (0, 'b'), (1, 'c'), (1, 'd')]));
     /// ```
 
-    fn merge_by<J, F>(self, other: J, cmp: F) -> Merge<Self, J, F> where
+    fn merge_by<J, F>(self, other: J, cmp: F) -> Merge<Self, J::IntoIter, F> where
         Self: Sized,
-        J: Iterator<Item=Self::Item>,
+        J: IntoIterator<Item=Self::Item>,
         F: FnMut(&Self::Item, &Self::Item) -> Ordering
     {
-        Merge::new(self, other, cmp)
+        Merge::new(self, other.into_iter(), cmp)
     }
 
     /// Return an iterator adaptor that iterates over the cartesian product of
@@ -476,19 +472,16 @@ pub trait Itertools : Iterator {
     /// ```
     /// use itertools::Itertools;
     ///
-    /// let mut it = (0..2).cartesian_product("αβ".chars());
-    /// assert_eq!(it.next(), Some((0, 'α')));
-    /// assert_eq!(it.next(), Some((0, 'β')));
-    /// assert_eq!(it.next(), Some((1, 'α')));
-    /// assert_eq!(it.next(), Some((1, 'β')));
-    /// assert_eq!(it.next(), None);
+    /// let it = (0..2).cartesian_product("αβ".chars());
+    /// assert!(itertools::equal(it, vec![(0, 'α'), (0, 'β'), (1, 'α'), (1, 'β')]));
     /// ```
-    fn cartesian_product<J>(self, other: J) -> Product<Self, J> where
+    fn cartesian_product<J>(self, other: J) -> Product<Self, J::IntoIter> where
         Self: Sized,
         Self::Item: Clone,
-        J: Clone + Iterator,
+        J: IntoIterator,
+        J::IntoIter: Clone,
     {
-        Product::new(self, other)
+        Product::new(self, other.into_iter())
     }
 
     /// Return an iterator adaptor that enumerates the iterator elements,
@@ -513,7 +506,7 @@ pub trait Itertools : Iterator {
 
     /// Returns an iterator adapter that allows peeking multiple values.
     ///
-    /// After a call to *.next()* the peeking cursor gets resetted.
+    /// After a call to *.next()* the peeking cursor is reset.
     ///
     /// ## Example
     ///
@@ -554,7 +547,8 @@ pub trait Itertools : Iterator {
     ///
     /// Return actual number of elements consumed,
     /// until done or reaching the end.
-    fn dropn(&mut self, mut n: usize) -> usize {
+    fn dropn(&mut self, mut n: usize) -> usize
+    {
         let start = n;
         while n > 0 {
             match self.next() {
@@ -575,35 +569,6 @@ pub trait Itertools : Iterator {
     {
         self.dropn(n);
         self
-    }
-
-    /// **Deprecated: because of a name clash, use .count() or .foreach() instead as appropriate.**
-    ///
-    /// Run the iterator, eagerly, to the end and consume all its elements.
-    ///
-    /// ## Example
-    ///
-    /// ```
-    /// use itertools::Itertools;
-    ///
-    /// let mut cnt = 0;
-    /// "hi".chars().map(|c| cnt += 1).drain();
-    /// ```
-    ///
-    fn drain(&mut self)
-    {
-        for _ in self { /* nothing */ }
-    }
-
-    /// **Deprecated: Use *.foreach()* instead.**
-    ///
-    /// Run the closure **f** eagerly on each element of the iterator.
-    ///
-    /// Consumes the iterator until its end.
-    fn apply<F>(&mut self, f: F) where
-        F: FnMut(Self::Item),
-    {
-        self.foreach(f)
     }
 
     /// Run the closure **f** eagerly on each element of the iterator.
@@ -642,7 +607,7 @@ pub trait Itertools : Iterator {
     #[inline]
     fn set_from<'a, A: 'a, J>(&mut self, from: J) -> usize where
         Self: Iterator<Item=&'a mut A>,
-        J: Iterator<Item=A>,
+        J: IntoIterator<Item=A>,
     {
         let mut count = 0;
         for elt in from {
@@ -653,25 +618,6 @@ pub trait Itertools : Iterator {
             count += 1;
         }
         count
-    }
-
-    /// **Deprecated: Use *.join()* instead, it's more efficient.**.
-    ///
-    /// Convert each element to String before joining them all together.
-    ///
-    /// Like *.join()*, but converts each element to **String** explicitly first.
-    ///
-    /// ## Example
-    ///
-    /// ```
-    /// use itertools::Itertools;
-    ///
-    /// assert_eq!([1, 2, 3].iter().to_string_join(", "), "1, 2, 3");
-    /// ```
-    fn to_string_join(&mut self, sep: &str) -> String where
-        Self::Item: ToString,
-    {
-        self.map(|elt| elt.to_string()).join(sep)
     }
 
     /// Combine all iterator elements into one String, seperated by **sep**.
@@ -708,9 +654,26 @@ pub trait Itertools : Iterator {
     /// Fold **Result** values from an iterator.
     ///
     /// Only **Ok** values are folded. If no error is encountered, the folded
-    /// value is returned inside **Ok**. Otherwise and the operation terminates
-    /// and returns the first error it encounters. No iterator elements are 
+    /// value is returned inside **Ok**. Otherwise, the operation terminates
+    /// and returns the first **Err** value it encounters. No iterator elements are
     /// consumed after the first error.
+    ///
+    /// The first accumulator value is the **start** parameter.
+    /// Each iteration passes the accumulator value and the next value inside **Ok**
+    /// to the fold function **f** and its return value becomes the new accumulator value.
+    ///
+    /// For example the sequence *Ok(1), Ok(2), Ok(3)* will result in a
+    /// computation like this:
+    ///
+    /// ```ignore
+    /// let mut accum = start;
+    /// accum = f(accum, 1);
+    /// accum = f(accum, 2);
+    /// accum = f(accum, 3);
+    /// ```
+    ///
+    /// With a **start** value of 0 and an addition as folding function,
+    /// this effetively results in *((0 + 1) + 2) + 3*
     ///
     /// ## Example
     ///
@@ -744,29 +707,33 @@ pub trait Itertools : Iterator {
         }
         Ok(start)
     }
+}
 
+/// Return **true** if both iterators produce equal sequences
+/// (elements pairwise equal and sequences of the same length),
+/// **false** otherwise.
+///
+/// ## Example
+///
+/// ```
+/// assert!(itertools::equal(vec![1, 2, 3], 1..4));
+/// assert!(!itertools::equal(&[0, 0], &[0, 0, 0]));
+/// ```
+pub fn equal<I, J>(a: I, b: J) -> bool where
+    I: IntoIterator,
+    J: IntoIterator,
+    I::Item: PartialEq<J::Item>,
+{
+    let mut ia = a.into_iter();
+    let mut ib = b.into_iter();
+    loop {
+        match (ia.next(), ib.next()) {
+            (Some(ref x), Some(ref y)) if x == y => { }
+            (None, None) => return true,
+            _ => return false,
+        }
+    }
 }
 
 impl<T: ?Sized> Itertools for T where T: Iterator { }
 
-/// **Deprecated: Use *.set_from()* instead**.
-///
-/// Assign to each reference in `to` from `from`, stopping
-/// at the shortest of the two iterators.
-///
-/// Return the number of elements written.
-#[inline]
-pub fn write<'a, A: 'a, I, J>(mut to: I, from: J) -> usize where
-    I: Iterator<Item=&'a mut A>,
-    J: Iterator<Item=A>
-{
-    let mut count = 0;
-    for elt in from {
-        match to.next() {
-            None => break,
-            Some(ptr) => *ptr = elt
-        }
-        count += 1;
-    }
-    count
-}
