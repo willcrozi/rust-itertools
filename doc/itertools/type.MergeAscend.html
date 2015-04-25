@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `write` fn in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, write">
+    <meta name="description" content="API documentation for the Rust `MergeAscend` type in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, MergeAscend">
 
-    <title>itertools::write - Rust</title>
+    <title>itertools::MergeAscend - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'write', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'MergeAscend', ty: 'type', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -40,16 +40,11 @@
         </form>
     </nav>
 
-    <section id='main' class="content fn">
-<h1 class='fqn'><span class='in-band'>Function <a href='index.html'>itertools</a>::<wbr><a class='fn' href=''>write</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-10590' class='srclink' href='../src/itertools/lib.rs.html#759-772'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn write&lt;'a, A: 'a, I, J&gt;(to: I, from: J) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a> <span class='where'>where I: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=&amp;'a mut A&gt;, J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=A&gt;</span></pre><div class='docblock'><p><strong>Deprecated: Use <em>.set_from()</em> instead</strong>.</p>
-
-<p>Assign to each reference in <code>to</code> from <code>from</code>, stopping
-at the shortest of the two iterators.</p>
-
-<p>Return the number of elements written.</p>
+    <section id='main' class="content type">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>itertools</a>::<wbr><a class='type' href=''>MergeAscend</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="#" title="collapse all docs">[-]</a>
+        </span><a id='src-9719' class='srclink' href='../src/itertools/lib.rs.html#83' title='goto source code'>[src]</a></span></h1>
+<pre class='rust typedef'>type MergeAscend&lt;I, J, A&gt; = <a class='struct' href='../itertools/struct.Merge.html' title='itertools::Merge'>Merge</a>&lt;I, J, fn(&amp;A, &amp;A) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html' title='core::cmp::Ordering'>Ordering</a>&gt;;</pre><div class='docblock'><p>An ascending order merge iterator created with <em>.merge()</em>.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
 

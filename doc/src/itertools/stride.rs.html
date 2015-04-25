@@ -314,6 +314,8 @@
 <span id="272">272</span>
 <span id="273">273</span>
 <span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -326,12 +328,12 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::{<span class='ident'>Index</span>, <span class='ident'>IndexMut</span>};
 
-<span class='doccomment'>/// Stride is similar to the slice iterator, but with a certain number of steps</span>
+<span class='doccomment'>/// An iterator similar to the slice iterator, but with a certain number of steps</span>
 <span class='doccomment'>/// (the stride) skipped per iteration.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Stride does not support zero-sized types for `A`.</span>
+<span class='doccomment'>/// **Stride** does not support zero-sized types for **A**.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `&amp;&#39;a A`.</span>
+<span class='doccomment'>/// Iterator element type is **&amp;&#39;a A**.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// base pointer -- does not change during iteration</span>
     <span class='ident'>begin</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>A</span>,
@@ -347,9 +349,11 @@
 <span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Send</span> <span class='kw'>for</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>A</span>: <span class='ident'>Send</span> {}
 <span class='kw'>unsafe</span> <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='ident'>Sync</span> <span class='kw'>for</span> <span class='ident'>Stride</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>A</span>: <span class='ident'>Sync</span> {}
 
-<span class='doccomment'>/// StrideMut is like Stride, but with mutable elements.</span>
+<span class='doccomment'>/// The mutable equivalent of Stride.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `&amp;&#39;a mut A`.</span>
+<span class='doccomment'>/// **StrideMut** does not support zero-sized types for **A**.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Iterator element type is **&amp;&#39;a mut A**.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>StrideMut</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='ident'>begin</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>A</span>,
     <span class='ident'>offset</span>: <span class='ident'>isize</span>,

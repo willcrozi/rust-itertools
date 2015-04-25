@@ -676,9 +676,6 @@
 <span id="634">634</span>
 <span id="635">635</span>
 <span id="636">636</span>
-<span id="637">637</span>
-<span id="638">638</span>
-<span id="639">639</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -707,10 +704,8 @@
 }
 
 
-<span class='doccomment'>/// Alternate elements from two iterators until both</span>
-<span class='doccomment'>/// are run out</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `A` if `I: Iterator&lt;A&gt;`</span>
+<span class='doccomment'>/// An iterator adaptor that alternates elements from two iterators until both</span>
+<span class='doccomment'>/// run out.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Interleave</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
     <span class='ident'>a</span>: <span class='ident'>I</span>,
@@ -747,12 +742,12 @@
     }
 }
 
-<span class='doccomment'>/// Clonable iterator adaptor to map elementwise</span>
-<span class='doccomment'>/// from `Iterator&lt;A&gt;` to `Iterator&lt;B&gt;`</span>
+<span class='doccomment'>/// A clonable iterator adaptor to map elementwise</span>
+<span class='doccomment'>/// from one iterator to another, using a function pointer.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Created with `.fn_map(..)` on an iterator</span>
+<span class='doccomment'>/// Created with the method *.fn_map()* on an iterator.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is `B`</span>
+<span class='doccomment'>/// Iterator element type is **B**.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
@@ -932,10 +927,9 @@
 }
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='doccomment'>/// Remove duplicates from sections of consecutive identical elements.</span>
-<span class='doccomment'>/// If the iterator is sorted, all elements will be unique.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is **I::Item**.</span>
+<span class='doccomment'>/// An iterator adaptor that removes duplicates from sections of consecutive</span>
+<span class='doccomment'>/// identical elements.  If the iterator is sorted, all elements will be</span>
+<span class='doccomment'>/// unique.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Dedup</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
@@ -1029,10 +1023,8 @@
 }
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='doccomment'>/// Group iterator elements. Consecutive elements that map to the same key (“runs”),</span>
-<span class='doccomment'>/// are returned as the iterator elements of **GroupBy**.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is **(K, Vec\&lt;A\&gt;)**</span>
+<span class='doccomment'>/// An iterator adaptor that groups iterator elements. Consecutive elements</span>
+<span class='doccomment'>/// that map to the same key (“runs”), are returned as the iterator elements.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
@@ -1045,7 +1037,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
-    <span class='doccomment'>/// Create a new GroupBy iterator.</span>
+    <span class='doccomment'>/// Create a new **GroupBy** iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>key</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>GroupBy</span>{<span class='ident'>key</span>: <span class='ident'>key</span>, <span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>current_key</span>: <span class='prelude-val'>None</span>, <span class='ident'>elts</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>()}
@@ -1268,7 +1260,8 @@
 }
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='doccomment'>/// An Iterator adaptor that allows the user to peek at multiple *.next()* values without advancing itself.</span>
+<span class='doccomment'>/// An iterator adaptor that allows the user to peek at multiple *.next()*</span>
+<span class='doccomment'>/// values without advancing itself.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>MultiPeek</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
@@ -1283,8 +1276,9 @@
         <span class='ident'>MultiPeek</span>{ <span class='ident'>iter</span>: <span class='ident'>iter</span>.<span class='ident'>fuse</span>(), <span class='ident'>buf</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>(), <span class='ident'>index</span>: <span class='number'>0</span> }
     }
 
-    <span class='doccomment'>/// Works exactly like *.next()* with the only difference that it doesn&#39;t advance itself.</span>
-    <span class='doccomment'>/// *.peek()* kann be called multiple times, behaving exactly like *.next()*.</span>
+    <span class='doccomment'>/// Works exactly like *.next()* with the only difference that it doesn&#39;t</span>
+    <span class='doccomment'>/// advance itself. *.peek()* can be called multiple times, to peek</span>
+    <span class='doccomment'>/// further ahead.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>peek</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>ret</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>index</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>buf</span>.<span class='ident'>len</span>() {
             <span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>buf</span>[<span class='self'>self</span>.<span class='ident'>index</span>])
