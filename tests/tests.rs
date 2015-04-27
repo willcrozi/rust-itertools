@@ -55,6 +55,20 @@ fn product3() {
 }
 
 #[test]
+fn izip_macro() {
+    let mut zip = izip!(0..3, 0..2, 0..2i8);
+    for i in 0..2 {
+        assert!((i as usize, i, i as i8) == zip.next().unwrap());
+    }
+    assert!(zip.next().is_none());
+
+    
+    let xs: [isize; 0] = [];
+    let mut zip = izip!(0..3, 0..2, 0..2i8, &xs);
+    assert!(zip.next().is_none());
+}
+
+#[test]
 fn izip3() {
     let mut zip = Zip::new((0..3, 0..2, 0..2i8));
     for i in 0..2 {
@@ -67,7 +81,7 @@ fn izip3() {
     let mut zip = Zip::new((0..3, 0..2, 0..2i8, xs.iter()));
     assert!(zip.next().is_none());
 
-    for (_, _, _, _) in Zip::new((0..3, 0..2, 0..2, 0..3)) {
+    for (_, _, _, _, _) in Zip::new((0..3, 0..2, xs.iter(), &xs, xs.to_vec())) {
         /* test compiles */
     }
 }
@@ -257,6 +271,11 @@ fn rciter() {
     assert_eq!(z.next(), Some((2, 1)));
     assert_eq!(z.next(), Some((3, 5)));
     assert_eq!(z.next(), None);
+
+    // test intoiterator
+    let r1 = (0..5).into_rc();
+    let mut z = izip!(&r1, r1);
+    assert_eq!(z.next(), Some((0, 1)));
 }
 
 #[test]

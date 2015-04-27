@@ -1,13 +1,15 @@
-use std::cmp;
+use super::misc::IntoIteratorTuple;
+use super::size_hint;
 
 #[derive(Clone)]
 /// An iterator that generalizes *.zip()* and allows running multiple iterators in lockstep.
 ///
-/// The iterator **Zip\<(I, J, ..., M)\>** is formed from a tuple of iterators and yields elements
+/// The iterator **Zip\<(I, J, ..., M)\>** is formed from a tuple of iterators (or values that
+/// implement **IntoIterator**) and yields elements
 /// until any of the subiterators yields **None**.
 ///
-/// Iterator element type is like **(A, B, ..., E)** where **A** to **E** are the respective
-/// subiterator types.
+/// The iterator element type is a tuple like like **(A, B, ..., E)** where **A** to **E** are the
+/// element types of the subiterator.
 ///
 /// ## Example
 ///
@@ -18,7 +20,7 @@ use std::cmp;
 /// let mut xs = [0, 0, 0];
 /// let ys = [69, 107, 101];
 ///
-/// for (i, a, b) in Zip::new((0i32..100, xs.iter_mut(), ys.iter())) {
+/// for (i, a, b) in Zip::new((0..100, &mut xs, &ys)) {
 ///    *a = i ^ *b;
 /// }
 ///
@@ -28,18 +30,32 @@ pub struct Zip<T> {
     t: T
 }
 
-impl<T> Zip<T> where Zip<T>: Iterator
+impl<T> Zip<T> where
+    T: IntoIteratorTuple,
+    Zip<T::Output>: Iterator
 {
     /// Create a new **Zip** from a tuple of iterators.
-    pub fn new(t: T) -> Zip<T>
+    pub fn new(t: T) -> Zip<T::Output>
     {
-        Zip{t: t}
+        Zip{t: t.into_iterator_tuple()}
     }
 }
 
 macro_rules! impl_zip_iter {
     ($($B:ident),*) => (
         #[allow(non_snake_case)]
+        impl<$($B: IntoIterator),*> IntoIteratorTuple for ($($B,)*)
+        {
+            type Output = ($($B::IntoIter,)*);
+            fn into_iterator_tuple(self) -> Self::Output
+            {
+                let ($($B,)*) = self;
+                ($($B.into_iter(),)*)
+            }
+        }
+
+        #[allow(non_snake_case)]
+        #[allow(unused_assignments)]
         impl<$($B),*> Iterator for Zip<($($B,)*)>
             where
             $(
@@ -66,21 +82,21 @@ macro_rules! impl_zip_iter {
 
             fn size_hint(&self) -> (usize, Option<usize>)
             {
-                let low = ::std::usize::MAX;
-                let high = None;
+                let sh = (::std::usize::MAX, None);
                 let ($(ref $B,)*) = self.t;
                 $(
-                    // update estimate
-                    let (l, h) = $B.size_hint();
-                    let low = cmp::min(low, l);
-                    let high = match (high, h) {
-                        (Some(u1), Some(u2)) => Some(cmp::min(u1, u2)),
-                        _ => high.or(h)
-                    };
+                    let sh = size_hint::min($B.size_hint(), sh);
                 )*
-                (low, high)
+                sh
             }
         }
+
+        #[allow(non_snake_case)]
+        impl<$($B),*> ExactSizeIterator for Zip<($($B,)*)> where
+            $(
+                $B: ExactSizeIterator,
+            )*
+        { }
     );
 }
 
