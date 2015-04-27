@@ -94,8 +94,9 @@
 <span id="52">52</span>
 <span id="53">53</span>
 <span id="54">54</span>
-<span id="55">55</span>
 </pre><pre class='rust '>
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>size_hint</span>;
+
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='doccomment'>/// An iterator adaptor to insert a particular value</span>
 <span class='doccomment'>/// between each element of the adapted iterator.</span>
@@ -141,14 +142,11 @@
 
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
     {
-        <span class='kw'>let</span> (<span class='kw-2'>mut</span> <span class='ident'>low</span>, <span class='kw-2'>mut</span> <span class='ident'>hi</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
-        <span class='kw'>if</span> <span class='ident'>low</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
-            <span class='ident'>low</span> <span class='op'>=</span> <span class='ident'>low</span>.<span class='ident'>saturating_add</span>((<span class='ident'>low</span> <span class='op'>-</span> <span class='number'>1</span>));
-        }
-        <span class='ident'>hi</span> <span class='op'>=</span> <span class='ident'>hi</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw'>if</span> <span class='ident'>x</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
-            <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='ident'>x</span> <span class='op'>-</span> <span class='number'>1</span>)
-        } <span class='kw'>else</span> { <span class='prelude-val'>Some</span> (<span class='ident'>x</span>) });
-        (<span class='ident'>low</span>, <span class='ident'>hi</span>)
+        <span class='comment'>// 2 * SH + { 1 or 0 }</span>
+        <span class='kw'>let</span> <span class='ident'>has_peek</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>peek</span>.<span class='ident'>is_some</span>() <span class='kw'>as</span> <span class='ident'>usize</span>;
+        <span class='kw'>let</span> <span class='ident'>sh</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
+        <span class='ident'>size_hint</span>::<span class='ident'>add_scalar</span>(
+            <span class='ident'>size_hint</span>::<span class='ident'>add</span>(<span class='ident'>sh</span>, <span class='ident'>sh</span>), <span class='ident'>has_peek</span>)
     }
 }
 </pre>

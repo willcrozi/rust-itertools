@@ -676,6 +676,25 @@
 <span id="634">634</span>
 <span id="635">635</span>
 <span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -689,9 +708,9 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>ops</span>::<span class='ident'>Add</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>Ordering</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>usize</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::{<span class='ident'>Fuse</span>, <span class='ident'>Peekable</span>};
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>Itertools</span>;
+<span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>size_hint</span>;
 
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>clone_fields</span> {
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>name</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>base</span>:<span class='ident'>expr</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>field</span>:<span class='ident'>ident</span>),<span class='op'>+</span>) <span class='op'>=&gt;</span> (
@@ -789,6 +808,11 @@
     }
 }
 
+<span class='comment'>// same size</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>ExactSizeIterator</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>ExactSizeIterator</span>,
+{ }
+
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>FnMap</span><span class='op'>&lt;</span><span class='ident'>B</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Iterator</span>,
 {
@@ -843,11 +867,8 @@
     }
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>) {
-        <span class='kw'>let</span> (<span class='ident'>lo</span>, <span class='ident'>hi</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
-        <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>top</span> {
-            <span class='prelude-val'>Some</span>(_) <span class='op'>=&gt;</span> (<span class='ident'>lo</span>.<span class='ident'>saturating_add</span>(<span class='number'>1</span>), <span class='ident'>hi</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='number'>1</span>))),
-            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> (<span class='ident'>lo</span>, <span class='ident'>hi</span>)
-        }
+        <span class='comment'>// Not ExactSizeIterator because size may be larger than usize</span>
+        <span class='ident'>size_hint</span>::<span class='ident'>add_scalar</span>(<span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>(), <span class='self'>self</span>.<span class='ident'>top</span>.<span class='ident'>is_some</span>() <span class='kw'>as</span> <span class='ident'>usize</span>)
     }
 }
 
@@ -912,17 +933,14 @@
 
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
     {
-        <span class='kw'>let</span> (<span class='ident'>a</span>, <span class='ident'>ah</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>size_hint</span>();
-        <span class='kw'>let</span> (<span class='ident'>b</span>, <span class='ident'>bh</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>size_hint</span>();
-        <span class='kw'>let</span> (<span class='ident'>bo</span>, <span class='ident'>boh</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>b_orig</span>.<span class='ident'>size_hint</span>();
+        <span class='kw'>let</span> <span class='ident'>has_cur</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>a_cur</span>.<span class='ident'>is_some</span>() <span class='kw'>as</span> <span class='ident'>usize</span>;
+        <span class='comment'>// Not ExactSizeIterator because size may be larger than usize</span>
+        <span class='kw'>let</span> (<span class='ident'>b</span>, _) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>size_hint</span>();
 
-        <span class='comment'>// Compute a * bo + b for both lower and upper bound</span>
-        <span class='kw'>let</span> <span class='ident'>low</span> <span class='op'>=</span> <span class='ident'>a</span>.<span class='ident'>checked_mul</span>(<span class='ident'>bo</span>)
-                    .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='ident'>b</span>))
-                    .<span class='ident'>unwrap_or</span>(::<span class='ident'>std</span>::<span class='ident'>usize</span>::<span class='ident'>MAX</span>);
-        <span class='kw'>let</span> <span class='ident'>high</span> <span class='op'>=</span> <span class='ident'>ah</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>boh</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>y</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_mul</span>(<span class='ident'>y</span>)))
-                     .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>bh</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>y</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='ident'>y</span>)));
-        (<span class='ident'>low</span>, <span class='ident'>high</span>)
+        <span class='comment'>// Compute a * b_orig + b for both lower and upper bound</span>
+        <span class='ident'>size_hint</span>::<span class='ident'>add_scalar</span>(
+            <span class='ident'>size_hint</span>::<span class='ident'>mul</span>(<span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>size_hint</span>(), <span class='self'>self</span>.<span class='ident'>b_orig</span>.<span class='ident'>size_hint</span>()),
+            <span class='ident'>b</span> <span class='op'>*</span> <span class='ident'>has_cur</span>)
     }
 }
 
@@ -974,13 +992,17 @@
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
     {
-        <span class='kw'>let</span> (<span class='ident'>lower</span>, <span class='ident'>upper</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
+        <span class='kw'>let</span> (<span class='kw-2'>mut</span> <span class='ident'>lower</span>, <span class='kw-2'>mut</span> <span class='ident'>upper</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>last</span>.<span class='ident'>is_some</span>() <span class='op'>||</span> <span class='ident'>lower</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
-            (<span class='number'>1</span>, <span class='ident'>upper</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='number'>1</span>)))
+            <span class='ident'>lower</span> <span class='op'>=</span> <span class='number'>1</span>;
         } <span class='kw'>else</span> {
             <span class='comment'>// they might all be duplicates</span>
-            (<span class='number'>0</span>, <span class='ident'>upper</span>)
+            <span class='ident'>lower</span> <span class='op'>=</span> <span class='number'>0</span>;
         }
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>last</span>.<span class='ident'>is_some</span>() {
+            <span class='ident'>upper</span> <span class='op'>=</span> <span class='ident'>upper</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='number'>1</span>));
+        }
+        (<span class='ident'>lower</span>, <span class='ident'>upper</span>)
     }
 }
 
@@ -1076,14 +1098,13 @@
 
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
     {
-        <span class='kw'>let</span> (<span class='ident'>lower</span>, <span class='ident'>upper</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
         <span class='kw'>let</span> <span class='ident'>stored_count</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>current_key</span>.<span class='ident'>is_some</span>() <span class='kw'>as</span> <span class='ident'>usize</span>;
-        <span class='kw'>let</span> <span class='ident'>my_upper</span> <span class='op'>=</span> <span class='ident'>upper</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='ident'>stored_count</span>));
-        <span class='kw'>if</span> <span class='ident'>lower</span> <span class='op'>&gt;</span> <span class='number'>0</span> <span class='op'>||</span> <span class='ident'>stored_count</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
-            (<span class='number'>1</span>, <span class='ident'>my_upper</span>)
-        } <span class='kw'>else</span> {
-            (<span class='number'>0</span>, <span class='ident'>my_upper</span>)
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>sh</span> <span class='op'>=</span> <span class='ident'>size_hint</span>::<span class='ident'>add_scalar</span>(<span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>(),
+                                           <span class='ident'>stored_count</span>);
+        <span class='kw'>if</span> <span class='ident'>sh</span>.<span class='number'>0</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
+            <span class='ident'>sh</span>.<span class='number'>0</span> <span class='op'>=</span> <span class='number'>1</span>;
         }
+        <span class='ident'>sh</span>
     }
 }
 
@@ -1136,6 +1157,11 @@
         (<span class='ident'>div</span>(<span class='ident'>low</span>), <span class='ident'>high</span>.<span class='ident'>map</span>(<span class='ident'>div</span>))
     }
 }
+
+<span class='comment'>// known size</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>ExactSizeIterator</span> <span class='kw'>for</span> <span class='ident'>Step</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>ExactSizeIterator</span>,
+{ }
 
 <span class='doccomment'>/// An iterator adaptor that merges the two base iterators in ascending order.</span>
 <span class='doccomment'>/// If both base iterators are sorted (ascending), the result is sorted.</span>
@@ -1205,16 +1231,8 @@
     }
 
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>) {
-        <span class='kw'>let</span> (<span class='ident'>a_min</span>, <span class='ident'>a_max</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>size_hint</span>();
-        <span class='kw'>let</span> (<span class='ident'>b_min</span>, <span class='ident'>b_max</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>size_hint</span>();
-
-        <span class='kw'>let</span> <span class='ident'>min</span> <span class='op'>=</span> <span class='ident'>a_min</span>.<span class='ident'>checked_add</span>(<span class='ident'>b_min</span>).<span class='ident'>unwrap_or</span>(<span class='ident'>usize</span>::<span class='ident'>MAX</span>);
-        <span class='kw'>let</span> <span class='ident'>max</span> <span class='op'>=</span> <span class='kw'>match</span> (<span class='ident'>a_max</span>, <span class='ident'>b_max</span>) {
-            (<span class='prelude-val'>Some</span>(<span class='ident'>a_min</span>), <span class='prelude-val'>Some</span>(<span class='ident'>b_min</span>)) <span class='op'>=&gt;</span> <span class='ident'>a_min</span>.<span class='ident'>checked_add</span>(<span class='ident'>b_min</span>),
-            _ <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
-        };
-
-        (<span class='ident'>min</span>, <span class='ident'>max</span>)
+        <span class='comment'>// Not ExactSizeIterator because size may be larger than usize</span>
+        <span class='ident'>size_hint</span>::<span class='ident'>add</span>(<span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>size_hint</span>(), <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>size_hint</span>())
     }
 }
 
@@ -1257,7 +1275,19 @@
             }
         }
     }
+
+    <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
+    {
+        <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>()
+    }
 }
+
+<span class='comment'>// Same size</span>
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>ExactSizeIterator</span> <span class='kw'>for</span> <span class='ident'>EnumerateFrom</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>K</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>K</span>: <span class='ident'>Copy</span> <span class='op'>+</span> <span class='ident'>One</span> <span class='op'>+</span> <span class='ident'>Add</span><span class='op'>&lt;</span><span class='ident'>Output</span><span class='op'>=</span><span class='ident'>K</span><span class='op'>&gt;</span>,
+    <span class='ident'>I</span>: <span class='ident'>ExactSizeIterator</span>,
+{ }
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='doccomment'>/// An iterator adaptor that allows the user to peek at multiple *.next()*</span>
@@ -1311,8 +1341,16 @@
         }
     }
 
-    <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>) { <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>() }
+    <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>)
+    {
+        <span class='ident'>size_hint</span>::<span class='ident'>add_scalar</span>(<span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>(), <span class='self'>self</span>.<span class='ident'>buf</span>.<span class='ident'>len</span>())
+    }
 }
+
+<span class='comment'>// Same size</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>ExactSizeIterator</span> <span class='kw'>for</span> <span class='ident'>MultiPeek</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>ExactSizeIterator</span>,
+{ }
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

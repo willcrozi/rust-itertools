@@ -779,6 +779,7 @@
 <span id="737">737</span>
 <span id="738">738</span>
 <span id="739">739</span>
+<span id="740">740</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>zero_one</span>))]</span>
@@ -842,7 +843,7 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>Times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>linspace</span>::{<span class='ident'>linspace</span>, <span class='ident'>Linspace</span>};
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip</span>::{<span class='ident'>ZipLongest</span>, <span class='ident'>EitherOrBoth</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip_longest</span>::{<span class='ident'>ZipLongest</span>, <span class='ident'>EitherOrBoth</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::{<span class='ident'>Zip</span>};
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptrusted</span>::{<span class='ident'>ZipTrusted</span>, <span class='ident'>TrustedIterator</span>};
@@ -853,10 +854,11 @@
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>misc</span>;
 <span class='kw'>mod</span> <span class='ident'>rciter</span>;
 <span class='kw'>mod</span> <span class='ident'>repeatn</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>size_hint</span>;
 <span class='kw'>mod</span> <span class='ident'>stride</span>;
 <span class='kw'>mod</span> <span class='ident'>tee</span>;
 <span class='kw'>mod</span> <span class='ident'>times</span>;
-<span class='kw'>mod</span> <span class='ident'>zip</span>;
+<span class='kw'>mod</span> <span class='ident'>zip_longest</span>;
 <span class='kw'>mod</span> <span class='ident'>ziptuple</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>ziptrusted</span>;

@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `misc` mod in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, misc">
+    <meta name="description" content="API documentation for the Rust `size_hint` mod in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, size_hint">
 
-    <title>itertools::misc - Rust</title>
+    <title>itertools::size_hint - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'misc', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+        <p class='location'><a href='../index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'size_hint', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,58 +41,72 @@
     </nav>
 
     <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>itertools</a>::<wbr><a class='mod' href=''>misc</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>itertools</a>::<wbr><a class='mod' href=''>size_hint</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[-]</a>
-        </span><a id='src-2447' class='srclink' href='../../src/itertools/misc.rs.html#1-137' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>A module of helper traits and iterators that are not intended to be used
-directly.</p>
-</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+        </span><a id='src-3814' class='srclink' href='../../src/itertools/size_hint.rs.html#1-108' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Arithmetic on <strong>Iterator</strong> <em>.size_hint()</em> values.</p>
+</div><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
 <table>
                     <tr class=' module-item'>
-                        <td><a class='struct' href='struct.FlatTuples.html'
-                               title='itertools::misc::FlatTuples'>FlatTuples</a></td>
+                        <td><a class='fn' href='fn.add.html'
+                               title='itertools::size_hint::add'>add</a></td>
                         <td class='docblock short'>
-                             <p>A helper iterator that maps an iterator of tuples like
-<code>((A, B), C)</code> to an iterator of <code>(A, B, C)</code>.</p>
+                             <p>Add <strong>SizeHint</strong> correctly.</p>
 
                         </td>
                     </tr>
-                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.add_scalar.html'
+                               title='itertools::size_hint::add_scalar'>add_scalar</a></td>
+                        <td class='docblock short'>
+                             <p>Add <strong>x</strong> correctly to a <strong>SizeHint</strong>.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.max.html'
+                               title='itertools::size_hint::max'>max</a></td>
+                        <td class='docblock short'>
+                             <p>Return the maximum</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.min.html'
+                               title='itertools::size_hint::min'>min</a></td>
+                        <td class='docblock short'>
+                             <p>Return the minimum</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.mul.html'
+                               title='itertools::size_hint::mul'>mul</a></td>
+                        <td class='docblock short'>
+                             <p>Multiply <strong>SizeHint</strong> correctly</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.mul_scalar.html'
+                               title='itertools::size_hint::mul_scalar'>mul_scalar</a></td>
+                        <td class='docblock short'>
+                             <p>Multiply <strong>x</strong> correctly with a <strong>SizeHint</strong>.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table>
                     <tr class=' module-item'>
-                        <td><a class='trait' href='trait.AppendTuple.html'
-                               title='itertools::misc::AppendTuple'>AppendTuple</a></td>
+                        <td><a class='type' href='type.SizeHint.html'
+                               title='itertools::size_hint::SizeHint'>SizeHint</a></td>
                         <td class='docblock short'>
-                             <p>A helper trait for (x, y, z) ++ w =&gt; (x, y, z, w),
-used for implementing <code>iproduct!</code>.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.GenericRange.html'
-                               title='itertools::misc::GenericRange'>GenericRange</a></td>
-                        <td class='docblock short'>
-                             <p><strong>GenericRange</strong> is implemented by Rust&#39;s built-in range types, produced
-by range syntax like <code>a..</code>, <code>..b</code> or <code>c..d</code>.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.IntoIteratorTuple.html'
-                               title='itertools::misc::IntoIteratorTuple'>IntoIteratorTuple</a></td>
-                        <td class='docblock short'>
-                             <p>Apply <strong>IntoIterator</strong> on each element of a tuple.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.ToFloat.html'
-                               title='itertools::misc::ToFloat'>ToFloat</a></td>
-                        <td class='docblock short'>
-                             <p>Helper trait to convert usize to floating point type.</p>
+                             <p><strong>SizeHint</strong> is the return type of <strong>Iterator::size_hint()</strong>.</p>
 
                         </td>
                     </tr>
