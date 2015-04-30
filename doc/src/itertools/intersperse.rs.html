@@ -94,7 +94,12 @@
 <span id="52">52</span>
 <span id="53">53</span>
 <span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
 </pre><pre class='rust '>
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>Fuse</span>;
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>size_hint</span>;
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
@@ -102,11 +107,13 @@
 <span class='doccomment'>/// between each element of the adapted iterator.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Iterator element type is **I::Item**</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// This iterator is *fused*.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Intersperse</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
     <span class='ident'>element</span>: <span class='ident'>I</span>::<span class='ident'>Item</span>,
-    <span class='ident'>iter</span>: <span class='ident'>I</span>,
+    <span class='ident'>iter</span>: <span class='ident'>Fuse</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>,
     <span class='ident'>peek</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
 }
 
@@ -114,8 +121,9 @@
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
     <span class='doccomment'>/// Create a new Intersperse iterator</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='kw-2'>mut</span> <span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>elt</span>: <span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>elt</span>: <span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='ident'>iter</span>.<span class='ident'>fuse</span>();
         <span class='ident'>Intersperse</span>{<span class='ident'>peek</span>: <span class='ident'>iter</span>.<span class='ident'>next</span>(), <span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>element</span>: <span class='ident'>elt</span>}
     }
 }

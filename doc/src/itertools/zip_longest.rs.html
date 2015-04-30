@@ -150,6 +150,12 @@
 <span id="108">108</span>
 <span id="109">109</span>
 <span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>Ordering</span>::{<span class='ident'>Equal</span>, <span class='ident'>Greater</span>, <span class='ident'>Less</span>};
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
@@ -157,35 +163,41 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>RandomAccessIterator</span>;
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>size_hint</span>;
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>::<span class='ident'>Fuse</span>;
 <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>EitherOrBoth</span>::{<span class='ident'>Right</span>, <span class='ident'>Left</span>, <span class='ident'>Both</span>};
 
 <span class='comment'>// ZipLongest originally written by SimonSapin,</span>
 <span class='comment'>// and dedicated to itertools https://github.com/rust-lang/rust/pull/19283</span>
 
 <span class='doccomment'>/// An iterator which iterates two other iterators simultaneously</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// This iterator is *fused*.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='attribute'>#[<span class='ident'>must_use</span> <span class='op'>=</span> <span class='string'>&quot;iterator adaptors are lazy and do nothing unless consumed&quot;</span>]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> {
-    <span class='ident'>a</span>: <span class='ident'>T</span>,
-    <span class='ident'>b</span>: <span class='ident'>U</span>
+    <span class='ident'>a</span>: <span class='ident'>Fuse</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>,
+    <span class='ident'>b</span>: <span class='ident'>Fuse</span><span class='op'>&lt;</span><span class='ident'>U</span><span class='op'>&gt;</span>,
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span>
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>T</span>: <span class='ident'>Iterator</span>,
+    <span class='ident'>U</span>: <span class='ident'>Iterator</span>,
 {
-    <span class='doccomment'>/// Create a new ZipLongest iterator.</span>
+    <span class='doccomment'>/// Create a new **ZipLongest** iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>a</span>: <span class='ident'>T</span>, <span class='ident'>b</span>: <span class='ident'>U</span>) <span class='op'>-&gt;</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span>
     {
-        <span class='ident'>ZipLongest</span>{<span class='ident'>a</span>: <span class='ident'>a</span>, <span class='ident'>b</span>: <span class='ident'>b</span>}
+        <span class='ident'>ZipLongest</span>{<span class='ident'>a</span>: <span class='ident'>a</span>.<span class='ident'>fuse</span>(), <span class='ident'>b</span>: <span class='ident'>b</span>.<span class='ident'>fuse</span>()}
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>T</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>,
-    <span class='ident'>U</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>B</span><span class='op'>&gt;</span>,
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>T</span>: <span class='ident'>Iterator</span>,
+    <span class='ident'>U</span>: <span class='ident'>Iterator</span>,
 {
-    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>EitherOrBoth</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span>;
+    <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>EitherOrBoth</span><span class='op'>&lt;</span><span class='ident'>T</span>::<span class='ident'>Item</span>, <span class='ident'>U</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>;
+
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>EitherOrBoth</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
         <span class='kw'>match</span> (<span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>next</span>(), <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>next</span>()) {
             (<span class='prelude-val'>None</span>, <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
             (<span class='prelude-val'>Some</span>(<span class='ident'>a</span>), <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>Left</span>(<span class='ident'>a</span>)),
@@ -200,12 +212,12 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>T</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>ExactSizeIterator</span>,
-    <span class='ident'>U</span>: <span class='ident'>DoubleEndedIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>B</span><span class='op'>&gt;</span> <span class='op'>+</span> <span class='ident'>ExactSizeIterator</span>,
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>DoubleEndedIterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>T</span>: <span class='ident'>DoubleEndedIterator</span> <span class='op'>+</span> <span class='ident'>ExactSizeIterator</span>,
+    <span class='ident'>U</span>: <span class='ident'>DoubleEndedIterator</span> <span class='op'>+</span> <span class='ident'>ExactSizeIterator</span>,
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>next_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>EitherOrBoth</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>next_back</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>len</span>().<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>len</span>()) {
             <span class='ident'>Equal</span> <span class='op'>=&gt;</span> <span class='kw'>match</span> (<span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>next_back</span>(), <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>next_back</span>()) {
                 (<span class='prelude-val'>None</span>, <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
@@ -221,9 +233,9 @@
 }
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>RandomAccessIterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
-    <span class='ident'>T</span>: <span class='ident'>RandomAccessIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>A</span><span class='op'>&gt;</span>,
-    <span class='ident'>U</span>: <span class='ident'>RandomAccessIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>B</span><span class='op'>&gt;</span>,
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='ident'>RandomAccessIterator</span> <span class='kw'>for</span> <span class='ident'>ZipLongest</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>U</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+    <span class='ident'>T</span>: <span class='ident'>RandomAccessIterator</span>,
+    <span class='ident'>U</span>: <span class='ident'>RandomAccessIterator</span>,
 {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>indexable</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
@@ -231,7 +243,7 @@
     }
 
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-    <span class='kw'>fn</span> <span class='ident'>idx</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>index</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>EitherOrBoth</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>idx</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>index</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
         <span class='kw'>match</span> (<span class='self'>self</span>.<span class='ident'>a</span>.<span class='ident'>idx</span>(<span class='ident'>index</span>), <span class='self'>self</span>.<span class='ident'>b</span>.<span class='ident'>idx</span>(<span class='ident'>index</span>)) {
             (<span class='prelude-val'>None</span>, <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
             (<span class='prelude-val'>Some</span>(<span class='ident'>a</span>), <span class='prelude-val'>None</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>Left</span>(<span class='ident'>a</span>)),
