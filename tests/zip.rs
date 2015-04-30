@@ -2,17 +2,25 @@
 
 extern crate itertools;
 
-#[cfg(feature = "unstable")]
 use std::fmt::Debug;
 #[cfg(feature = "unstable")]
 use std::iter::RandomAccessIterator;
 use itertools::Itertools;
-use itertools::EitherOrBoth::{Both, Left};
-use itertools::{
-    Zip,
-};
+use itertools::EitherOrBoth::{Both, Left, Right};
 #[cfg(feature = "unstable")]
 use itertools::ZipTrusted;
+
+#[test]
+fn zip_longest_fused()
+{
+    let a = [Some(1), None, Some(3), Some(4)];
+    let b = [1, 2, 3];
+
+    let unfused = a.iter().batching(|mut it| *it.next().unwrap())
+        .zip_longest(b.iter().cloned());
+    assert_iters_equal(unfused,
+                       vec![Both(1, 1), Right(2), Right(3)]);
+}
 
 #[cfg(feature = "unstable")]
 #[test]
@@ -74,27 +82,13 @@ fn test_random_access_zip_longest() {
     check_randacc_iter(xs.iter().zip_longest(ys.iter()), std::cmp::max(xs.len(), ys.len()));
 }
 
-#[test]
-fn zip_tuple() {
-    let xs = [1, 2, 3];
-    let ys = b"ab";
-    let mut it = Zip::new((xs.iter().cloned(), ));
-    assert!(it.next() != None);
-    let mut jt = Zip::new((xs.iter().cloned(), ys.iter().cloned()));
-    assert_eq!(jt.next(), Some((1, b'a')));
-    assert_eq!(jt.next(), Some((2, b'b')));
-    assert_eq!(jt.next(), None);
-
-    let mut jt = Zip::new((xs.iter().cloned(), xs.iter().cloned(), xs.iter().cloned()));
-    assert_eq!(jt.next(), Some((1, 1, 1)));
-}
-
-#[cfg(feature = "unstable")]
 fn assert_iters_equal<
     A: PartialEq + Debug,
-    I: Iterator<Item=A>,
-    J: Iterator<Item=A>>(mut it: I, mut jt: J)
+    I: IntoIterator<Item=A>,
+    J: IntoIterator<Item=A>>(it: I, jt: J)
 {
+    let mut it = it.into_iter();
+    let mut jt = jt.into_iter();
     loop {
         let elti = it.next();
         let eltj = jt.next();

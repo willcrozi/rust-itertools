@@ -210,6 +210,8 @@ pub trait Itertools : Iterator {
     ///
     /// Iterator element type is **Self::Item**.
     ///
+    /// This iterator is *fused*.
+    ///
     /// ## Example
     ///
     /// ```
@@ -229,6 +231,8 @@ pub trait Itertools : Iterator {
     /// between each element of the adapted iterator.
     ///
     /// Iterator element type is **Self::Item**.
+    ///
+    /// This iterator is *fused*.
     fn intersperse(self, element: Self::Item) -> Intersperse<Self> where
         Self: Sized,
         Self::Item: Clone
@@ -238,8 +242,11 @@ pub trait Itertools : Iterator {
 
     /// Create an iterator which iterates over both this and the specified
     /// iterator simultaneously, yielding pairs of two optional elements.
-    /// When both iterators return None, all further invocations of next() will
-    /// return None.
+    ///
+    /// This iterator is *fused*.
+    ///
+    /// When both iterators return **None**, all further invocations of *.next()* 
+    /// will return **None**.
     ///
     /// # Example
     ///
@@ -263,6 +270,8 @@ pub trait Itertools : Iterator {
     /// If the iterator is sorted, all elements will be unique.
     ///
     /// Iterator element type is **Self::Item**.
+    ///
+    /// This iterator is *fused*.
     fn dedup(self) -> Dedup<Self> where
         Self: Sized,
     {
@@ -293,7 +302,8 @@ pub trait Itertools : Iterator {
     /// assert!(itertools::equal(pit, vec![(0, 1), (2, 3)]));
     /// ```
     ///
-    fn batching<B, F: FnMut(&mut Self) -> Option<B>>(self, f: F) -> Batching<Self, F> where
+    fn batching<B, F>(self, f: F) -> Batching<Self, F> where
+        F: FnMut(&mut Self) -> Option<B>,
         Self: Sized,
     {
         Batching::new(self, f)
@@ -434,8 +444,8 @@ pub trait Itertools : Iterator {
         Self::Item: PartialOrd,
         J: IntoIterator<Item=Self::Item>,
     {
-        fn wrapper<A: PartialOrd>(a: &A, b: &A) -> Ordering { 
-            a.partial_cmp(b).unwrap_or(Ordering::Less) 
+        fn wrapper<A: PartialOrd>(a: &A, b: &A) -> Ordering {
+            a.partial_cmp(b).unwrap_or(Ordering::Less)
         };
         self.merge_by(other, wrapper)
     }

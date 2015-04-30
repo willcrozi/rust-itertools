@@ -62,7 +62,6 @@ fn izip_macro() {
     }
     assert!(zip.next().is_none());
 
-    
     let xs: [isize; 0] = [];
     let mut zip = izip!(0..3, 0..2, 0..2i8, &xs);
     assert!(zip.next().is_none());
@@ -76,7 +75,6 @@ fn izip3() {
     }
     assert!(zip.next().is_none());
 
-    
     let xs: [isize; 0] = [];
     let mut zip = Zip::new((0..3, 0..2, 0..2i8, xs.iter()));
     assert!(zip.next().is_none());
@@ -432,5 +430,14 @@ fn count_clones() {
         } else {
             assert_eq!(last, Some(Foo{n: Cell::new(n - 1)}));
         }
+    }
+}
+
+#[cfg(feature = "unstable")]
+#[test]
+#[should_panic]
+/// NOTE: Will only panic/overflow in debug builds
+fn enumerate_from_overflow() {
+    for _ in (0..1000).enumerate_from(0i8) {
     }
 }
