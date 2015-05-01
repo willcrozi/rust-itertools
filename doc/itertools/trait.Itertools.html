@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `Itertools` trait in crate `itertools`.">
     <meta name="keywords" content="rust, rustlang, rust-lang, Itertools">
 
-    <title>itertools 0.3.2 - itertools::Itertools - Rust</title>
+    <title>itertools 0.3.3 - itertools::Itertools - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -43,7 +43,7 @@
     <section id='main' class="content trait">
 <h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>itertools</a>::<wbr><a class='trait' href=''>Itertools</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-9392' class='srclink' href='../src/itertools/lib.rs.html#195-721' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-9392' class='srclink' href='../src/itertools/lib.rs.html#195-804' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Itertools: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> {
     fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;B, Self&gt; <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span> { ... }
     fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt; <span class='where'>where J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>&lt;Item=Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>&gt;, Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span> { ... }
@@ -63,11 +63,14 @@
     fn <a href='#method.find_position' class='fnname'>find_position</a>&lt;P&gt;(&amp;mut self, pred: P) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>)</a>&gt; <span class='where'>where P: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></span> { ... }
     fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a> { ... }
     fn <a href='#method.dropping' class='fnname'>dropping</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span> { ... }
+    fn <a href='#method.dropping_back' class='fnname'>dropping_back</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a>, Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.DoubleEndedIterator.html' title='core::iter::DoubleEndedIterator'>DoubleEndedIterator</a></span> { ... }
     fn <a href='#method.foreach' class='fnname'>foreach</a>&lt;F&gt;(&amp;mut self, f: F) <span class='where'>where F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>)</span> { ... }
     fn <a href='#method.collect_vec' class='fnname'>collect_vec</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>&gt; <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span> { ... }
     fn <a href='#method.set_from' class='fnname'>set_from</a>&lt;'a, A: 'a, J&gt;(&amp;mut self, from: J) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a> <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=&amp;'a mut A&gt;, J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>&lt;Item=A&gt;</span> { ... }
     fn <a href='#method.join' class='fnname'>join</a>(&amp;mut self, sep: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a> <span class='where'>where Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>: <a class='trait' href='http://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a></span> { ... }
     fn <a href='#method.fold_results' class='fnname'>fold_results</a>&lt;A, E, B, F&gt;(&amp;mut self, start: B, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;B, E&gt; <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>&lt;Item=<a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;A, E&gt;&gt;, F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(B, A) -&gt; B</span> { ... }
+    fn <a href='#method.fold1' class='fnname'>fold1</a>&lt;F&gt;(&amp;mut self, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>&gt; <span class='where'>where F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>, Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a></span> { ... }
+    fn <a href='#method.is_empty_hint' class='fnname'>is_empty_hint</a>(&amp;self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt; { ... }
 }</pre><div class='docblock'><p>Extra iterator methods for arbitrary iterators</p>
 </div>
             <h2 id='provided-methods'>Provided Methods</h2>
@@ -290,6 +293,22 @@ and return the same iterator again.</p>
 
 <p>It works similarly to <strong>.skip(n)</strong> except it is eager and
 preserves the iterator type.</p>
+</div><h3 id='method.dropping_back' class='method stab '><code>fn <a href='#method.dropping_back' class='fnname'>dropping_back</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a>, Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.DoubleEndedIterator.html' title='core::iter::DoubleEndedIterator'>DoubleEndedIterator</a></span></code></h3><div class='docblock'><p>Consume the last <strong>n</strong> elements from the iterator eagerly,
+and return the same iterator again.</p>
+
+<p>This is only possible on double ended iterators. <strong>n</strong> may be
+larger than the number of elements.</p>
+
+<p>Note: This method is eager, dropping the back elements immediately and
+preserves the iterator type.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='kw'>let</span> <span class='ident'>init</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0</span>, <span class='number'>3</span>, <span class='number'>6</span>, <span class='number'>9</span>].<span class='ident'>into_iter</span>().<span class='ident'>dropping_back</span>(<span class='number'>1</span>);
+<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='ident'>init</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0</span>, <span class='number'>3</span>, <span class='number'>6</span>]));
+</pre>
 </div><h3 id='method.foreach' class='method stab '><code>fn <a href='#method.foreach' class='fnname'>foreach</a>&lt;F&gt;(&amp;mut self, f: F) <span class='where'>where F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>)</span></code></h3><div class='docblock'><p>Run the closure <strong>f</strong> eagerly on each element of the iterator.</p>
 
 <p>Consumes the iterator until its end.</p>
@@ -363,6 +382,31 @@ this effetively results in <em>((0 + 1) + 2) + 3</em></p>
         .<span class='ident'>fold_results</span>(<span class='number'>0</span>, <span class='ident'>Add</span>::<span class='ident'>add</span>)
         .<span class='ident'>is_err</span>()
 );
+</pre>
+</div><h3 id='method.fold1' class='method stab '><code>fn <a href='#method.fold1' class='fnname'>fold1</a>&lt;F&gt;(&amp;mut self, f: F) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>&gt; <span class='where'>where F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>, Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a></span></code></h3><div class='docblock'><p>Accumulator of the elements in the iterator.</p>
+
+<p>Like <em>.fold()</em>, without a base case. If the iterator is
+empty, return <strong>None</strong>. With just one element, return it.
+Otherwise elements are accumulated in sequence using the closure <strong>f</strong>.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='macro'>assert_eq</span><span class='macro'>!</span>((<span class='number'>0</span>..<span class='number'>10</span>).<span class='ident'>fold1</span>(<span class='op'>|</span><span class='ident'>x</span>, <span class='ident'>y</span><span class='op'>|</span> <span class='ident'>x</span> <span class='op'>+</span> <span class='ident'>y</span>).<span class='ident'>unwrap_or</span>(<span class='number'>0</span>), <span class='number'>45</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>((<span class='number'>0</span>..<span class='number'>0</span>).<span class='ident'>fold1</span>(<span class='op'>|</span><span class='ident'>x</span>, <span class='ident'>y</span><span class='op'>|</span> <span class='ident'>x</span> <span class='op'>*</span> <span class='ident'>y</span>), <span class='prelude-val'>None</span>);
+</pre>
+</div><h3 id='method.is_empty_hint' class='method stab '><code>fn <a href='#method.is_empty_hint' class='fnname'>is_empty_hint</a>(&amp;self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;</code></h3><div class='docblock'><p>Tell if the iterator is empty or not according to its size hint.
+Return <strong>None</strong> if the size hint does not tell, or return a <strong>Some</strong>
+value with the emptiness if it&#39;s possible to tell.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='macro'>assert_eq</span><span class='macro'>!</span>((<span class='number'>1</span>..<span class='number'>1</span>).<span class='ident'>is_empty_hint</span>(), <span class='prelude-val'>Some</span>(<span class='boolval'>true</span>));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>([<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>].<span class='ident'>iter</span>().<span class='ident'>is_empty_hint</span>(), <span class='prelude-val'>Some</span>(<span class='boolval'>false</span>));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>((<span class='number'>0</span>..<span class='number'>10</span>).<span class='ident'>filter</span>(<span class='op'>|</span><span class='kw-2'>&amp;</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span> <span class='op'>&gt;</span> <span class='number'>0</span>).<span class='ident'>is_empty_hint</span>(), <span class='prelude-val'>None</span>);
 </pre>
 </div></div>
         <h2 id='implementors'>Implementors</h2>

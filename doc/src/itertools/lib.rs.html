@@ -790,6 +790,89 @@
 <span id="748">748</span>
 <span id="749">749</span>
 <span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>zero_one</span>))]</span>
@@ -1375,6 +1458,31 @@
         <span class='self'>self</span>
     }
 
+    <span class='doccomment'>/// Consume the last **n** elements from the iterator eagerly,</span>
+    <span class='doccomment'>/// and return the same iterator again.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// This is only possible on double ended iterators. **n** may be</span>
+    <span class='doccomment'>/// larger than the number of elements.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Note: This method is eager, dropping the back elements immediately and</span>
+    <span class='doccomment'>/// preserves the iterator type.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ## Example</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let init = vec![0, 3, 6, 9].into_iter().dropping_back(1);</span>
+    <span class='doccomment'>/// assert!(itertools::equal(init, vec![0, 3, 6]));</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>dropping_back</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
+        <span class='kw'>Self</span>: <span class='ident'>DoubleEndedIterator</span>,
+    {
+        <span class='self'>self</span>.<span class='ident'>by_ref</span>().<span class='ident'>rev</span>().<span class='ident'>dropn</span>(<span class='ident'>n</span>);
+        <span class='self'>self</span>
+    }
+
     <span class='doccomment'>/// Run the closure **f** eagerly on each element of the iterator.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Consumes the iterator until its end.</span>
@@ -1510,6 +1618,64 @@
             }
         }
         <span class='prelude-val'>Ok</span>(<span class='ident'>start</span>)
+    }
+
+    <span class='doccomment'>/// Accumulator of the elements in the iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Like *.fold()*, without a base case. If the iterator is</span>
+    <span class='doccomment'>/// empty, return **None**. With just one element, return it.</span>
+    <span class='doccomment'>/// Otherwise elements are accumulated in sequence using the closure **f**.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ## Example</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// assert_eq!((0..10).fold1(|x, y| x + y).unwrap_or(0), 45);</span>
+    <span class='doccomment'>/// assert_eq!((0..0).fold1(|x, y| x * y), None);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>fold1</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>Self</span>::<span class='ident'>Item</span>, <span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Self</span>::<span class='ident'>Item</span>,
+    {
+        <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>next</span>() {
+            <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
+            <span class='prelude-val'>Some</span>(<span class='kw-2'>mut</span> <span class='ident'>x</span>) <span class='op'>=&gt;</span> {
+                <span class='kw'>for</span> <span class='ident'>y</span> <span class='kw'>in</span> <span class='self'>self</span> {
+                    <span class='ident'>x</span> <span class='op'>=</span> <span class='ident'>f</span>(<span class='ident'>x</span>, <span class='ident'>y</span>);
+                }
+                <span class='prelude-val'>Some</span>(<span class='ident'>x</span>)
+            }
+        }
+    }
+
+    <span class='doccomment'>/// Tell if the iterator is empty or not according to its size hint.</span>
+    <span class='doccomment'>/// Return **None** if the size hint does not tell, or return a **Some**</span>
+    <span class='doccomment'>/// value with the emptiness if it&#39;s possible to tell.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ## Example</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// assert_eq!((1..1).is_empty_hint(), Some(true));</span>
+    <span class='doccomment'>/// assert_eq!([1, 2, 3].iter().is_empty_hint(), Some(false));</span>
+    <span class='doccomment'>/// assert_eq!((0..10).filter(|&amp;x| x &gt; 0).is_empty_hint(), None);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>is_empty_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>bool</span><span class='op'>&gt;</span>
+    {
+        <span class='kw'>let</span> (<span class='ident'>low</span>, <span class='ident'>opt_hi</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>size_hint</span>();
+        <span class='comment'>// check for erronous hint</span>
+        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>hi</span>) <span class='op'>=</span> <span class='ident'>opt_hi</span> {
+            <span class='kw'>if</span> <span class='ident'>hi</span> <span class='op'>&lt;</span> <span class='ident'>low</span> { <span class='kw'>return</span> <span class='prelude-val'>None</span> }
+        }
+
+        <span class='kw'>if</span> <span class='ident'>opt_hi</span> <span class='op'>==</span> <span class='prelude-val'>Some</span>(<span class='number'>0</span>) {
+            <span class='prelude-val'>Some</span>(<span class='boolval'>true</span>)
+        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>low</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
+            <span class='prelude-val'>Some</span>(<span class='boolval'>false</span>)
+        } <span class='kw'>else</span> {
+            <span class='prelude-val'>None</span>
+        }
     }
 }
 
