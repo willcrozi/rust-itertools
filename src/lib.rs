@@ -582,6 +582,31 @@ pub trait Itertools : Iterator {
         self
     }
 
+    /// Consume the last **n** elements from the iterator eagerly,
+    /// and return the same iterator again.
+    ///
+    /// This is only possible on double ended iterators. **n** may be
+    /// larger than the number of elements.
+    ///
+    /// Note: This method is eager, dropping the back elements immediately and
+    /// preserves the iterator type.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let init = vec![0, 3, 6, 9].into_iter().dropping_back(1);
+    /// assert!(itertools::equal(init, vec![0, 3, 6]));
+    /// ```
+    fn dropping_back(mut self, n: usize) -> Self where
+        Self: Sized,
+        Self: DoubleEndedIterator,
+    {
+        self.by_ref().rev().dropn(n);
+        self
+    }
+
     /// Run the closure **f** eagerly on each element of the iterator.
     ///
     /// Consumes the iterator until its end.
@@ -717,6 +742,64 @@ pub trait Itertools : Iterator {
             }
         }
         Ok(start)
+    }
+
+    /// Accumulator of the elements in the iterator.
+    ///
+    /// Like *.fold()*, without a base case. If the iterator is
+    /// empty, return **None**. With just one element, return it.
+    /// Otherwise elements are accumulated in sequence using the closure **f**.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// assert_eq!((0..10).fold1(|x, y| x + y).unwrap_or(0), 45);
+    /// assert_eq!((0..0).fold1(|x, y| x * y), None);
+    /// ```
+    fn fold1<F>(&mut self, mut f: F) -> Option<Self::Item> where
+        F: FnMut(Self::Item, Self::Item) -> Self::Item,
+    {
+        match self.next() {
+            None => None,
+            Some(mut x) => {
+                for y in self {
+                    x = f(x, y);
+                }
+                Some(x)
+            }
+        }
+    }
+
+    /// Tell if the iterator is empty or not according to its size hint.
+    /// Return **None** if the size hint does not tell, or return a **Some**
+    /// value with the emptiness if it's possible to tell.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// assert_eq!((1..1).is_empty_hint(), Some(true));
+    /// assert_eq!([1, 2, 3].iter().is_empty_hint(), Some(false));
+    /// assert_eq!((0..10).filter(|&x| x > 0).is_empty_hint(), None);
+    /// ```
+    fn is_empty_hint(&self) -> Option<bool>
+    {
+        let (low, opt_hi) = self.size_hint();
+        // check for erronous hint
+        if let Some(hi) = opt_hi {
+            if hi < low { return None }
+        }
+
+        if opt_hi == Some(0) {
+            Some(true)
+        } else if low > 0 {
+            Some(false)
+        } else {
+            None
+        }
     }
 }
 
