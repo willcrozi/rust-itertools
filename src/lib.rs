@@ -41,12 +41,14 @@ pub use adaptors::{
     Product,
     PutBack,
     FnMap,
-    Dedup,
     Batching,
     GroupBy,
     Step,
     Merge,
     MultiPeek,
+    TakeWhileRef,
+    Coalesce,
+    CoalesceFn,
 };
 #[cfg(feature = "unstable")]
 pub use adaptors::EnumerateFrom;
@@ -191,7 +193,17 @@ macro_rules! icompr {
     );
 }
 
-/// Extra iterator methods for arbitrary iterators
+/// The trait **Itertools**: extra iterator adaptors and methods for iterators.
+///
+/// This trait defines a number of methods. They are divided into two groups:
+///
+/// * *Adaptors* take an interator and parameter as input, and return
+/// a new iterator value. These are listed first in the trait. An example
+/// of an adaptor is [*.interleave()*](#method.interleave)
+///
+/// * *Regular methods* are those that don't return iterators and instead
+/// return a regular value of some other kind. [*.find_position()*](#method.find_position)
+/// is an example and the first regular method in the list.
 pub trait Itertools : Iterator {
     // adaptors
 
@@ -264,18 +276,6 @@ pub trait Itertools : Iterator {
         Self: Sized,
     {
         ZipLongest::new(self, other.into_iter())
-    }
-
-    /// Remove duplicates from sections of consecutive identical elements.
-    /// If the iterator is sorted, all elements will be unique.
-    ///
-    /// Iterator element type is **Self::Item**.
-    ///
-    /// This iterator is *fused*.
-    fn dedup(self) -> Dedup<Self> where
-        Self: Sized,
-    {
-        Dedup::new(self)
     }
 
     /// A “meta iterator adaptor”. Its closure recives a reference to the iterator
@@ -357,7 +357,7 @@ pub trait Itertools : Iterator {
     /// use std::iter::repeat;
     /// use itertools::Itertools;
     ///
-    /// let mut it = repeat('a').slice(..3);
+    /// let it = repeat('a').slice(..3);
     /// assert_eq!(it.count(), 3);
     /// ```
     fn slice<R>(self, range: R) -> ISlice<Self> where
@@ -515,7 +515,7 @@ pub trait Itertools : Iterator {
         EnumerateFrom::new(self, start)
     }
 
-    /// Returns an iterator adapter that allows peeking multiple values.
+    /// Return an iterator adapter that allows peeking multiple values.
     ///
     /// After a call to *.next()* the peeking cursor is reset.
     ///
@@ -536,6 +536,124 @@ pub trait Itertools : Iterator {
         Self: Sized
     {
         MultiPeek::new(self)
+    }
+
+    /// Return an iterator adaptor that uses the passed-in closure to
+    /// optionally merge together consecutive elements. For each pair the closure
+    /// is passed the latest two elements, `x`, `y` and may return either `Ok(z)`
+    /// to merge the two values or `Err((x, y))` to indicate they can't be merged.
+    ///
+    /// *.dedup()* and *.mend_slices()* are specializations of the coalesce
+    /// adaptor.
+    ///
+    /// Iterator element type is **Self::Item**.
+    ///
+    /// This iterator is *fused*.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// // sum same-sign runs together
+    /// let data = vec![-1., -2., -3., 3., 1., 0., -1.];
+    /// assert!(itertools::equal(data.into_iter().coalesce(|x, y|
+    ///         if (x >= 0.) == (y >= 0.) {
+    ///             Ok(x + y)
+    ///         } else {
+    ///             Err((x, y))
+    ///         }),
+    ///         vec![-6., 4., -1.]));
+    /// ```
+    fn coalesce<F>(self, f: F) -> Coalesce<Self, F> where
+        Self: Sized,
+        F: FnMut(Self::Item, Self::Item) -> Result<Self::Item, (Self::Item, Self::Item)>
+    {
+        Coalesce::new(self, f)
+    }
+
+    /// Remove duplicates from sections of consecutive identical elements.
+    /// If the iterator is sorted, all elements will be unique.
+    ///
+    /// Iterator element type is **Self::Item**.
+    ///
+    /// This iterator is *fused*.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let data = vec![1., 1., 2., 3., 3., 2., 2.];
+    /// assert!(itertools::equal(data.into_iter().dedup(),
+    ///                          vec![1., 2., 3., 2.]));
+    /// ```
+    fn dedup(self) -> CoalesceFn<Self> where
+        Self: Sized,
+        Self::Item: PartialEq,
+    {
+        fn eq<T: PartialEq>(x: T, y: T) -> Result<T, (T, T)>
+        {
+            if x == y { Ok(x) } else { Err((x, y)) }
+        }
+        Coalesce::new(self, eq)
+    }
+
+
+    /// Return an iterator adaptor that joins together adjacent slices if possible.
+    ///
+    /// Only implemented for iterators with slice or string slice elements.
+    /// Only slices that are contiguous together can be joined.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let text = String::from("let there be text");
+    /// let excerpts = vec![&text[0..4], &text[4..9], &text[10..12], &text[12..]];
+    ///
+    /// assert!(itertools::equal(excerpts.into_iter().mend_slices(),
+    ///                          vec!["let there", "be text"]));
+    /// ```
+    fn mend_slices(self) -> CoalesceFn<Self> where
+        Self: Sized,
+        Self::Item: misc::MendSlice
+    {
+        fn mend<T: misc::MendSlice>(x: T, y: T) -> Result<T, (T, T)>
+        {
+            match misc::MendSlice::mend(x, y) {
+                Some(z) => Ok(z),
+                None => Err((x, y)),
+            }
+        }
+        Coalesce::new(self, mend)
+    }
+
+    /// Return an iterator adaptor that borrows from a **Clone**-able iterator
+    /// to only pick off elements while the predicate **f** returns **true**.
+    ///
+    /// It uses the **Clone** trait to restore the original iterator so that the last
+    /// and rejected element is still available when **TakeWhileRef** is done.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let mut alphanumerics = "abcdef012345".chars();
+    ///
+    /// let alphas = alphanumerics.take_while_ref(|c| c.is_alphabetic())
+    ///                           .collect::<String>();
+    /// assert_eq!(alphas, "abcdef");
+    /// assert_eq!(alphanumerics.next(), Some('0'));
+    ///
+    /// ```
+    fn take_while_ref<'a, F>(&'a mut self, f: F) -> TakeWhileRef<'a, Self, F> where
+        Self: Clone,
+        F: FnMut(&Self::Item) -> bool,
+    {
+        TakeWhileRef::new(self, f)
     }
 
     // non-adaptor methods

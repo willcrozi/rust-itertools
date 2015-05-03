@@ -441,3 +441,60 @@ fn enumerate_from_overflow() {
     for _ in (0..1000).enumerate_from(0i8) {
     }
 }
+
+/// Like CharIndices iterator, except it yeilds slices instead
+#[derive(Clone)]
+struct CharSlices<'a> {
+    slice: &'a str,
+    offset: usize,
+}
+
+impl<'a> CharSlices<'a>
+{
+    pub fn new(s: &'a str) -> Self
+    {
+        CharSlices {
+            slice: s,
+            offset: 0,
+        }
+    }
+}
+
+impl<'a> Iterator for CharSlices<'a>
+{
+    type Item = (usize, &'a str);
+
+    fn next(&mut self) -> Option<Self::Item>
+    {
+        if self.slice.len() == 0 {
+            None
+        } else {
+            // count continuation bytes
+            let mut char_len = 1;
+            for byte in self.slice.bytes().dropping(1) {
+                if (byte & 0xC0) != 0x80 {
+                    break
+                }
+                char_len += 1;
+            }
+            let ch_slice = &self.slice[..char_len];
+            self.slice = &self.slice[char_len..];
+            let off = self.offset;
+            self.offset += char_len;
+            Some((off, ch_slice))
+        }
+    }
+}
+
+#[test]
+fn mend_slices() {
+    let text = "α-toco (and) β-toco";
+    let full_text = CharSlices::new(text).map(|(_, s)| s).mend_slices().join("");
+    assert_eq!(text, full_text);
+
+    // join certain different pieces together again
+    let words = CharSlices::new(text).map(|(_, s)| s)
+                    .filter(|s| !s.chars().any(char::is_whitespace))
+                    .mend_slices().collect::<Vec<_>>();
+    assert_eq!(words, vec!["α-toco", "(and)", "β-toco"]);
+}
