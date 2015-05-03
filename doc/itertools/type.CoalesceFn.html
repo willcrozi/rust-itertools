@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `equal` fn in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, equal">
+    <meta name="description" content="API documentation for the Rust `CoalesceFn` type in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, CoalesceFn">
 
-    <title>itertools 0.3.4 - itertools::equal - Rust</title>
+    <title>itertools 0.3.4 - itertools::CoalesceFn - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'equal', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'CoalesceFn', ty: 'type', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -40,19 +40,11 @@
         </form>
     </nav>
 
-    <section id='main' class="content fn">
-<h1 class='fqn'><span class='in-band'>Function <a href='index.html'>itertools</a>::<wbr><a class='fn' href=''>equal</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content type">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>itertools</a>::<wbr><a class='type' href=''>CoalesceFn</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-10745' class='srclink' href='../src/itertools/lib.rs.html#934-948' title='goto source code'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn equal&lt;I, J&gt;(a: I, b: J) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> <span class='where'>where I: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>, J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>, I: <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a>&lt;J&gt;</span></pre><div class='docblock'><p>Return <strong>true</strong> if both iterators produce equal sequences
-(elements pairwise equal and sequences of the same length),
-<strong>false</strong> otherwise.</p>
-
-<h2 id="example" class='section-header'><a
-                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>], <span class='number'>1</span>..<span class='number'>4</span>));
-<span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span><span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='kw-2'>&amp;</span>[<span class='number'>0</span>, <span class='number'>0</span>], <span class='kw-2'>&amp;</span>[<span class='number'>0</span>, <span class='number'>0</span>, <span class='number'>0</span>]));
-</pre>
+        </span><a id='src-1832' class='srclink' href='../src/itertools/adaptors.rs.html#621-622' title='goto source code'>[src]</a></span></h1>
+<pre class='rust typedef'>type CoalesceFn&lt;I&gt; = <a class='struct' href='../itertools/struct.Coalesce.html' title='itertools::Coalesce'>Coalesce</a>&lt;I, fn(I, I) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;I, <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(I, I)</a>&gt;&gt;;</pre><div class='docblock'><p>An iterator adaptor that may joins together adjacent elements.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
 

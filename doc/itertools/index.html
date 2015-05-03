@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `itertools` crate.">
     <meta name="keywords" content="rust, rustlang, rust-lang, itertools">
 
-    <title>itertools 0.3.3 - itertools - Rust</title>
+    <title>itertools 0.3.4 - itertools - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -43,7 +43,7 @@
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-832' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-950' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros.</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -133,12 +133,10 @@ and may pick off as many elements as it likes, to produce the next iterator elem
                     </tr>
                 
                     <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Dedup.html'
-                               title='itertools::Dedup'>Dedup</a></td>
+                        <td><a class='struct' href='struct.Coalesce.html'
+                               title='itertools::Coalesce'>Coalesce</a></td>
                         <td class='docblock short'>
-                             <p>An iterator adaptor that removes duplicates from sections of consecutive
-identical elements.  If the iterator is sorted, all elements will be
-unique.</p>
+                             <p>An iterator adaptor that may join together adjacent elements.</p>
 
                         </td>
                     </tr>
@@ -289,6 +287,16 @@ for each iteration.</p>
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='struct' href='struct.TakeWhileRef.html'
+                               title='itertools::TakeWhileRef'>TakeWhileRef</a></td>
+                        <td class='docblock short'>
+                             <p>An iterator adaptor that borrows from a <strong>Clone</strong>-able iterator
+to only pick off elements while the predicate returns <strong>true</strong>.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='struct' href='struct.Tee.html'
                                title='itertools::Tee'>Tee</a></td>
                         <td class='docblock short'>
@@ -341,7 +349,7 @@ depending on which of the input iterators are exhausted.</p>
                         <td><a class='trait' href='trait.Itertools.html'
                                title='itertools::Itertools'>Itertools</a></td>
                         <td class='docblock short'>
-                             <p>Extra iterator methods for arbitrary iterators</p>
+                             <p>The trait <strong>Itertools</strong>: extra iterator adaptors and methods for iterators.</p>
 
                         </td>
                     </tr>
@@ -379,6 +387,15 @@ a particular number of times. The iterator yields a counter.</p>
                     </tr>
                 </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table>
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.CoalesceFn.html'
+                               title='itertools::CoalesceFn'>CoalesceFn</a></td>
+                        <td class='docblock short'>
+                             <p>An iterator adaptor that may joins together adjacent elements.</p>
+
+                        </td>
+                    </tr>
+                
                     <tr class=' module-item'>
                         <td><a class='type' href='type.MergeAscend.html'
                                title='itertools::MergeAscend'>MergeAscend</a></td>

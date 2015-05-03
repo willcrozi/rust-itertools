@@ -113,9 +113,6 @@
 <span id="71">71</span>
 <span id="72">72</span>
 <span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>Itertools</span>;
 <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>size_hint</span>;
@@ -128,14 +125,11 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ## Example</span>
 <span class='doccomment'>/// ```</span>
-<span class='doccomment'>/// # extern crate itertools;</span>
-<span class='doccomment'>/// # fn main() {</span>
 <span class='doccomment'>/// use std::iter::repeat;</span>
-<span class='doccomment'>/// # use itertools::Itertools;</span>
+<span class='doccomment'>/// use itertools::Itertools;</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// let mut it = repeat(&#39;a&#39;).slice(..3);</span>
+<span class='doccomment'>/// let it = repeat(&#39;a&#39;).slice(..3);</span>
 <span class='doccomment'>/// assert_eq!(it.count(), 3);</span>
-<span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ISlice</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {

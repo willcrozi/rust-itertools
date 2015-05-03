@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `ToFloat` trait in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, ToFloat">
+    <meta name="description" content="API documentation for the Rust `MendSlice` trait in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, MendSlice">
 
-    <title>itertools 0.3.4 - itertools::misc::ToFloat - Rust</title>
+    <title>itertools 0.3.4 - itertools::misc::MendSlice - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../index.html'>itertools</a>::<wbr><a href='index.html'>misc</a></p><script>window.sidebarCurrent = {name: 'ToFloat', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='../index.html'>itertools</a>::<wbr><a href='index.html'>misc</a></p><script>window.sidebarCurrent = {name: 'MendSlice', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,23 +41,23 @@
     </nav>
 
     <section id='main' class="content trait">
-<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>itertools</a>::<wbr><a href='index.html'>misc</a>::<wbr><a class='trait' href=''>ToFloat</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>itertools</a>::<wbr><a href='index.html'>misc</a>::<wbr><a class='trait' href=''>MendSlice</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-3714' class='srclink' href='../../src/itertools/misc.rs.html#129-132' title='goto source code'>[src]</a></span></h1>
-<pre class='rust trait'>pub trait ToFloat&lt;F&gt;: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> {
-    fn <a href='#tymethod.to_float' class='fnname'>to_float</a>(self) -&gt; F;
-}</pre><div class='docblock'><p>Helper trait to convert usize to floating point type.</p>
+        </span><a id='src-3754' class='srclink' href='../../src/itertools/misc.rs.html#143-147' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait MendSlice: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> {
+    fn <a href='#tymethod.mend' class='fnname'>mend</a>(Self, Self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self&gt;;
+}</pre><div class='docblock'><p>A trait for items that can <em>maybe</em> be joined together.</p>
 </div>
             <h2 id='required-methods'>Required Methods</h2>
             <div class='methods'>
-        <h3 id='tymethod.to_float' class='method stab '><code>fn <a href='#tymethod.to_float' class='fnname'>to_float</a>(self) -&gt; F</code></h3><div class='docblock'><p>Convert usize to float.</p>
+        <h3 id='tymethod.mend' class='method stab '><code>fn <a href='#tymethod.mend' class='fnname'>mend</a>(Self, Self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self&gt;</code></h3><div class='docblock'><p>If the slices are contiguous, return them joined into one.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><code>impl <a class='trait' href='../../itertools/misc/trait.ToFloat.html' title='itertools::misc::ToFloat'>ToFloat</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>&gt; for <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></li>
-<li><code>impl <a class='trait' href='../../itertools/misc/trait.ToFloat.html' title='itertools::misc::ToFloat'>ToFloat</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>&gt; for <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></li>
+    <li><code>impl&lt;'a, T&gt; <a class='trait' href='../../itertools/misc/trait.MendSlice.html' title='itertools::misc::MendSlice'>MendSlice</a> for <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'a [T]</a></code></li>
+<li><code>impl&lt;'a&gt; <a class='trait' href='../../itertools/misc/trait.MendSlice.html' title='itertools::misc::MendSlice'>MendSlice</a> for &amp;'a <a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></li>
 </ul><script type="text/javascript" async
-                              src="../../implementors/itertools/misc/trait.ToFloat.js">
+                              src="../../implementors/itertools/misc/trait.MendSlice.js">
                       </script></section>
     <section id='search' class="content hidden"></section>
 
