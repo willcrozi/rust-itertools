@@ -269,7 +269,7 @@ pub trait Itertools : Iterator {
     /// assert!(itertools::equal(it, vec![Both(0, 1), Right(2)]));
     /// ```
     ///
-    /// Iterator element type is **EitherOrBoth\<Self::Item, B\>**.
+    /// Iterator element type is **EitherOrBoth\<Self::Item, J::Item\>**.
     #[inline]
     fn zip_longest<J>(self, other: J) -> ZipLongest<Self, J::IntoIter> where
         J: IntoIterator,
@@ -395,7 +395,7 @@ pub trait Itertools : Iterator {
     ///
     /// **Panics** in iterator methods if a borrow error is encountered,
     /// but it can only happen if the RcIter is reentered in for example **.next()**,
-    /// i.e. if it somehow participates in an "iterator knot" where it is an adaptor of itself.
+    /// i.e. if it somehow participates in an “iterator knot” where it is an adaptor of itself.
     fn into_rc(self) -> RcIter<Self> where
         Self: Sized,
     {
@@ -728,6 +728,22 @@ pub trait Itertools : Iterator {
     /// Run the closure **f** eagerly on each element of the iterator.
     ///
     /// Consumes the iterator until its end.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use std::sync::mpsc::channel;
+    /// use itertools::Itertools;
+    ///
+    /// let (tx, rx) = channel();
+    ///
+    /// // use .foreach() to apply a function to each value -- sending it
+    /// (0..5).map(|x| x * 2 + 1).foreach(|x| { tx.send(x).unwrap(); } );
+    ///
+    /// drop(tx);
+    ///
+    /// assert!(itertools::equal(rx.iter(), vec![1, 3, 5, 7, 9]));
+    /// ```
     fn foreach<F>(&mut self, mut f: F) where
         F: FnMut(Self::Item),
     {
