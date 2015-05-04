@@ -212,6 +212,11 @@
 <span id="170">170</span>
 <span id="171">171</span>
 <span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! A module of helper traits and iterators that are not intended to be used</span>
 <span class='doccomment'>//! directly.</span>
@@ -282,6 +287,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>FlatTuples</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span>
 {
     <span class='doccomment'>/// Create a new **FlatTuples**.</span>
+    <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>hidden</span>)]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>FlatTuples</span>{<span class='ident'>iter</span>: <span class='ident'>iter</span>}
@@ -318,8 +324,10 @@
 <span class='doccomment'>/// **GenericRange** is implemented by Rust&#39;s built-in range types, produced</span>
 <span class='doccomment'>/// by range syntax like `a..`, `..b` or `c..d`.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>GenericRange</span> {
+    <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>hidden</span>)]</span>
     <span class='doccomment'>/// Start index (inclusive)</span>
     <span class='kw'>fn</span> <span class='ident'>start</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span> { <span class='prelude-val'>None</span> }
+    <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>hidden</span>)]</span>
     <span class='doccomment'>/// End index (exclusive)</span>
     <span class='kw'>fn</span> <span class='ident'>end</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span> { <span class='prelude-val'>None</span> }
 }
@@ -342,6 +350,7 @@
 
 <span class='doccomment'>/// Helper trait to convert usize to floating point type.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>ToFloat</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> : <span class='ident'>Copy</span> {
+    <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>hidden</span>)]</span>
     <span class='doccomment'>/// Convert usize to float.</span>
     <span class='kw'>fn</span> <span class='ident'>to_float</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>F</span>;
 }
@@ -357,6 +366,7 @@
 <span class='doccomment'>/// A trait for items that can *maybe* be joined together.</span>
 <span class='kw'>pub</span> <span class='kw'>trait</span> <span class='ident'>MendSlice</span> : <span class='ident'>Copy</span>
 {
+    <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>hidden</span>)]</span>
     <span class='doccomment'>/// If the slices are contiguous, return them joined into one.</span>
     <span class='kw'>fn</span> <span class='ident'>mend</span>(<span class='kw'>Self</span>, <span class='kw'>Self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>;
 }
