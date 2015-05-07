@@ -32,7 +32,7 @@
 //!
 //!
 
-use std::iter::IntoIterator;
+use std::iter::{self, IntoIterator};
 use std::fmt::Write;
 use std::cmp::Ordering;
 
@@ -82,8 +82,11 @@ mod ziptuple;
 #[cfg(feature = "unstable")]
 mod ziptrusted;
 
+/// The function pointer map iterator created with *.map_fn()*.
+pub type MapFn<I, B> where I: Iterator = iter::Map<I, fn(I::Item) -> B>;
+
 /// An ascending order merge iterator created with *.merge()*.
-pub type MergeAscend<I, J, A> = Merge<I, J, fn(&A, &A) -> Ordering>;
+pub type MergeAscend<I, J> where I: Iterator = Merge<I, J, fn(&I::Item, &I::Item) -> Ordering>;
 
 #[macro_export]
 /// Create an iterator over the “cartesian product” of iterators.
@@ -207,16 +210,6 @@ macro_rules! icompr {
 pub trait Itertools : Iterator {
     // adaptors
 
-    /// Like regular *.map()*, but using a simple function pointer instead,
-    /// so that the resulting **FnMap** iterator value can be cloned.
-    ///
-    /// Iterator element type is **B**.
-    fn fn_map<B>(self, map: fn(Self::Item) -> B) -> FnMap<B, Self> where
-        Self: Sized
-    {
-        FnMap::new(self, map)
-    }
-
     /// Alternate elements from two iterators until both
     /// run out.
     ///
@@ -321,6 +314,9 @@ pub trait Itertools : Iterator {
 
     /// Split into an iterator pair that both yield all elements from
     /// the original iterator.
+    ///
+    /// **Note:** If the iterator is clonable, prefer using that instead
+    /// of using this method. It is likely to be more efficient.
     ///
     /// Iterator element type is **Self::Item**.
     ///
@@ -439,7 +435,7 @@ pub trait Itertools : Iterator {
     /// let it = a.merge(b);
     /// assert!(itertools::equal(it, vec![0, 0, 3, 5, 6, 9, 10]));
     /// ```
-    fn merge<J>(self, other: J) -> MergeAscend<Self, J::IntoIter, Self::Item> where
+    fn merge<J>(self, other: J) -> MergeAscend<Self, J::IntoIter> where
         Self: Sized,
         Self::Item: PartialOrd,
         J: IntoIterator<Item=Self::Item>,
@@ -655,6 +651,24 @@ pub trait Itertools : Iterator {
     {
         TakeWhileRef::new(self, f)
     }
+
+    /// Like regular *.map()*, specialized to using a simple function pointer instead,
+    /// so that the resulting **Map** iterator value can be cloned.
+    ///
+    /// Iterator element type is **B**.
+    fn map_fn<B>(self, f: fn(Self::Item) -> B) -> MapFn<Self, B> where
+        Self: Sized
+    {
+        self.map(f)
+    }
+
+    /// **Deprecated:** Use *.map_fn()* instead.
+    fn fn_map<B>(self, map: fn(Self::Item) -> B) -> FnMap<B, Self> where
+        Self: Sized
+    {
+        FnMap::new(self, map)
+    }
+
 
     // non-adaptor methods
 
