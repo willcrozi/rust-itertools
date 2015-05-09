@@ -1371,7 +1371,7 @@
     <span class='ident'>f</span>: <span class='ident'>F</span>,
 }
 
-<span class='doccomment'>/// An iterator adaptor that may joins together adjacent elements.</span>
+<span class='doccomment'>/// An iterator adaptor that may join together adjacent elements.</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>CoalesceFn</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span> <span class='op'>=</span>
     <span class='ident'>Coalesce</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='kw'>fn</span>(<span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, (<span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='ident'>I</span>::<span class='ident'>Item</span>)<span class='op'>&gt;&gt;</span>;
 
@@ -1506,6 +1506,10 @@
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>

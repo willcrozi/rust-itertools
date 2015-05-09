@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `itertools` crate.">
     <meta name="keywords" content="rust, rustlang, rust-lang, itertools">
 
-    <title>itertools 0.3.5 - itertools - Rust</title>
+    <title>itertools 0.3.6 - itertools - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -42,8 +42,10 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>itertools</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-980' title='goto source code'>[src]</a></span></h1>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1027' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros.</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -96,9 +98,8 @@ directly.</p>
                         <td><a class='macro' href='macro.icompr!.html'
                                title='itertools::icompr!'>icompr!</a></td>
                         <td class='docblock short'>
-                             <p><code>icompr</code> as in “iterator comprehension” allows creating a
-mapped iterator with simple syntax, similar to set builder notation,
-and directly inspired by Python. Supports an optional filter clause.</p>
+                             <p><strong>Deprecated:</strong> Will hopefully be replaced by a dedicated
+syntax extension that can offer real convenient python-like syntax.</p>
 
                         </td>
                     </tr>
@@ -376,6 +377,16 @@ element is <code>a</code> and the last element is <code>b</code>.</p>
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='fn' href='fn.partition.html'
+                               title='itertools::partition'>partition</a></td>
+                        <td class='docblock short'>
+                             <p>Partition a sequence using predicate <strong>pred</strong> so that elements
+that map to <strong>true</strong> are placed before elements which map to <strong>false</strong>.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='fn' href='fn.times.html'
                                title='itertools::times'>times</a></td>
                         <td class='docblock short'>
@@ -390,7 +401,7 @@ a particular number of times. The iterator yields a counter.</p>
                         <td><a class='type' href='type.CoalesceFn.html'
                                title='itertools::CoalesceFn'>CoalesceFn</a></td>
                         <td class='docblock short'>
-                             <p>An iterator adaptor that may joins together adjacent elements.</p>
+                             <p>An iterator adaptor that may join together adjacent elements.</p>
 
                         </td>
                     </tr>
@@ -444,6 +455,10 @@ a particular number of times. The iterator yields a counter.</p>
                 <code>struct</code>, <code>enum</code>,
                 <code>trait</code>, <code>typedef</code> (or
                 <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
             </p>
         </div>
     </div>
