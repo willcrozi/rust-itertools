@@ -160,6 +160,12 @@ macro_rules! izip {
     );
 }
 
+/// **Deprecated:** Will hopefully be replaced by a dedicated
+/// syntax extension that can offer real convenient python-like syntax.
+///
+/// **Note:** A Python like syntax of `<expression> for <pattern> in <iterator>` is
+/// **not possible** with the stable macro rules since Rust 1.0.0-alpha.
+///
 /// `icompr` as in “iterator comprehension” allows creating a
 /// mapped iterator with simple syntax, similar to set builder notation,
 /// and directly inspired by Python. Supports an optional filter clause.
@@ -183,9 +189,6 @@ macro_rules! izip {
 /// ```ignore
 /// let mut squares = icompr!(x * x, x, 1..100);
 /// ```
-///
-/// **Note:** A Python like syntax of `<expression> for <pattern> in <iterator>` is
-/// **not possible** with the stable macro rules since Rust 1.0.0-alpha.
 #[macro_export]
 macro_rules! icompr {
     ($r:expr, $x:pat, $J:expr, $pred:expr) => (
@@ -976,6 +979,50 @@ pub fn equal<I, J>(a: I, b: J) -> bool where
         }
     }
 }
+
+/// Partition a sequence using predicate **pred** so that elements
+/// that map to **true** are placed before elements which map to **false**.
+///
+/// The order within the partitions is arbitrary.
+///
+/// Return the index of the split point.
+///
+/// ## Example
+///
+/// ```
+/// use itertools::partition;
+///
+/// let mut data = [7, 1, 1, 9, 1, 1, 3];
+/// let split_index = partition(&mut data, |elt| *elt >= 3);
+///
+/// assert_eq!(data, [7, 3, 9, 1, 1, 1, 1]);
+/// assert_eq!(split_index, 3);
+/// ```
+pub fn partition<'a, T: 'a, I, F>(it: I, mut pred: F) -> usize where
+    I: IntoIterator<Item=&'a mut T>,
+    I::IntoIter: DoubleEndedIterator,
+    F: FnMut(&T) -> bool,
+{
+    let mut split_index = 0;
+    let mut it = it.into_iter();
+    'main: while let Some(front) = it.next() {
+        if !pred(&*front) {
+            loop {
+                if let Some(back) = it.next_back() {
+                    if pred(&*back) {
+                        std::mem::swap(front, back);
+                        break;
+                    }
+                } else {
+                    break 'main;
+                }
+            }
+        }
+        split_index += 1;
+    }
+    split_index
+}
+
 
 impl<T: ?Sized> Itertools for T where T: Iterator { }
 

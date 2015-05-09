@@ -9,14 +9,26 @@ __ http://bluss.github.io/rust-itertools/
 Recent Changes
 ==============
 
-Recently added:
+- 0.3.6
 
-- .take_while_ref() *by-ref adaptor*
-- .coalesce() *adaptor*
-- .mend_slices() *adaptor*
-- .dropping_back() *method*
-- .fold1() *method*
-- .is_empty_hint() *method*
+  - Added itertools::partition, partition a sequence in place based on a predicate.
+  - Deprecate icompr!() with no replacement.
+
+- 0.3.5
+
+  - .map_fn() replaces deprecated .fn_map().
+
+- 0.3.4
+
+  - .take_while_ref() *by-ref adaptor*
+  - .coalesce() *adaptor*
+  - .mend_slices() *adaptor*
+
+- 0.3.3
+
+  - .dropping_back() *method*
+  - .fold1() *method*
+  - .is_empty_hint() *method*
 
 License
 =======
