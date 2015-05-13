@@ -1068,6 +1068,25 @@
 <span id="1026">1026</span>
 <span id="1027">1027</span>
 <span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>zero_one</span>))]</span>
@@ -1111,6 +1130,7 @@
     <span class='ident'>Interleave</span>,
     <span class='ident'>Product</span>,
     <span class='ident'>PutBack</span>,
+    <span class='ident'>PutBackN</span>,
     <span class='ident'>FnMap</span>,
     <span class='ident'>Batching</span>,
     <span class='ident'>GroupBy</span>,
@@ -1120,6 +1140,7 @@
     <span class='ident'>TakeWhileRef</span>,
     <span class='ident'>Coalesce</span>,
     <span class='ident'>CoalesceFn</span>,
+    <span class='ident'>Combinations</span>,
 };
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>EnumerateFrom</span>;
@@ -1726,6 +1747,23 @@
         <span class='ident'>TakeWhileRef</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>f</span>)
     }
 
+    <span class='doccomment'>/// Return an iterator adaptor that iterates over the combinations of</span>
+    <span class='doccomment'>/// the elements from an iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Iterator element type is **(Self::Item, Self::Item)**.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let it = (1..5).combinations();</span>
+    <span class='doccomment'>/// assert!(itertools::equal(it, vec![(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]));</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>combinations</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Combinations</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span> <span class='op'>+</span> <span class='ident'>Clone</span>, <span class='ident'>Self</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span>
+    {
+        <span class='ident'>Combinations</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
+    }
+
     <span class='doccomment'>/// Like regular *.map()*, specialized to using a simple function pointer instead,</span>
     <span class='doccomment'>/// so that the resulting **Map** iterator value can be cloned.</span>
     <span class='doccomment'>///</span>
@@ -2063,29 +2101,29 @@
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// use itertools::partition;</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// let mut data = [7, 1, 1, 9, 1, 1, 3];</span>
+<span class='doccomment'>/// # // use repeated numbers to not promise any ordering</span>
+<span class='doccomment'>/// let mut data = [7, 1, 1, 7, 1, 1, 7];</span>
 <span class='doccomment'>/// let split_index = partition(&amp;mut data, |elt| *elt &gt;= 3);</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// assert_eq!(data, [7, 3, 9, 1, 1, 1, 1]);</span>
+<span class='doccomment'>/// assert_eq!(data, [7, 7, 7, 1, 1, 1, 1]);</span>
 <span class='doccomment'>/// assert_eq!(split_index, 3);</span>
 <span class='doccomment'>/// ```</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>partition</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span>(<span class='ident'>it</span>: <span class='ident'>I</span>, <span class='kw-2'>mut</span> <span class='ident'>pred</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> <span class='kw'>where</span>
-    <span class='ident'>I</span>: <span class='ident'>IntoIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>T</span><span class='op'>&gt;</span>,
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>partition</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>A</span>: <span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='kw-2'>mut</span> <span class='ident'>pred</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> <span class='kw'>where</span>
+    <span class='ident'>I</span>: <span class='ident'>IntoIterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>A</span><span class='op'>&gt;</span>,
     <span class='ident'>I</span>::<span class='ident'>IntoIter</span>: <span class='ident'>DoubleEndedIterator</span>,
-    <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>,
+    <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>,
 {
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>split_index</span> <span class='op'>=</span> <span class='number'>0</span>;
-    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>into_iter</span>();
-    <span class='lifetime'>&#39;main</span>: <span class='kw'>while</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>front</span>) <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>next</span>() {
-        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>pred</span>(<span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>front</span>) {
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='ident'>iter</span>.<span class='ident'>into_iter</span>();
+    <span class='lifetime'>&#39;main</span>: <span class='kw'>while</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>front</span>) <span class='op'>=</span> <span class='ident'>iter</span>.<span class='ident'>next</span>() {
+        <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>pred</span>(<span class='ident'>front</span>) {
             <span class='kw'>loop</span> {
-                <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>back</span>) <span class='op'>=</span> <span class='ident'>it</span>.<span class='ident'>next_back</span>() {
-                    <span class='kw'>if</span> <span class='ident'>pred</span>(<span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>back</span>) {
+                <span class='kw'>match</span> <span class='ident'>iter</span>.<span class='ident'>next_back</span>() {
+                    <span class='prelude-val'>Some</span>(<span class='ident'>back</span>) <span class='op'>=&gt;</span> <span class='kw'>if</span> <span class='ident'>pred</span>(<span class='ident'>back</span>) {
                         <span class='ident'>std</span>::<span class='ident'>mem</span>::<span class='ident'>swap</span>(<span class='ident'>front</span>, <span class='ident'>back</span>);
                         <span class='kw'>break</span>;
-                    }
-                } <span class='kw'>else</span> {
-                    <span class='kw'>break</span> <span class='lifetime'>&#39;main</span>;
+                    },
+                    <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>break</span> <span class='lifetime'>&#39;main</span>,
                 }
             }
         }
