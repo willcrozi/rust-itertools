@@ -174,6 +174,75 @@ impl<I> Iterator for PutBack<I> where
     }
 }
 
+/// An iterator adaptor that allows putting multiple
+/// items in front of the iterator.
+///
+/// Iterator element type is **I::Item**.
+pub struct PutBackN<I: Iterator>
+{
+    top: Vec<I::Item>,
+    iter: I
+}
+
+impl<I: Iterator> PutBackN<I>
+{
+    /// Iterator element type is `A`
+    #[inline]
+    pub fn new(it: I) -> Self
+    {
+        PutBackN{top: vec![], iter: it}
+    }
+
+    /// Puts x in front of the iterator.
+    /// The values are yielded in order.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// use itertools::PutBackN;
+    ///
+    /// let mut it = PutBackN::new(1..5);
+    /// it.next();
+    /// it.put_back(1);
+    /// it.put_back(0);
+    ///
+    /// assert!(itertools::equal(it, 0..5));
+    /// ```
+    #[inline]
+    pub fn put_back(&mut self, x: I::Item)
+    {
+        self.top.push(x);
+    }
+}
+
+impl<I: Iterator> Iterator for PutBackN<I>
+{
+    type Item = I::Item;
+    #[inline]
+    fn next(&mut self) -> Option<I::Item> {
+        if self.top.is_empty() {
+            self.iter.next()
+        } else {
+            self.top.pop()
+        }
+    }
+    #[inline]
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let (lo, hi) = self.iter.size_hint();
+        (lo.saturating_add(self.top.len()), hi.and_then(|x| x.checked_add(self.top.len())))
+    }
+}
+
+impl<I: Iterator> Clone for PutBackN<I> where
+    I: Clone,
+    I::Item: Clone
+{
+    fn clone(&self) -> Self
+    {
+        clone_fields!(PutBackN, self, top, iter)
+    }
+}
+
 #[derive(Clone)]
 /// An iterator adaptor that iterates over the cartesian product of
 /// the element sets of two iterators **I** and **J**.
@@ -712,5 +781,58 @@ impl<'a, I, F> Iterator for TakeWhileRef<'a, I, F> where
     {
         let (_, hi) = self.iter.size_hint();
         (0, hi)
+    }
+}
+
+/// An iterator to iterate through all the combinations of pairs in a **Clone**-able iterator.
+#[derive(Clone)]
+pub struct Combinations<I: Iterator> {
+    iter: I,
+    next_iter: I,
+    val: Option<I::Item>,
+}
+impl<I> Combinations<I> where I: Iterator + Clone {
+    /// Create a new **Combinations** from a clonable iterator.
+    pub fn new(iter: I) -> Combinations<I> {
+        Combinations { 
+            next_iter: iter.clone(), 
+            iter: iter, 
+            val: None,
+        }
+    }
+}
+
+impl<I> Iterator for Combinations<I> where I: Iterator + Clone, I::Item: Clone{
+    type Item = (I::Item, I::Item);
+    fn next(&mut self) -> Option<Self::Item> {
+        // not having a value means we iterate once more through the first iterator
+        if self.val.is_none() {
+            self.val = self.iter.next();
+            self.next_iter = self.iter.clone();
+        }
+
+        // if its still none, we're out of values
+        let elt = match self.val {
+            Some(ref x) => x.clone(),
+            None => return None,
+        };
+
+        match self.next_iter.next() {
+            Some(ref x) => {
+                return Some((elt, x.clone()));
+            },
+            None => {
+                self.val = None;
+            }
+        }
+        // try again if we ran out of values in the second iterator
+        self.next()
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let (lo, hi) = self.iter.size_hint();
+        let (lo, hi) = size_hint::mul((lo, hi), (lo - 1, hi.map(|hi|hi - 1)));
+        // won't truncate because x * (x - 1) is guarenteed to be even
+        (lo / 2, hi.map(|hi| hi / 2))
     }
 }

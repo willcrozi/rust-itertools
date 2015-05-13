@@ -40,6 +40,7 @@ pub use adaptors::{
     Interleave,
     Product,
     PutBack,
+    PutBackN,
     FnMap,
     Batching,
     GroupBy,
@@ -49,6 +50,7 @@ pub use adaptors::{
     TakeWhileRef,
     Coalesce,
     CoalesceFn,
+    Combinations,
 };
 #[cfg(feature = "unstable")]
 pub use adaptors::EnumerateFrom;
@@ -655,6 +657,23 @@ pub trait Itertools : Iterator {
         TakeWhileRef::new(self, f)
     }
 
+    /// Return an iterator adaptor that iterates over the combinations of
+    /// the elements from an iterator.
+    ///
+    /// Iterator element type is **(Self::Item, Self::Item)**.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let it = (1..5).combinations();
+    /// assert!(itertools::equal(it, vec![(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]));
+    /// ```
+    fn combinations(self) -> Combinations<Self> where
+        Self: Sized + Clone, Self::Item: Clone
+    {
+        Combinations::new(self)
+    }
+
     /// Like regular *.map()*, specialized to using a simple function pointer instead,
     /// so that the resulting **Map** iterator value can be cloned.
     ///
@@ -992,29 +1011,29 @@ pub fn equal<I, J>(a: I, b: J) -> bool where
 /// ```
 /// use itertools::partition;
 ///
-/// let mut data = [7, 1, 1, 9, 1, 1, 3];
+/// # // use repeated numbers to not promise any ordering
+/// let mut data = [7, 1, 1, 7, 1, 1, 7];
 /// let split_index = partition(&mut data, |elt| *elt >= 3);
 ///
-/// assert_eq!(data, [7, 3, 9, 1, 1, 1, 1]);
+/// assert_eq!(data, [7, 7, 7, 1, 1, 1, 1]);
 /// assert_eq!(split_index, 3);
 /// ```
-pub fn partition<'a, T: 'a, I, F>(it: I, mut pred: F) -> usize where
-    I: IntoIterator<Item=&'a mut T>,
+pub fn partition<'a, A: 'a, I, F>(iter: I, mut pred: F) -> usize where
+    I: IntoIterator<Item=&'a mut A>,
     I::IntoIter: DoubleEndedIterator,
-    F: FnMut(&T) -> bool,
+    F: FnMut(&A) -> bool,
 {
     let mut split_index = 0;
-    let mut it = it.into_iter();
-    'main: while let Some(front) = it.next() {
-        if !pred(&*front) {
+    let mut iter = iter.into_iter();
+    'main: while let Some(front) = iter.next() {
+        if !pred(front) {
             loop {
-                if let Some(back) = it.next_back() {
-                    if pred(&*back) {
+                match iter.next_back() {
+                    Some(back) => if pred(back) {
                         std::mem::swap(front, back);
                         break;
-                    }
-                } else {
-                    break 'main;
+                    },
+                    None => break 'main,
                 }
             }
         }
