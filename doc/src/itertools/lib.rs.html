@@ -1087,6 +1087,12 @@
 <span id="1045">1045</span>
 <span id="1046">1046</span>
 <span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>zero_one</span>))]</span>
@@ -1154,6 +1160,9 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>Times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>times</span>::<span class='ident'>times</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>linspace</span>::{<span class='ident'>linspace</span>, <span class='ident'>Linspace</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>sources</span>::{
+    <span class='ident'>RepeatCall</span>,
+};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip_longest</span>::{<span class='ident'>ZipLongest</span>, <span class='ident'>EitherOrBoth</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::{<span class='ident'>Zip</span>};
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
@@ -1165,6 +1174,7 @@
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>misc</span>;
 <span class='kw'>mod</span> <span class='ident'>rciter</span>;
 <span class='kw'>mod</span> <span class='ident'>repeatn</span>;
+<span class='kw'>mod</span> <span class='ident'>sources</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>size_hint</span>;
 <span class='kw'>mod</span> <span class='ident'>stride</span>;
 <span class='kw'>mod</span> <span class='ident'>tee</span>;
@@ -1233,12 +1243,16 @@
 <span class='doccomment'>/// #[macro_use]</span>
 <span class='doccomment'>/// extern crate itertools;</span>
 <span class='doccomment'>/// # fn main() {</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// // Iterate over three sequences side-by-side</span>
 <span class='doccomment'>/// let mut xs = [0, 0, 0];</span>
-<span class='doccomment'>/// let ys = [72, 73, 74];</span>
+<span class='doccomment'>/// let ys = [69, 107, 101];</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// for (i, a, b) in izip!(0..100, &amp;mut xs, &amp;ys) {</span>
 <span class='doccomment'>///    *a = i ^ *b;</span>
 <span class='doccomment'>/// }</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// assert_eq!(xs, [69, 106, 103]);</span>
 <span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>izip</span> {
@@ -2063,6 +2077,8 @@
     }
 }
 
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>: ?<span class='ident'>Sized</span><span class='op'>&gt;</span> <span class='ident'>Itertools</span> <span class='kw'>for</span> <span class='ident'>T</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Iterator</span> { }
+
 <span class='doccomment'>/// Return **true** if both iterators produce equal sequences</span>
 <span class='doccomment'>/// (elements pairwise equal and sequences of the same length),</span>
 <span class='doccomment'>/// **false** otherwise.</span>
@@ -2131,10 +2147,6 @@
     }
     <span class='ident'>split_index</span>
 }
-
-
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>T</span>: ?<span class='ident'>Sized</span><span class='op'>&gt;</span> <span class='ident'>Itertools</span> <span class='kw'>for</span> <span class='ident'>T</span> <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Iterator</span> { }
-
 </pre>
 </section>
     <section id='search' class="content hidden"></section>
