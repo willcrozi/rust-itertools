@@ -64,6 +64,9 @@ pub use tee::Tee;
 pub use times::Times;
 pub use times::times;
 pub use linspace::{linspace, Linspace};
+pub use sources::{
+    RepeatCall,
+};
 pub use zip_longest::{ZipLongest, EitherOrBoth};
 pub use ziptuple::{Zip};
 #[cfg(feature = "unstable")]
@@ -75,6 +78,7 @@ mod linspace;
 pub mod misc;
 mod rciter;
 mod repeatn;
+mod sources;
 pub mod size_hint;
 mod stride;
 mod tee;
@@ -143,12 +147,16 @@ macro_rules! iproduct {
 /// #[macro_use]
 /// extern crate itertools;
 /// # fn main() {
+///
 /// // Iterate over three sequences side-by-side
 /// let mut xs = [0, 0, 0];
-/// let ys = [72, 73, 74];
+/// let ys = [69, 107, 101];
+///
 /// for (i, a, b) in izip!(0..100, &mut xs, &ys) {
 ///    *a = i ^ *b;
 /// }
+///
+/// assert_eq!(xs, [69, 106, 103]);
 /// # }
 /// ```
 macro_rules! izip {
@@ -973,6 +981,8 @@ pub trait Itertools : Iterator {
     }
 }
 
+impl<T: ?Sized> Itertools for T where T: Iterator { }
+
 /// Return **true** if both iterators produce equal sequences
 /// (elements pairwise equal and sequences of the same length),
 /// **false** otherwise.
@@ -1041,7 +1051,3 @@ pub fn partition<'a, A: 'a, I, F>(iter: I, mut pred: F) -> usize where
     }
     split_index
 }
-
-
-impl<T: ?Sized> Itertools for T where T: Iterator { }
-
