@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-10141' class='srclink' href='../src/itertools/lib.rs.html#223-982' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-10141' class='srclink' href='../src/itertools/lib.rs.html#223-1049' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Itertools: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> {
     fn <a href='#method.interleave' class='fnname'>interleave</a>&lt;J&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.Interleave.html' title='itertools::Interleave'>Interleave</a>&lt;Self, J&gt; <span class='where'>where J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>&lt;Item=Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>&gt;, Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span> { ... }
     fn <a href='#method.intersperse' class='fnname'>intersperse</a>(self, element: Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; <a class='struct' href='../itertools/struct.Intersperse.html' title='itertools::Intersperse'>Intersperse</a>&lt;Self&gt; <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a>, Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span> { ... }
@@ -104,8 +104,8 @@ run out.</p>
                            href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
 <span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
 
-<span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> (<span class='number'>0</span>..<span class='number'>3</span>).<span class='ident'>interleave</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>7</span>, <span class='number'>7</span>]);
-<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='ident'>it</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0</span>, <span class='number'>7</span>, <span class='number'>1</span>, <span class='number'>7</span>, <span class='number'>2</span>]));
+<span class='kw'>let</span> <span class='ident'>it</span> <span class='op'>=</span> (<span class='number'>0</span>..<span class='number'>3</span>).<span class='ident'>interleave</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>7</span>, <span class='number'>8</span>]);
+<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='ident'>it</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0</span>, <span class='number'>7</span>, <span class='number'>1</span>, <span class='number'>8</span>, <span class='number'>2</span>]));
 </pre>
 </div><h3 id='method.intersperse' class='method stab '><code>fn <a href='#method.intersperse' class='fnname'>intersperse</a>(self, element: Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; <a class='struct' href='../itertools/struct.Intersperse.html' title='itertools::Intersperse'>Intersperse</a>&lt;Self&gt; <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a>, Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></h3><div class='docblock'><p>An iterator adaptor to insert a particular value
 between each element of the adapted iterator.</p>
@@ -113,6 +113,13 @@ between each element of the adapted iterator.</p>
 <p>Iterator element type is <strong>Self::Item</strong>.</p>
 
 <p>This iterator is <em>fused</em>.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>((<span class='number'>0</span>..<span class='number'>3</span>).<span class='ident'>intersperse</span>(<span class='number'>8</span>), <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0</span>, <span class='number'>8</span>, <span class='number'>1</span>, <span class='number'>8</span>, <span class='number'>2</span>]));
+</pre>
 </div><h3 id='method.zip_longest' class='method stab '><code>fn <a href='#method.zip_longest' class='fnname'>zip_longest</a>&lt;J&gt;(self, other: J) -&gt; <a class='struct' href='../itertools/struct.ZipLongest.html' title='itertools::ZipLongest'>ZipLongest</a>&lt;Self, J&gt; <span class='where'>where J: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>, Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span></code></h3><div class='docblock'><p>Create an iterator which iterates over both this and the specified
 iterator simultaneously, yielding pairs of two optional elements.</p>
 
@@ -156,6 +163,18 @@ and may pick off as many elements as it likes, to produce the next iterator elem
 are returned as the iterator elements of <strong>GroupBy</strong>.</p>
 
 <p>Iterator element type is <strong>(K, Vec&lt;Self::Item&gt;)</strong></p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='comment'>// group data into runs of larger than zero or not.</span>
+<span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='op'>-</span><span class='number'>3</span>, <span class='number'>4</span>, <span class='number'>5</span>];
+
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='ident'>data</span>.<span class='ident'>into_iter</span>().<span class='ident'>group_by</span>(<span class='op'>|</span><span class='ident'>elt</span><span class='op'>|</span> <span class='op'>*</span><span class='ident'>elt</span> <span class='op'>&gt;=</span> <span class='number'>0</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>iter</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='boolval'>true</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>])));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>iter</span>.<span class='ident'>next</span>(), <span class='prelude-val'>Some</span>((<span class='boolval'>false</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='op'>-</span><span class='number'>3</span>])));
+</pre>
 </div><h3 id='method.tee' class='method stab '><code>fn <a href='#method.tee' class='fnname'>tee</a>(self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='struct' href='../itertools/struct.Tee.html' title='itertools::Tee'>Tee</a>&lt;Self&gt;, <a class='struct' href='../itertools/struct.Tee.html' title='itertools::Tee'>Tee</a>&lt;Self&gt;)</a> <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a>, Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></h3><div class='docblock'><p>Split into an iterator pair that both yield all elements from
 the original iterator.</p>
 
@@ -381,17 +400,59 @@ the elements from an iterator.</p>
 so that the resulting <strong>Map</strong> iterator value can be cloned.</p>
 
 <p>Iterator element type is <strong>B</strong>.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='kw'>let</span> <span class='ident'>data</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Ok</span>(<span class='number'>1</span>), <span class='prelude-val'>Ok</span>(<span class='number'>0</span>), <span class='prelude-val'>Err</span>(<span class='string'>&quot;No result&quot;</span>)];
+
+<span class='kw'>let</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='ident'>data</span>.<span class='ident'>iter</span>().<span class='ident'>cloned</span>().<span class='ident'>map_fn</span>(<span class='prelude-ty'>Result</span>::<span class='ident'>ok</span>);
+<span class='kw'>let</span> <span class='ident'>iter_copy</span> <span class='op'>=</span> <span class='ident'>iter</span>.<span class='ident'>clone</span>();
+
+<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='ident'>iter</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>(<span class='number'>1</span>), <span class='prelude-val'>Some</span>(<span class='number'>0</span>), <span class='prelude-val'>None</span>]));
+<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='ident'>iter_copy</span>, <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>(<span class='number'>1</span>), <span class='prelude-val'>Some</span>(<span class='number'>0</span>), <span class='prelude-val'>None</span>]));
+</pre>
 </div><h3 id='method.fn_map' class='method stab '><code>fn <a href='#method.fn_map' class='fnname'>fn_map</a>&lt;B&gt;(self, map: fn(Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; B) -&gt; <a class='struct' href='../itertools/struct.FnMap.html' title='itertools::FnMap'>FnMap</a>&lt;B, Self&gt; <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span></code></h3><div class='docblock'><p><strong>Deprecated:</strong> Use <em>.map_fn()</em> instead.</p>
 </div><h3 id='method.find_position' class='method stab '><code>fn <a href='#method.find_position' class='fnname'>find_position</a>&lt;P&gt;(&amp;mut self, pred: P) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>)</a>&gt; <span class='where'>where P: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;Self::<a class='trait' href='../itertools/trait.Itertools.html' title='itertools::Itertools'>Item</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></span></code></h3><div class='docblock'><p>Find the position and value of the first element satisfying a predicate.</p>
+
+<p>The iterator is not advanced past the first element found.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='kw'>let</span> <span class='ident'>text</span> <span class='op'>=</span> <span class='string'>&quot;α-0&quot;</span>;
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>text</span>.<span class='ident'>chars</span>().<span class='ident'>find_position</span>(<span class='op'>|</span><span class='ident'>ch</span><span class='op'>|</span> <span class='ident'>ch</span>.<span class='ident'>is_numeric</span>()), <span class='prelude-val'>Some</span>((<span class='number'>2</span>, <span class='string'>&#39;0&#39;</span>)));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>text</span>.<span class='ident'>chars</span>().<span class='ident'>find_position</span>(<span class='op'>|</span><span class='ident'>ch</span><span class='op'>|</span> <span class='ident'>ch</span>.<span class='ident'>is_uppercase</span>()), <span class='prelude-val'>None</span>);
+</pre>
 </div><h3 id='method.dropn' class='method stab '><code>fn <a href='#method.dropn' class='fnname'>dropn</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h3><div class='docblock'><p>Consume the first <strong>n</strong> elements of the iterator eagerly.</p>
 
-<p>Return actual number of elements consumed,
-until done or reaching the end.</p>
+<p>Return actual number of elements consumed, until done or reaching the end.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='string'>&quot;αβγ&quot;</span>.<span class='ident'>chars</span>();
+<span class='ident'>iter</span>.<span class='ident'>dropn</span>(<span class='number'>2</span>);
+<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='ident'>iter</span>, <span class='string'>&quot;γ&quot;</span>.<span class='ident'>chars</span>()));
+
+<span class='macro'>assert_eq</span><span class='macro'>!</span>((<span class='number'>0</span>..<span class='number'>10</span>).<span class='ident'>dropn</span>(<span class='number'>50</span>), <span class='number'>10</span>);
+</pre>
 </div><h3 id='method.dropping' class='method stab '><code>fn <a href='#method.dropping' class='fnname'>dropping</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span></code></h3><div class='docblock'><p>Consume the first <strong>n</strong> elements from the iterator eagerly,
 and return the same iterator again.</p>
 
 <p>It works similarly to <strong>.skip(n)</strong> except it is eager and
 preserves the iterator type.</p>
+
+<h2 id="example" class='section-header'><a
+                           href="#example">Example</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>Itertools</span>;
+
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='string'>&quot;αβγ&quot;</span>.<span class='ident'>chars</span>().<span class='ident'>dropping</span>(<span class='number'>2</span>);
+<span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>itertools</span>::<span class='ident'>equal</span>(<span class='ident'>iter</span>, <span class='string'>&quot;γ&quot;</span>.<span class='ident'>chars</span>()));
+</pre>
 </div><h3 id='method.dropping_back' class='method stab '><code>fn <a href='#method.dropping_back' class='fnname'>dropping_back</a>(self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a>, Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.DoubleEndedIterator.html' title='core::iter::DoubleEndedIterator'>DoubleEndedIterator</a></span></code></h3><div class='docblock'><p>Consume the last <strong>n</strong> elements from the iterator eagerly,
 and return the same iterator again.</p>
 

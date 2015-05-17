@@ -45,14 +45,15 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-7213' class='srclink' href='../src/itertools/zip_longest.rs.html#107-116' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-7213' class='srclink' href='../src/itertools/zip_longest.rs.html#110-119' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum EitherOrBoth&lt;A, B&gt; {
     Both(A, B),
     Left(A),
     Right(B),
 }</pre><div class='docblock'><p>A value yielded by <code>ZipLongest</code>.
-Contains one or two values,
-depending on which of the input iterators are exhausted.</p>
+Contains one or two values, depending on which of the input iterators are exhausted.</p>
+
+<p>See <a href="trait.Itertools.html#method.zip_longest"><em>.zip_longest()</em></a> for more information.</p>
 </div><h2 class='variants'>Variants</h2>
 <table><tr><td id='variant.Both'><code>Both</code></td><td><div class='docblock'><p>Neither input iterator is exhausted yet, yielding two values.</p>
 </div></td></tr><tr><td id='variant.Left'><code>Left</code></td><td><div class='docblock'><p>The parameter iterator of <code>.zip_longest()</code> is exhausted,
