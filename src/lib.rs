@@ -640,24 +640,21 @@ pub trait Itertools : Iterator {
     /// ```
     /// use itertools::Itertools;
     ///
-    /// let text = String::from("let there be text");
-    /// let excerpts = vec![&text[0..4], &text[4..9], &text[10..12], &text[12..]];
+    /// // Split a string into a slice per letter, filter out whitespace,
+    /// // and join into words again by mending adjacent slices.
+    /// let text = String::from("Warning:  γ-radiation (ionizing)");
+    /// let char_slices = text.char_indices()
+    ///                       .map(|(index, ch)| &text[index..index + ch.len_utf8()]);
+    /// let words = char_slices.filter(|s| !s.chars().any(char::is_whitespace))
+    ///                        .mend_slices();
     ///
-    /// assert!(itertools::equal(excerpts.into_iter().mend_slices(),
-    ///                          vec!["let there", "be text"]));
+    /// assert!(itertools::equal(words, vec!["Warning:", "γ-radiation", "(ionizing)"]));
     /// ```
     fn mend_slices(self) -> CoalesceFn<Self> where
         Self: Sized,
         Self::Item: misc::MendSlice
     {
-        fn mend<T: misc::MendSlice>(x: T, y: T) -> Result<T, (T, T)>
-        {
-            match misc::MendSlice::mend(x, y) {
-                Some(z) => Ok(z),
-                None => Err((x, y)),
-            }
-        }
-        Coalesce::new(self, mend)
+        Coalesce::new(self, misc::MendSlice::mend)
     }
 
     /// Return an iterator adaptor that borrows from a **Clone**-able iterator
