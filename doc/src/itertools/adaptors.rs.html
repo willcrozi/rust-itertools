@@ -900,6 +900,10 @@
 <span id="858">858</span>
 <span id="859">859</span>
 <span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Licensed under the Apache License, Version 2.0</span>
 <span class='doccomment'>//! http://www.apache.org/licenses/LICENSE-2.0 or the MIT license</span>
@@ -1131,10 +1135,10 @@
             <span class='self'>self</span>.<span class='ident'>top</span>.<span class='ident'>pop</span>()
         }
     }
+
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>) {
-        <span class='kw'>let</span> (<span class='ident'>lo</span>, <span class='ident'>hi</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
-        (<span class='ident'>lo</span>.<span class='ident'>saturating_add</span>(<span class='self'>self</span>.<span class='ident'>top</span>.<span class='ident'>len</span>()), <span class='ident'>hi</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>checked_add</span>(<span class='self'>self</span>.<span class='ident'>top</span>.<span class='ident'>len</span>())))
+        <span class='ident'>size_hint</span>::<span class='ident'>add_scalar</span>(<span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>(), <span class='self'>self</span>.<span class='ident'>top</span>.<span class='ident'>len</span>())
     }
 }
 
@@ -1755,10 +1759,14 @@
     }
 
     <span class='kw'>fn</span> <span class='ident'>size_hint</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>) {
-        <span class='kw'>let</span> (<span class='ident'>lo</span>, <span class='ident'>hi</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
-        <span class='kw'>let</span> (<span class='ident'>lo</span>, <span class='ident'>hi</span>) <span class='op'>=</span> <span class='ident'>size_hint</span>::<span class='ident'>mul</span>((<span class='ident'>lo</span>, <span class='ident'>hi</span>), (<span class='ident'>lo</span> <span class='op'>-</span> <span class='number'>1</span>, <span class='ident'>hi</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>hi</span><span class='op'>|</span><span class='ident'>hi</span> <span class='op'>-</span> <span class='number'>1</span>)));
+        <span class='kw'>let</span> <span class='ident'>sh</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>.<span class='ident'>size_hint</span>();
+        <span class='kw'>let</span> (<span class='ident'>lo</span>, <span class='ident'>hi</span>) <span class='op'>=</span> <span class='ident'>size_hint</span>::<span class='ident'>mul</span>(<span class='ident'>sh</span>, <span class='ident'>size_hint</span>::<span class='ident'>sub_scalar</span>(<span class='ident'>sh</span>, <span class='number'>1</span>));
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>extra</span> <span class='op'>=</span> (<span class='number'>0</span>, <span class='prelude-val'>Some</span>(<span class='number'>0</span>));
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>val</span>.<span class='ident'>is_some</span>() {
+            <span class='ident'>extra</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>next_iter</span>.<span class='ident'>size_hint</span>();
+        }
         <span class='comment'>// won&#39;t truncate because x * (x - 1) is guarenteed to be even</span>
-        (<span class='ident'>lo</span> <span class='op'>/</span> <span class='number'>2</span>, <span class='ident'>hi</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>hi</span><span class='op'>|</span> <span class='ident'>hi</span> <span class='op'>/</span> <span class='number'>2</span>))
+        <span class='ident'>size_hint</span>::<span class='ident'>add</span>((<span class='ident'>lo</span> <span class='op'>/</span> <span class='number'>2</span>, <span class='ident'>hi</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>hi</span><span class='op'>|</span> <span class='ident'>hi</span> <span class='op'>/</span> <span class='number'>2</span>)), <span class='ident'>extra</span>)
     }
 }
 </pre>

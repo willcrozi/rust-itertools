@@ -157,6 +157,17 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Arithmetic on **Iterator** *.size_hint()* values.</span>
 <span class='doccomment'>//!</span>
@@ -166,16 +177,6 @@
 
 <span class='doccomment'>/// **SizeHint** is the return type of **Iterator::size_hint()**.</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>SizeHint</span> <span class='op'>=</span> (<span class='ident'>usize</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>usize</span><span class='op'>&gt;</span>);
-
-<span class='doccomment'>/// Add **x** correctly to a **SizeHint**.</span>
-<span class='attribute'>#[<span class='ident'>inline</span>]</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>add_scalar</span>(<span class='ident'>sh</span>: <span class='ident'>SizeHint</span>, <span class='ident'>x</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>SizeHint</span>
-{
-    <span class='kw'>let</span> (<span class='kw-2'>mut</span> <span class='ident'>low</span>, <span class='kw-2'>mut</span> <span class='ident'>hi</span>) <span class='op'>=</span> <span class='ident'>sh</span>;
-    <span class='ident'>low</span> <span class='op'>=</span> <span class='ident'>low</span>.<span class='ident'>saturating_add</span>(<span class='ident'>x</span>);
-    <span class='ident'>hi</span> <span class='op'>=</span> <span class='ident'>hi</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>elt</span><span class='op'>|</span> <span class='ident'>elt</span>.<span class='ident'>checked_add</span>(<span class='ident'>x</span>));
-    (<span class='ident'>low</span>, <span class='ident'>hi</span>)
-}
 
 <span class='doccomment'>/// Add **SizeHint** correctly.</span>
 <span class='attribute'>#[<span class='ident'>inline</span>]</span>
@@ -189,6 +190,27 @@
 
     (<span class='ident'>min</span>, <span class='ident'>max</span>)
 }
+
+<span class='doccomment'>/// Add **x** correctly to a **SizeHint**.</span>
+<span class='attribute'>#[<span class='ident'>inline</span>]</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>add_scalar</span>(<span class='ident'>sh</span>: <span class='ident'>SizeHint</span>, <span class='ident'>x</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>SizeHint</span>
+{
+    <span class='kw'>let</span> (<span class='kw-2'>mut</span> <span class='ident'>low</span>, <span class='kw-2'>mut</span> <span class='ident'>hi</span>) <span class='op'>=</span> <span class='ident'>sh</span>;
+    <span class='ident'>low</span> <span class='op'>=</span> <span class='ident'>low</span>.<span class='ident'>saturating_add</span>(<span class='ident'>x</span>);
+    <span class='ident'>hi</span> <span class='op'>=</span> <span class='ident'>hi</span>.<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>elt</span><span class='op'>|</span> <span class='ident'>elt</span>.<span class='ident'>checked_add</span>(<span class='ident'>x</span>));
+    (<span class='ident'>low</span>, <span class='ident'>hi</span>)
+}
+
+<span class='doccomment'>/// Sbb **x** correctly to a **SizeHint**.</span>
+<span class='attribute'>#[<span class='ident'>inline</span>]</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>sub_scalar</span>(<span class='ident'>sh</span>: <span class='ident'>SizeHint</span>, <span class='ident'>x</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>SizeHint</span>
+{
+    <span class='kw'>let</span> (<span class='kw-2'>mut</span> <span class='ident'>low</span>, <span class='kw-2'>mut</span> <span class='ident'>hi</span>) <span class='op'>=</span> <span class='ident'>sh</span>;
+    <span class='ident'>low</span> <span class='op'>=</span> <span class='ident'>low</span>.<span class='ident'>saturating_sub</span>(<span class='ident'>x</span>);
+    <span class='ident'>hi</span> <span class='op'>=</span> <span class='ident'>hi</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>elt</span><span class='op'>|</span> <span class='ident'>elt</span>.<span class='ident'>saturating_sub</span>(<span class='ident'>x</span>));
+    (<span class='ident'>low</span>, <span class='ident'>hi</span>)
+}
+
 
 <span class='doccomment'>/// Multiply **x** correctly with a **SizeHint**.</span>
 <span class='doccomment'>///</span>
