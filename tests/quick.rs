@@ -380,6 +380,15 @@ fn size_put_back(a: Vec<u8>, x: Option<u8>) -> bool {
 }
 
 #[quickcheck]
+fn size_put_backn(a: Vec<u8>, b: Vec<u8>) -> bool {
+    let mut it = itertools::PutBackN::new(a.into_iter());
+    for elt in b {
+        it.put_back(elt)
+    }
+    correct_size_hint(it)
+}
+
+#[quickcheck]
 fn size_tee(a: Vec<u8>) -> bool {
     let (mut t1, mut t2) = a.iter().tee();
     t1.next();
@@ -424,6 +433,27 @@ fn equal_partition(mut a: Vec<i32>) -> bool {
     a.sort();
     ap.sort();
     parted && (a == ap)
+}
+
+#[quickcheck]
+fn size_combinations(it: Iter<i16>) -> bool {
+    correct_size_hint(it.combinations())
+}
+
+#[quickcheck]
+fn equal_combinations(mut it: Iter<i16>) -> bool {
+    let values = it.clone().collect_vec();
+    let mut cmb = it.combinations();
+    for i in 0..values.len() {
+        for j in i+1..values.len() {
+            let pair = (values[i], values[j]);
+            if pair != cmb.next().unwrap() {
+                return false;
+            }
+        }
+    }
+
+    cmb.next() == None
 }
 
 }
