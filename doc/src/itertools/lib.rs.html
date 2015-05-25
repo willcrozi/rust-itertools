@@ -1099,64 +1099,6 @@
 <span id="1057">1057</span>
 <span id="1058">1058</span>
 <span id="1059">1059</span>
-<span id="1060">1060</span>
-<span id="1061">1061</span>
-<span id="1062">1062</span>
-<span id="1063">1063</span>
-<span id="1064">1064</span>
-<span id="1065">1065</span>
-<span id="1066">1066</span>
-<span id="1067">1067</span>
-<span id="1068">1068</span>
-<span id="1069">1069</span>
-<span id="1070">1070</span>
-<span id="1071">1071</span>
-<span id="1072">1072</span>
-<span id="1073">1073</span>
-<span id="1074">1074</span>
-<span id="1075">1075</span>
-<span id="1076">1076</span>
-<span id="1077">1077</span>
-<span id="1078">1078</span>
-<span id="1079">1079</span>
-<span id="1080">1080</span>
-<span id="1081">1081</span>
-<span id="1082">1082</span>
-<span id="1083">1083</span>
-<span id="1084">1084</span>
-<span id="1085">1085</span>
-<span id="1086">1086</span>
-<span id="1087">1087</span>
-<span id="1088">1088</span>
-<span id="1089">1089</span>
-<span id="1090">1090</span>
-<span id="1091">1091</span>
-<span id="1092">1092</span>
-<span id="1093">1093</span>
-<span id="1094">1094</span>
-<span id="1095">1095</span>
-<span id="1096">1096</span>
-<span id="1097">1097</span>
-<span id="1098">1098</span>
-<span id="1099">1099</span>
-<span id="1100">1100</span>
-<span id="1101">1101</span>
-<span id="1102">1102</span>
-<span id="1103">1103</span>
-<span id="1104">1104</span>
-<span id="1105">1105</span>
-<span id="1106">1106</span>
-<span id="1107">1107</span>
-<span id="1108">1108</span>
-<span id="1109">1109</span>
-<span id="1110">1110</span>
-<span id="1111">1111</span>
-<span id="1112">1112</span>
-<span id="1113">1113</span>
-<span id="1114">1114</span>
-<span id="1115">1115</span>
-<span id="1116">1116</span>
-<span id="1117">1117</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>zero_one</span>))]</span>
@@ -1260,8 +1202,6 @@
 <span class='doccomment'>/// Iterator element type is like **(A, B, ..., E)** if formed</span>
 <span class='doccomment'>/// from iterators **(I, J, ..., M)** with element types **I::Item = A**, **J::Item = B**, etc.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// ## Example</span>
-<span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// #[macro_use]</span>
 <span class='doccomment'>/// extern crate itertools;</span>
@@ -1300,8 +1240,6 @@
 <span class='doccomment'>/// Iterator element type is like `(A, B, ..., E)` if formed</span>
 <span class='doccomment'>/// from iterators `(I, J, ..., M)` implementing `I: Iterator&lt;A&gt;`,</span>
 <span class='doccomment'>/// `J: Iterator&lt;B&gt;`, ..., `M: Iterator&lt;E&gt;`</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// ## Example</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// #[macro_use]</span>
@@ -1354,8 +1292,6 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Iterator element type is the type of `&lt;expression&gt;`</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// ## Example</span>
-<span class='doccomment'>///</span>
 <span class='doccomment'>/// ```ignore</span>
 <span class='doccomment'>/// let mut squares = icompr!(x * x, x, 1..100);</span>
 <span class='doccomment'>/// ```</span>
@@ -1390,8 +1326,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// This iterator is *fused*.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1411,8 +1345,6 @@
     <span class='doccomment'>/// Iterator element type is **Self::Item**.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// This iterator is *fused*.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1434,8 +1366,6 @@
     <span class='doccomment'>/// When both iterators return **None**, all further invocations of *.next()* </span>
     <span class='doccomment'>/// will return **None**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// # Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```rust</span>
     <span class='doccomment'>/// use itertools::EitherOrBoth::{Both, Right};</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1456,8 +1386,6 @@
     <span class='doccomment'>/// and may pick off as many elements as it likes, to produce the next iterator element.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **B**.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1488,8 +1416,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **(K, Vec\&lt;Self::Item\&gt;)**</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1514,7 +1440,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Self::Item**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>/// let xs = vec![0, 1, 2, 3];</span>
@@ -1542,7 +1467,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Self::Item**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::iter::repeat;</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1567,8 +1491,6 @@
     <span class='doccomment'>/// (If it is not obvious: this has a performance penalty.)</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Self::Item**.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1602,7 +1524,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// **Panics** if the step is 0.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1620,7 +1541,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Self::Item**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1647,7 +1567,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **Self::Item**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1709,8 +1628,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// After a call to *.next()* the peeking cursor is reset.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1740,8 +1657,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// This iterator is *fused*.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1769,8 +1684,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// This iterator is *fused*.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1794,8 +1707,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Only implemented for iterators with slice or string slice elements.</span>
     <span class='doccomment'>/// Only slices that are contiguous together can be joined.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1822,8 +1733,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// It uses the **Clone** trait to restore the original iterator so that the last</span>
     <span class='doccomment'>/// and rejected element is still available when **TakeWhileRef** is done.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1865,8 +1774,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is **B**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1898,8 +1805,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The iterator is not advanced past the first element found.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1923,8 +1828,6 @@
     <span class='doccomment'>/// Consume the first **n** elements of the iterator eagerly.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Return actual number of elements consumed, until done or reaching the end.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -1953,8 +1856,6 @@
     <span class='doccomment'>/// It works similarly to **.skip(n)** except it is eager and</span>
     <span class='doccomment'>/// preserves the iterator type.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1977,8 +1878,6 @@
     <span class='doccomment'>/// Note: This method is eager, dropping the back elements immediately and</span>
     <span class='doccomment'>/// preserves the iterator type.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -1996,8 +1895,6 @@
     <span class='doccomment'>/// Run the closure **f** eagerly on each element of the iterator.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Consumes the iterator until its end.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::sync::mpsc::channel;</span>
@@ -2034,7 +1931,6 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Return the number of elements written.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -2061,8 +1957,6 @@
     <span class='doccomment'>/// Combine all iterator elements into one String, seperated by **sep**.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Use the **Display** implementation of each element.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -2113,8 +2007,6 @@
     <span class='doccomment'>/// With a **start** value of 0 and an addition as folding function,</span>
     <span class='doccomment'>/// this effetively results in *((0 + 1) + 2) + 3*</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use std::ops::Add;</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -2152,8 +2044,6 @@
     <span class='doccomment'>/// empty, return **None**. With just one element, return it.</span>
     <span class='doccomment'>/// Otherwise elements are accumulated in sequence using the closure **f**.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
-    <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
@@ -2177,8 +2067,6 @@
     <span class='doccomment'>/// Tell if the iterator is empty or not according to its size hint.</span>
     <span class='doccomment'>/// Return **None** if the size hint does not tell, or return a **Some**</span>
     <span class='doccomment'>/// value with the emptiness if it&#39;s possible to tell.</span>
-    <span class='doccomment'>///</span>
-    <span class='doccomment'>/// ## Example</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
@@ -2211,8 +2099,6 @@
 <span class='doccomment'>/// (elements pairwise equal and sequences of the same length),</span>
 <span class='doccomment'>/// **false** otherwise.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// ## Example</span>
-<span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// assert!(itertools::equal(vec![1, 2, 3], 1..4));</span>
 <span class='doccomment'>/// assert!(!itertools::equal(&amp;[0, 0], &amp;[0, 0, 0]));</span>
@@ -2239,8 +2125,6 @@
 <span class='doccomment'>/// The order within the partitions is arbitrary.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Return the index of the split point.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// ## Example</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// use itertools::partition;</span>
