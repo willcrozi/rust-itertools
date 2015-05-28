@@ -46,7 +46,7 @@
                 [<span class='inner'>&#x2212;</span>]
             </a>
         </span><a id='src-1956' class='srclink' href='../src/itertools/adaptors.rs.html#701-702' title='goto source code'>[src]</a></span></h1>
-<pre class='rust typedef'>type CoalesceFn&lt;I&gt; = <a class='struct' href='../itertools/struct.Coalesce.html' title='itertools::Coalesce'>Coalesce</a>&lt;I, fn(I, I) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;I, <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(I, I)</a>&gt;&gt;;</pre><div class='docblock'><p>An iterator adaptor that may join together adjacent elements.</p>
+<pre class='rust typedef'>type CoalesceFn&lt;I&gt; <span class='where'>where I: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a></span> = <a class='struct' href='../itertools/struct.Coalesce.html' title='itertools::Coalesce'>Coalesce</a>&lt;I, fn(I::Item, I::Item) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;I::Item, <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(I::Item, I::Item)</a>&gt;&gt;;</pre><div class='docblock'><p>An iterator adaptor that may join together adjacent elements.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
 
