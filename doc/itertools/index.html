@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `itertools` crate.">
     <meta name="keywords" content="rust, rustlang, rust-lang, itertools">
 
-    <title>itertools 0.3.10 - itertools - Rust</title>
+    <title>itertools 0.3.11 - itertools - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1059' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1090' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros.</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -57,7 +57,7 @@
 <a href="./struct.PutBack.html"><strong>PutBack</strong></a>, <a href="./struct.Zip.html"><strong>Zip</strong></a>,
 <a href="./struct.Stride.html"><strong>Stride</strong></a>, <a href="./struct.StrideMut.html"><strong>StrideMut</strong></a>.</p>
 
-<p>To use the macros in this crate, use the <code>#[macro_use]</code> attribute:</p>
+<p>To enable the macros in this crate, use the <code>#[macro_use]</code> attribute:</p>
 <pre id='rust-example-rendered' class='rust '>
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
@@ -383,6 +383,16 @@ Contains one or two values, depending on which of the input iterators are exhaus
                     </tr>
                 </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
 <table>
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.assert_equal.html'
+                               title='itertools::assert_equal'>assert_equal</a></td>
+                        <td class='docblock short'>
+                             <p>Assert that two iterators produce equal sequences, with the same
+semantics as <em>equal(a, b)</em>.</p>
+
+                        </td>
+                    </tr>
+                
                     <tr class=' module-item'>
                         <td><a class='fn' href='fn.equal.html'
                                title='itertools::equal'>equal</a></td>
