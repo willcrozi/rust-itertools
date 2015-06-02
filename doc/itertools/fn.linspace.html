@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `linspace` fn in crate `itertools`.">
     <meta name="keywords" content="rust, rustlang, rust-lang, linspace">
 
-    <title>itertools 0.3.11 - itertools::linspace - Rust</title>
+    <title>itertools 0.3.12 - itertools::linspace - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -51,10 +51,10 @@ element is <code>a</code> and the last element is <code>b</code>.</p>
 
 <p>Iterator element type is <code>F</code>.</p>
 <pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>itertools</span> <span class='kw'>as</span> <span class='ident'>it</span>;
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>xs</span> <span class='op'>=</span> <span class='ident'>it</span>::<span class='ident'>linspace</span>::<span class='op'>&lt;</span><span class='ident'>f32</span><span class='op'>&gt;</span>(<span class='number'>0.</span>, <span class='number'>1.</span>, <span class='number'>5</span>);
-<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>xs</span>.<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>(),
-           <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0.</span>, <span class='number'>0.25</span>, <span class='number'>0.5</span>, <span class='number'>0.75</span>, <span class='number'>1.0</span>]);
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>linspace</span>;
+
+<span class='ident'>itertools</span>::<span class='ident'>assert_equal</span>(<span class='ident'>linspace</span>::<span class='op'>&lt;</span><span class='ident'>f32</span><span class='op'>&gt;</span>(<span class='number'>0.</span>, <span class='number'>1.</span>, <span class='number'>5</span>),
+                        <span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>0.</span>, <span class='number'>0.25</span>, <span class='number'>0.5</span>, <span class='number'>0.75</span>, <span class='number'>1.0</span>]);
 </pre>
 </div></section>
     <section id='search' class="content hidden"></section>

@@ -153,10 +153,10 @@
 <span class='doccomment'>/// Iterator element type is `F`.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
-<span class='doccomment'>/// use itertools as it;</span>
-<span class='doccomment'>/// let mut xs = it::linspace::&lt;f32&gt;(0., 1., 5);</span>
-<span class='doccomment'>/// assert_eq!(xs.collect::&lt;Vec&lt;_&gt;&gt;(),</span>
-<span class='doccomment'>///            vec![0., 0.25, 0.5, 0.75, 1.0]);</span>
+<span class='doccomment'>/// use itertools::linspace;</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// itertools::assert_equal(linspace::&lt;f32&gt;(0., 1., 5),</span>
+<span class='doccomment'>///                         vec![0., 0.25, 0.5, 0.75, 1.0]);</span>
 <span class='doccomment'>/// ```</span>
 <span class='attribute'>#[<span class='ident'>inline</span>]</span>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>linspace</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>(<span class='ident'>a</span>: <span class='ident'>F</span>, <span class='ident'>b</span>: <span class='ident'>F</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Linspace</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
