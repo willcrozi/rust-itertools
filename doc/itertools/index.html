@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `itertools` crate.">
     <meta name="keywords" content="rust, rustlang, rust-lang, itertools">
 
-    <title>itertools 0.3.12 - itertools - Rust</title>
+    <title>itertools 0.3.13 - itertools - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1095' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1141' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros.</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -190,6 +190,16 @@ run out.</p>
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='struct' href='struct.InterleaveShortest.html'
+                               title='itertools::InterleaveShortest'>InterleaveShortest</a></td>
+                        <td class='docblock short'>
+                             <p>An iterator adaptor that alternates elements from the two iterators until
+one of them runs out.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='struct' href='struct.Intersperse.html'
                                title='itertools::Intersperse'>Intersperse</a></td>
                         <td class='docblock short'>
@@ -224,6 +234,16 @@ If both base iterators are sorted (ascending), the result is sorted.</p>
                         <td class='docblock short'>
                              <p>An iterator adaptor that allows the user to peek at multiple <em>.next()</em>
 values without advancing itself.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.PadUsing.html'
+                               title='itertools::PadUsing'>PadUsing</a></td>
+                        <td class='docblock short'>
+                             <p>An iterator adaptor that pads a sequence to a minimum length by filling
+missing elements using a closure.</p>
 
                         </td>
                     </tr>
