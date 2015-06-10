@@ -338,10 +338,10 @@ nav.sub {
     font-size: 1em;
     position: relative;
 }
-/* Shift "where ..." part of method definition down a line */
-.content .method .where { display: block; }
+/* Shift "where ..." part of method or fn definition down a line */
+.content .method .where, .content .fn .where { display: block; }
 /* Bit of whitespace to indent it */
-.content .method .where::before { content: '  '; }
+.content .method .where::before, .content .fn .where::before { content: '  '; }
 
 .content .methods > div { margin-left: 40px; }
 
@@ -663,11 +663,6 @@ pre.rust { position: relative; }
 
 .docblock pre.rust { background: #eeeeff; }
 pre.trait, pre.fn, pre.struct, pre.enum, pre.typedef { background: #fcfefc; }
-
-/* Shift "where ..." part of FUNCTION definition down a line */
-.content .fn .where { display: block; }
-/* Bit of whitespace to indent it */
-.content .fn .where::before { content: '  '; }
 
 /* Small “example” label for doc examples */
 .docblock pre.rust::before {
