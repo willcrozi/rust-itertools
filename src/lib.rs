@@ -50,6 +50,7 @@ pub use adaptors::{
     Merge,
     MultiPeek,
     TakeWhileRef,
+    WhileSome,
     Coalesce,
     CoalesceFn,
     Combinations,
@@ -287,14 +288,15 @@ pub trait Itertools : Iterator {
     /// When both iterators return **None**, all further invocations of *.next()* 
     /// will return **None**.
     ///
+    /// Iterator element type is 
+    /// [**EitherOrBoth\<Self::Item, J::Item\>**](enum.EitherOrBoth.html).
+    ///
     /// ```rust
     /// use itertools::EitherOrBoth::{Both, Right};
     /// use itertools::Itertools;
     /// let it = (0..1).zip_longest(1..3);
     /// itertools::assert_equal(it, vec![Both(0, 1), Right(2)]);
     /// ```
-    ///
-    /// Iterator element type is **EitherOrBoth\<Self::Item, J::Item\>**.
     #[inline]
     fn zip_longest<J>(self, other: J) -> ZipLongest<Self, J::IntoIter> where
         J: IntoIterator,
@@ -671,6 +673,26 @@ pub trait Itertools : Iterator {
         F: FnMut(&Self::Item) -> bool,
     {
         TakeWhileRef::new(self, f)
+    }
+
+    /// Return an iterator adaptor that filters **Option\<A\>** iterator elements
+    /// and produces **A**. Stops on the first **None** encountered.
+    ///
+    /// Iterator element type is **A**, the unwrapped element.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// // List all hexadecimal digits
+    /// itertools::assert_equal(
+    ///     (0..).map(|i| std::char::from_digit(i, 16)).while_some(),
+    ///     "0123456789abcdef".chars());
+    ///
+    /// ```
+    fn while_some<A>(self) -> WhileSome<Self> where
+        Self: Sized + Iterator<Item=Option<A>>,
+    {
+        WhileSome::new(self)
     }
 
     /// Return an iterator adaptor that iterates over the combinations of
