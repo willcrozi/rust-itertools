@@ -1234,6 +1234,51 @@
 <span id="1192">1192</span>
 <span id="1193">1193</span>
 <span id="1194">1194</span>
+<span id="1195">1195</span>
+<span id="1196">1196</span>
+<span id="1197">1197</span>
+<span id="1198">1198</span>
+<span id="1199">1199</span>
+<span id="1200">1200</span>
+<span id="1201">1201</span>
+<span id="1202">1202</span>
+<span id="1203">1203</span>
+<span id="1204">1204</span>
+<span id="1205">1205</span>
+<span id="1206">1206</span>
+<span id="1207">1207</span>
+<span id="1208">1208</span>
+<span id="1209">1209</span>
+<span id="1210">1210</span>
+<span id="1211">1211</span>
+<span id="1212">1212</span>
+<span id="1213">1213</span>
+<span id="1214">1214</span>
+<span id="1215">1215</span>
+<span id="1216">1216</span>
+<span id="1217">1217</span>
+<span id="1218">1218</span>
+<span id="1219">1219</span>
+<span id="1220">1220</span>
+<span id="1221">1221</span>
+<span id="1222">1222</span>
+<span id="1223">1223</span>
+<span id="1224">1224</span>
+<span id="1225">1225</span>
+<span id="1226">1226</span>
+<span id="1227">1227</span>
+<span id="1228">1228</span>
+<span id="1229">1229</span>
+<span id="1230">1230</span>
+<span id="1231">1231</span>
+<span id="1232">1232</span>
+<span id="1233">1233</span>
+<span id="1234">1234</span>
+<span id="1235">1235</span>
+<span id="1236">1236</span>
+<span id="1237">1237</span>
+<span id="1238">1238</span>
+<span id="1239">1239</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>zero_one</span>))]</span>
@@ -1273,6 +1318,7 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>::<span class='ident'>Write</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>::<span class='ident'>Ordering</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>hash</span>::<span class='ident'>Hash</span>;
 
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::{
     <span class='ident'>Interleave</span>,
@@ -1291,6 +1337,8 @@
     <span class='ident'>Coalesce</span>,
     <span class='ident'>CoalesceFn</span>,
     <span class='ident'>Combinations</span>,
+    <span class='ident'>Unique</span>,
+    <span class='ident'>UniqueBy</span>,
 };
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>EnumerateFrom</span>;
@@ -1862,6 +1910,48 @@
         <span class='ident'>Coalesce</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>eq</span>)
     }
 
+    <span class='doccomment'>/// Return an iterator adaptor that filters out elements that have</span>
+    <span class='doccomment'>/// already been produced once during the iteration. Duplicates</span>
+    <span class='doccomment'>/// are detected using hash and equality.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Clones of visited elements are stored in a hash set in the</span>
+    <span class='doccomment'>/// iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let data = vec![10, 20, 30, 20, 40, 10, 50];</span>
+    <span class='doccomment'>/// itertools::assert_equal(data.into_iter().unique(),</span>
+    <span class='doccomment'>///                         vec![10, 20, 30, 40, 50]);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>unique</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>Unique</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
+        <span class='ident'>Self</span>::<span class='ident'>Item</span>: <span class='ident'>Clone</span> <span class='op'>+</span> <span class='ident'>Eq</span> <span class='op'>+</span> <span class='ident'>Hash</span>,
+    {
+        <span class='self'>self</span>.<span class='ident'>unique_by</span>(<span class='ident'>Clone</span>::<span class='ident'>clone</span>)
+    }
+
+    <span class='doccomment'>/// Return an iterator adaptor that filters out elements that have</span>
+    <span class='doccomment'>/// already been produced once during the iteration.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Duplicates are detected by comparing the key they map to</span>
+    <span class='doccomment'>/// with the keying function **f** by hash and equality.</span>
+    <span class='doccomment'>/// The keys are stored in a hash set in the iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let data = vec![&quot;a&quot;, &quot;bb&quot;, &quot;aa&quot;, &quot;c&quot;, &quot;ccc&quot;];</span>
+    <span class='doccomment'>/// itertools::assert_equal(data.into_iter().unique_by(|s| s.len()),</span>
+    <span class='doccomment'>///                         vec![&quot;a&quot;, &quot;bb&quot;, &quot;ccc&quot;]);</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>unique_by</span><span class='op'>&lt;</span><span class='ident'>V</span>, <span class='ident'>F</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>UniqueBy</span><span class='op'>&lt;</span><span class='kw'>Self</span>, <span class='ident'>V</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
+        <span class='ident'>V</span>: <span class='ident'>Eq</span> <span class='op'>+</span> <span class='ident'>Hash</span>,
+        <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>Self</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>V</span>
+    {
+        <span class='ident'>UniqueBy</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>f</span>)
+    }
 
     <span class='doccomment'>/// Return an iterator adaptor that joins together adjacent slices if possible.</span>
     <span class='doccomment'>///</span>

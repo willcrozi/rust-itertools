@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `add` fn in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, add">
+    <meta name="description" content="API documentation for the Rust `Unique` type in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Unique">
 
-    <title>itertools 0.3.16 - itertools::size_hint::add - Rust</title>
+    <title>itertools 0.3.16 - itertools::Unique - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
 
     
     
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='../index.html'>itertools</a>::<wbr><a href='index.html'>size_hint</a></p><script>window.sidebarCurrent = {name: 'add', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'Unique', ty: 'type', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -40,13 +40,13 @@
         </form>
     </nav>
 
-    <section id='main' class="content fn">
-<h1 class='fqn'><span class='in-band'>Function <a href='../index.html'>itertools</a>::<wbr><a href='index.html'>size_hint</a>::<wbr><a class='fn' href=''>add</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content type">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>itertools</a>::<wbr><a class='type' href=''>Unique</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-5518' class='srclink' href='../../src/itertools/size_hint.rs.html#12-21' title='goto source code'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn add(a: <a class='type' href='../../itertools/size_hint/type.SizeHint.html' title='itertools::size_hint::SizeHint'>SizeHint</a>, b: <a class='type' href='../../itertools/size_hint/type.SizeHint.html' title='itertools::size_hint::SizeHint'>SizeHint</a>) -&gt; <a class='type' href='../../itertools/size_hint/type.SizeHint.html' title='itertools::size_hint::SizeHint'>SizeHint</a></pre><div class='docblock'><p>Add <strong>SizeHint</strong> correctly.</p>
+        </span><a id='src-3077' class='srclink' href='../src/itertools/adaptors.rs.html#1031-1032' title='goto source code'>[src]</a></span></h1>
+<pre class='rust typedef'>type Unique&lt;I&gt; <span class='where'>where I: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a></span> = <a class='struct' href='../itertools/struct.UniqueBy.html' title='itertools::UniqueBy'>UniqueBy</a>&lt;I, I::Item, fn(&amp;I::Item) -&gt; I::Item&gt;;</pre><div class='docblock'><p>An iterator adapter to filter out duplicate elements.</p>
 </div></section>
     <section id='search' class="content hidden"></section>
 
@@ -90,13 +90,13 @@
     
 
     <script>
-        window.rootPath = "../../";
+        window.rootPath = "../";
         window.currentCrate = "itertools";
         window.playgroundUrl = "";
     </script>
-    <script src="../../jquery.js"></script>
-    <script src="../../main.js"></script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
     
-    <script async src="../../search-index.js"></script>
+    <script async src="../search-index.js"></script>
 </body>
 </html>
