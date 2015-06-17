@@ -36,6 +36,7 @@ use std::iter::{self, IntoIterator};
 use std::fmt::Write;
 use std::cmp::Ordering;
 use std::fmt;
+use std::hash::Hash;
 
 pub use adaptors::{
     Interleave,
@@ -54,6 +55,8 @@ pub use adaptors::{
     Coalesce,
     CoalesceFn,
     Combinations,
+    Unique,
+    UniqueBy,
 };
 #[cfg(feature = "unstable")]
 pub use adaptors::EnumerateFrom;
@@ -625,6 +628,48 @@ pub trait Itertools : Iterator {
         Coalesce::new(self, eq)
     }
 
+    /// Return an iterator adaptor that filters out elements that have
+    /// already been produced once during the iteration. Duplicates
+    /// are detected using hash and equality.
+    ///
+    /// Clones of visited elements are stored in a hash set in the
+    /// iterator.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let data = vec![10, 20, 30, 20, 40, 10, 50];
+    /// itertools::assert_equal(data.into_iter().unique(),
+    ///                         vec![10, 20, 30, 40, 50]);
+    /// ```
+    fn unique(self) -> Unique<Self> where
+        Self: Sized,
+        Self::Item: Clone + Eq + Hash,
+    {
+        self.unique_by(Clone::clone)
+    }
+
+    /// Return an iterator adaptor that filters out elements that have
+    /// already been produced once during the iteration.
+    ///
+    /// Duplicates are detected by comparing the key they map to
+    /// with the keying function **f** by hash and equality.
+    /// The keys are stored in a hash set in the iterator.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let data = vec!["a", "bb", "aa", "c", "ccc"];
+    /// itertools::assert_equal(data.into_iter().unique_by(|s| s.len()),
+    ///                         vec!["a", "bb", "ccc"]);
+    /// ```
+    fn unique_by<V, F>(self, f: F) -> UniqueBy<Self, V, F> where
+        Self: Sized,
+        V: Eq + Hash,
+        F: FnMut(&Self::Item) -> V
+    {
+        UniqueBy::new(self, f)
+    }
 
     /// Return an iterator adaptor that joins together adjacent slices if possible.
     ///
