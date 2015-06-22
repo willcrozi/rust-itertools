@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `itertools` crate.">
     <meta name="keywords" content="rust, rustlang, rust-lang, itertools">
 
-    <title>itertools 0.3.16 - itertools - Rust</title>
+    <title>itertools 0.3.17 - itertools - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1239' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1240' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros.</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><strong>Itertools</strong> trait</a>:</p>
@@ -54,8 +54,8 @@
 </pre>
 
 <p>Some iterators or adaptors are used directly like regular structs, for example
-<a href="./struct.PutBack.html"><strong>PutBack</strong></a>, <a href="./struct.Zip.html"><strong>Zip</strong></a>,
-<a href="./struct.Stride.html"><strong>Stride</strong></a>, <a href="./struct.StrideMut.html"><strong>StrideMut</strong></a>.</p>
+<a href="./struct.PutBack.html"><strong>PutBack</strong></a>, <a href="./struct.Unfold.html"><strong>Unfold</strong></a>,
+<a href="./struct.Zip.html"><strong>Zip</strong></a>, <a href="./struct.Stride.html"><strong>Stride</strong></a></p>
 
 <p>To enable the macros in this crate, use the <code>#[macro_use]</code> attribute:</p>
 <pre class='rust rust-example-rendered'>
@@ -359,6 +359,16 @@ to only pick off elements while the predicate returns <strong>true</strong>.</p>
                                title='itertools::Times'>Times</a></td>
                         <td class='docblock short'>
                              <p>A simple iterator to repeat a given number of times</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Unfold.html'
+                               title='itertools::Unfold'>Unfold</a></td>
+                        <td class='docblock short'>
+                             <p><strong>Unfold</strong> is a general iterator builder: it has a mutable state value,
+and a closure with access to the state that produces the next value.</p>
 
                         </td>
                     </tr>

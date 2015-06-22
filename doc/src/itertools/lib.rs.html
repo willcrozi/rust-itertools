@@ -1279,6 +1279,7 @@
 <span id="1237">1237</span>
 <span id="1238">1238</span>
 <span id="1239">1239</span>
+<span id="1240">1240</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>core</span>, <span class='ident'>zero_one</span>))]</span>
@@ -1293,8 +1294,8 @@
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! Some iterators or adaptors are used directly like regular structs, for example</span>
-<span class='doccomment'>//! [**PutBack**](./struct.PutBack.html), [**Zip**](./struct.Zip.html),</span>
-<span class='doccomment'>//! [**Stride**](./struct.Stride.html), [**StrideMut**](./struct.StrideMut.html).</span>
+<span class='doccomment'>//! [**PutBack**](./struct.PutBack.html), [**Unfold**](./struct.Unfold.html),</span>
+<span class='doccomment'>//! [**Zip**](./struct.Zip.html), [**Stride**](./struct.Stride.html)</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! To enable the macros in this crate, use the `#[macro_use]` attribute:</span>
 <span class='doccomment'>//!</span>
@@ -1355,6 +1356,7 @@
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>linspace</span>::{<span class='ident'>linspace</span>, <span class='ident'>Linspace</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>sources</span>::{
     <span class='ident'>RepeatCall</span>,
+    <span class='ident'>Unfold</span>,
 };
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip_longest</span>::{<span class='ident'>ZipLongest</span>, <span class='ident'>EitherOrBoth</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::{<span class='ident'>Zip</span>};
