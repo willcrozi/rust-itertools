@@ -202,7 +202,7 @@
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>RepeatCall</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>
 {
-    <span class='doccomment'>/// Create a new **RepeatCall** from a closure.</span>
+    <span class='doccomment'>/// Create a new `RepeatCall` from a closure.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;</span>(<span class='ident'>func</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> <span class='kw'>where</span>
         <span class='ident'>F</span>: <span class='ident'>FnMut</span>() <span class='op'>-&gt;</span> <span class='ident'>A</span>,
     {
@@ -235,10 +235,10 @@
 }
 
 
-<span class='doccomment'>/// **Unfold** is a general iterator builder: it has a mutable state value,</span>
+<span class='doccomment'>/// `Unfold` is a general iterator builder: it has a mutable state value,</span>
 <span class='doccomment'>/// and a closure with access to the state that produces the next value.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// This more or less equivalent to a regular struct with an **Iterator**</span>
+<span class='doccomment'>/// This more or less equivalent to a regular struct with an `Iterator`</span>
 <span class='doccomment'>/// implementation, and is useful for one-off iterators.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>

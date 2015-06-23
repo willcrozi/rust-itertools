@@ -1119,7 +1119,7 @@
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
     <span class='ident'>J</span>: <span class='ident'>Iterator</span>,
 {
-    <span class='doccomment'>/// Creat a new **Interleave** iterator.</span>
+    <span class='doccomment'>/// Creat a new `Interleave` iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>a</span>: <span class='ident'>I</span>, <span class='ident'>b</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>Interleave</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
         <span class='ident'>Interleave</span>{<span class='ident'>a</span>: <span class='ident'>a</span>.<span class='ident'>fuse</span>(), <span class='ident'>b</span>: <span class='ident'>b</span>.<span class='ident'>fuse</span>(), <span class='ident'>flag</span>: <span class='boolval'>false</span>}
     }
@@ -1168,7 +1168,7 @@
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
     <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
 {
-    <span class='doccomment'>/// Create a new **InterleaveShortest** iterator.</span>
+    <span class='doccomment'>/// Create a new `InterleaveShortest` iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>a</span>: <span class='ident'>I</span>, <span class='ident'>b</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='ident'>InterleaveShortest</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> {
         <span class='ident'>InterleaveShortest</span> {
             <span class='ident'>it0</span>: <span class='ident'>a</span>.<span class='ident'>fuse</span>(),
@@ -1285,7 +1285,7 @@
 <span class='doccomment'>/// An iterator adaptor that allows putting back a single</span>
 <span class='doccomment'>/// item to the front of the iterator.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is **I::Item**.</span>
+<span class='doccomment'>/// Iterator element type is `I::Item`.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PutBack</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
@@ -1334,7 +1334,7 @@
 <span class='doccomment'>/// An iterator adaptor that allows putting multiple</span>
 <span class='doccomment'>/// items in front of the iterator.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is **I::Item**.</span>
+<span class='doccomment'>/// Iterator element type is `I::Item`.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>PutBackN</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span>
 {
     <span class='ident'>top</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
@@ -1400,9 +1400,9 @@
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='doccomment'>/// An iterator adaptor that iterates over the cartesian product of</span>
-<span class='doccomment'>/// the element sets of two iterators **I** and **J**.</span>
+<span class='doccomment'>/// the element sets of two iterators `I` and `J`.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is **(I::Item, J::Item)**.</span>
+<span class='doccomment'>/// Iterator element type is `(I::Item, J::Item)`.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// See [*.cartesian_product()*](trait.Itertools.html#method.cartesian_product) for more information.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Product</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span><span class='op'>&gt;</span> <span class='kw'>where</span>
@@ -1421,7 +1421,7 @@
 {
     <span class='doccomment'>/// Create a new cartesian product iterator</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Iterator element type is **(I::Item, J::Item)**.</span>
+    <span class='doccomment'>/// Iterator element type is `(I::Item, J::Item)`.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>i</span>: <span class='ident'>I</span>, <span class='ident'>j</span>: <span class='ident'>J</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>i</span> <span class='op'>=</span> <span class='ident'>i</span>;
@@ -1475,7 +1475,7 @@
 <span class='doccomment'>/// A “meta iterator adaptor”. Its closure recives a reference to the iterator</span>
 <span class='doccomment'>/// and may pick off as many elements as it likes, to produce the next iterator element.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is *X*, if the return type of **F** is *Option\&lt;X\&gt;*.</span>
+<span class='doccomment'>/// Iterator element type is *X*, if the return type of `F` is *Option\&lt;X\&gt;*.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// See [*.batching()*](trait.Itertools.html#method.batching) for more information.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
@@ -1528,7 +1528,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>F</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>GroupBy</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
-    <span class='doccomment'>/// Create a new **GroupBy** iterator.</span>
+    <span class='doccomment'>/// Create a new `GroupBy` iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>key</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>GroupBy</span>{<span class='ident'>key</span>: <span class='ident'>key</span>, <span class='ident'>iter</span>: <span class='ident'>iter</span>, <span class='ident'>current_key</span>: <span class='prelude-val'>None</span>, <span class='ident'>elts</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>()}
@@ -1592,7 +1592,7 @@
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Step</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span>
 {
-    <span class='doccomment'>/// Create a **Step** iterator.</span>
+    <span class='doccomment'>/// Create a `Step` iterator.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// **Panics** if the step is 0.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>step</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
@@ -1635,7 +1635,7 @@
 <span class='doccomment'>/// An iterator adaptor that merges the two base iterators in ascending order.</span>
 <span class='doccomment'>/// If both base iterators are sorted (ascending), the result is sorted.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Iterator element type is **I::Item**.</span>
+<span class='doccomment'>/// Iterator element type is `I::Item`.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// See [*.merge_by()*](trait.Itertools.html#method.merge_by) for more information.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Merge</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>J</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
@@ -1653,7 +1653,7 @@
     <span class='ident'>J</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
     <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span>
 {
-    <span class='doccomment'>/// Create a **Merge** iterator.</span>
+    <span class='doccomment'>/// Create a `Merge` iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>a</span>: <span class='ident'>I</span>, <span class='ident'>b</span>: <span class='ident'>J</span>, <span class='ident'>cmp</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>Merge</span> {
@@ -1735,7 +1735,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>K</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>EnumerateFrom</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>K</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
-    <span class='doccomment'>/// Create a new **EnumerateFrom**.</span>
+    <span class='doccomment'>/// Create a new `EnumerateFrom`.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>start</span>: <span class='ident'>K</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>EnumerateFrom</span>{<span class='ident'>index</span>: <span class='ident'>start</span>, <span class='ident'>iter</span>: <span class='ident'>iter</span>}
@@ -1789,7 +1789,7 @@
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>: <span class='ident'>Iterator</span><span class='op'>&gt;</span> <span class='ident'>MultiPeek</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Create a **MultiPeek** iterator.</span>
+    <span class='doccomment'>/// Create a `MultiPeek` iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>MultiPeek</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
         <span class='ident'>MultiPeek</span>{ <span class='ident'>iter</span>: <span class='ident'>iter</span>.<span class='ident'>fuse</span>(), <span class='ident'>buf</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>(), <span class='ident'>index</span>: <span class='number'>0</span> }
     }
@@ -1859,7 +1859,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>Coalesce</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
-    <span class='doccomment'>/// Create a new **Coalesce**.</span>
+    <span class='doccomment'>/// Create a new `Coalesce`.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='kw-2'>mut</span> <span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>Coalesce</span> {
@@ -1906,8 +1906,8 @@
 
 
 
-<span class='doccomment'>/// An iterator adaptor that borrows from a **Clone**-able iterator</span>
-<span class='doccomment'>/// to only pick off elements while the predicate returns **true**.</span>
+<span class='doccomment'>/// An iterator adaptor that borrows from a `Clone`-able iterator</span>
+<span class='doccomment'>/// to only pick off elements while the predicate returns `true`.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// See [*.take_while_ref()*](trait.Itertools.html#method.take_while_ref) for more information.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>TakeWhileRef</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>: <span class='lifetime'>&#39;a</span>, <span class='ident'>F</span><span class='op'>&gt;</span>
@@ -1918,7 +1918,7 @@
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>TakeWhileRef</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>Clone</span>,
 {
-    <span class='doccomment'>/// Create a new **TakeWhileRef** from a reference to clonable iterator.</span>
+    <span class='doccomment'>/// Create a new `TakeWhileRef` from a reference to clonable iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='ident'>I</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span>
     {
         <span class='ident'>TakeWhileRef</span> {
@@ -1957,8 +1957,8 @@
     }
 }
 
-<span class='doccomment'>/// An iterator adaptor that filters **Option\&lt;A\&gt;** iterator elements</span>
-<span class='doccomment'>/// and produces **A**. Stops on the first **None** encountered.</span>
+<span class='doccomment'>/// An iterator adaptor that filters `Option&lt;A&gt;` iterator elements</span>
+<span class='doccomment'>/// and produces `A`. Stops on the first `None` encountered.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// See [*.while_some()*](trait.Itertools.html#method.while_some) for more information.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
@@ -1967,7 +1967,7 @@
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>WhileSome</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Create a new **WhileSome\&lt;I\&gt;**.</span>
+    <span class='doccomment'>/// Create a new `WhileSome&lt;I&gt;`.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> {
         <span class='ident'>WhileSome</span> { <span class='ident'>iter</span>: <span class='ident'>iter</span> }
     }
@@ -1991,7 +1991,7 @@
     }
 }
 
-<span class='doccomment'>/// An iterator to iterate through all the combinations of pairs in a **Clone**-able iterator.</span>
+<span class='doccomment'>/// An iterator to iterate through all the combinations of pairs in a `Clone`-able iterator.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// See [*.combinations()*](trait.Itertools.html#method.combinations) for more information.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
@@ -2001,7 +2001,7 @@
     <span class='ident'>val</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>I</span>::<span class='ident'>Item</span><span class='op'>&gt;</span>,
 }
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>Combinations</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span> <span class='op'>+</span> <span class='ident'>Clone</span> {
-    <span class='doccomment'>/// Create a new **Combinations** from a clonable iterator.</span>
+    <span class='doccomment'>/// Create a new `Combinations` from a clonable iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>) <span class='op'>-&gt;</span> <span class='ident'>Combinations</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
         <span class='ident'>Combinations</span> { 
             <span class='ident'>next_iter</span>: <span class='ident'>iter</span>.<span class='ident'>clone</span>(), 
@@ -2064,7 +2064,7 @@
     <span class='kw'>where</span> <span class='ident'>V</span>: <span class='ident'>Eq</span> <span class='op'>+</span> <span class='ident'>Hash</span>,
           <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>I</span>::<span class='ident'>Item</span>) <span class='op'>-&gt;</span> <span class='ident'>V</span>
 {
-    <span class='doccomment'>/// Create a new **UniqueBy** iterator.</span>
+    <span class='doccomment'>/// Create a new `UniqueBy` iterator.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>iter</span>: <span class='ident'>I</span>, <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='ident'>UniqueBy</span><span class='op'>&lt;</span><span class='ident'>I</span>, <span class='ident'>V</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {
         <span class='ident'>UniqueBy</span> {
             <span class='ident'>iter</span>: <span class='ident'>iter</span>,

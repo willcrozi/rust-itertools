@@ -157,11 +157,11 @@
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='doccomment'>/// An iterator that generalizes *.zip()* and allows running multiple iterators in lockstep.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// The iterator **Zip\&lt;(I, J, ..., M)\&gt;** is formed from a tuple of iterators (or values that</span>
-<span class='doccomment'>/// implement **IntoIterator**) and yields elements</span>
-<span class='doccomment'>/// until any of the subiterators yields **None**.</span>
+<span class='doccomment'>/// The iterator `Zip&lt;(I, J, ..., M)&gt;` is formed from a tuple of iterators (or values that</span>
+<span class='doccomment'>/// implement `IntoIterator`) and yields elements</span>
+<span class='doccomment'>/// until any of the subiterators yields `None`.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// The iterator element type is a tuple like like **(A, B, ..., E)** where **A** to **E** are the</span>
+<span class='doccomment'>/// The iterator element type is a tuple like like `(A, B, ..., E)` where `A` to `E` are the</span>
 <span class='doccomment'>/// element types of the subiterator.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
@@ -185,7 +185,7 @@
     <span class='ident'>T</span>: <span class='ident'>IntoIteratorTuple</span>,
     <span class='ident'>Zip</span><span class='op'>&lt;</span><span class='ident'>T</span>::<span class='ident'>Output</span><span class='op'>&gt;</span>: <span class='ident'>Iterator</span>
 {
-    <span class='doccomment'>/// Create a new **Zip** from a tuple of iterators.</span>
+    <span class='doccomment'>/// Create a new `Zip` from a tuple of iterators.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>t</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>Zip</span><span class='op'>&lt;</span><span class='ident'>T</span>::<span class='ident'>Output</span><span class='op'>&gt;</span>
     {
         <span class='ident'>Zip</span>{<span class='ident'>t</span>: <span class='ident'>t</span>.<span class='ident'>into_iterator_tuple</span>()}

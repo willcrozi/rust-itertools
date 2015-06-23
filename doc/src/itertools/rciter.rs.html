@@ -117,7 +117,7 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>rc</span>::<span class='ident'>Rc</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cell</span>::<span class='ident'>RefCell</span>;
 
-<span class='doccomment'>/// A wrapper for **Rc\&lt;RefCell\&lt;I\&gt;\&gt;**, that implements the **Iterator** trait.</span>
+<span class='doccomment'>/// A wrapper for `Rc&lt;RefCell&lt;I&gt;&gt;`, that implements the `Iterator` trait.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// See [*.into_rc()*](trait.Itertools.html#method.into_rc) for more information.</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>RcIter</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> {
@@ -171,7 +171,7 @@
         <span class='self'>self</span>.<span class='ident'>rciter</span>.<span class='ident'>borrow_mut</span>().<span class='ident'>next_back</span>()
     }
 }
-<span class='doccomment'>/// Return an iterator from **&amp;RcIter\&lt;I\&gt;** (by simply cloning it).</span>
+<span class='doccomment'>/// Return an iterator from `&amp;RcIter&lt;I&gt;` (by simply cloning it).</span>
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>I</span><span class='op'>&gt;</span> <span class='ident'>IntoIterator</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>RcIter</span><span class='op'>&lt;</span><span class='ident'>I</span><span class='op'>&gt;</span> <span class='kw'>where</span>
     <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
 {
