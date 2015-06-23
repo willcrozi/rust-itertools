@@ -1,8 +1,4 @@
 use std::cmp::Ordering::{Equal, Greater, Less};
-#[cfg(feature = "unstable")]
-use std::cmp;
-#[cfg(feature = "unstable")]
-use std::iter::RandomAccessIterator;
 use super::size_hint;
 use std::iter::Fuse;
 use self::EitherOrBoth::{Right, Left, Both};
@@ -26,7 +22,7 @@ impl<T, U> ZipLongest<T, U> where
     T: Iterator,
     U: Iterator,
 {
-    /// Create a new **ZipLongest** iterator.
+    /// Create a new `ZipLongest` iterator.
     pub fn new(a: T, b: U) -> ZipLongest<T, U>
     {
         ZipLongest{a: a.fuse(), b: b.fuse()}
@@ -75,34 +71,13 @@ impl<T, U> DoubleEndedIterator for ZipLongest<T, U> where
     }
 }
 
-#[cfg(feature = "unstable")]
-impl<T, U> RandomAccessIterator for ZipLongest<T, U> where
-    T: RandomAccessIterator,
-    U: RandomAccessIterator,
-{
-    #[inline]
-    fn indexable(&self) -> usize {
-        cmp::max(self.a.indexable(), self.b.indexable())
-    }
-
-    #[inline]
-    fn idx(&mut self, index: usize) -> Option<Self::Item> {
-        match (self.a.idx(index), self.b.idx(index)) {
-            (None, None) => None,
-            (Some(a), None) => Some(Left(a)),
-            (None, Some(b)) => Some(Right(b)),
-            (Some(a), Some(b)) => Some(Both(a, b)),
-        }
-    }
-}
-
 impl<T, U> ExactSizeIterator for ZipLongest<T, U> where
     T: ExactSizeIterator,
     U: ExactSizeIterator,
 {}
 
 
-/// A value yielded by **ZipLongest**.
+/// A value yielded by `ZipLongest`.
 /// Contains one or two values, depending on which of the input iterators are exhausted.
 ///
 /// See [*.zip_longest()*](trait.Itertools.html#method.zip_longest) for more information.
