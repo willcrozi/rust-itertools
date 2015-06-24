@@ -64,6 +64,8 @@ pub use adaptors::{
 };
 #[cfg(feature = "unstable")]
 pub use adaptors::EnumerateFrom;
+pub use format::Format;
+pub use groupbylazy::{GroupByLazy, Group, Groups};
 pub use intersperse::Intersperse;
 pub use islice::{ISlice};
 pub use pad_tail::PadUsing;
@@ -84,6 +86,8 @@ pub use ziptuple::{Zip};
 #[cfg(feature = "unstable")]
 pub use ziptrusted::{ZipTrusted, TrustedIterator};
 mod adaptors;
+mod format;
+mod groupbylazy;
 mod intersperse;
 mod islice;
 mod linspace;
@@ -351,16 +355,57 @@ pub trait Itertools : Iterator {
     /// use itertools::Itertools;
     ///
     /// // group data into runs of larger than zero or not.
-    /// let data = vec![1, 2, -3, 4, 5];
+    /// let data = vec![1, 3, -2, -2, 1, 0, 1, 2];
     ///
-    /// let mut iter = data.into_iter().group_by(|elt| *elt >= 0);
-    /// assert_eq!(iter.next(), Some((true, vec![1, 2])));
-    /// assert_eq!(iter.next(), Some((false, vec![-3])));
+    /// for (key, group) in data.into_iter().group_by(|elt| *elt >= 0) {
+    ///     // Check that the sum of each group is +/- 4.
+    ///     assert_eq!(4, group.iter().fold(0_i32, |a, b| a + b).abs());
+    /// }
     /// ```
-    fn group_by<K, F: FnMut(&Self::Item) -> K>(self, key: F) -> GroupBy<K, Self, F> where
-        Self: Sized,
+    fn group_by<K, F>(self, key: F) -> GroupBy<K, Self, F>
+        where Self: Sized,
+              F: FnMut(&Self::Item) -> K,
     {
         GroupBy::new(self, key)
+    }
+
+    /// Return an iterable that can group iterator elements.
+    /// Consecutive elements that map to the same key (“runs”), are assigned
+    /// to the same group.
+    ///
+    /// `GroupByLazy` is the storage for the lazy grouping operation.
+    ///
+    /// If the groups are consumed in order, or if each group's iterator is
+    /// dropped without keeping it around, then `GroupByLazy` uses no
+    /// allocations.  It needs allocations only if several group iterators
+    /// are alive at the same time.
+    ///
+    /// This type implements `IntoIterator` (it is **not** an iterator
+    /// itself), because the group iterators need to borrow from this
+    /// value. It should stored in a local variable or temporary and
+    /// iterated.
+    ///
+    /// Iterator element type is `(K, Group)`: the group's key and the
+    /// group iterator.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// // group data into runs of larger than zero or not.
+    /// let data = vec![1, 3, -2, -2, 1, 0, 1, 2];
+    ///
+    /// // Note: The `&` is significant here, `GroupByLazy` is iterable
+    /// // only by reference. You can also call `.into_iter()` explicitly.
+    /// for (key, group) in &data.into_iter().group_by_lazy(|elt| *elt >= 0) {
+    ///     // Check that the sum of each group is +/- 4.
+    ///     assert_eq!(4, group.fold(0_i32, |a, b| a + b).abs());
+    /// }
+    /// ```
+    fn group_by_lazy<K, F>(self, key: F) -> GroupByLazy<K, Self, F>
+        where Self: Sized,
+              F: FnMut(&Self::Item) -> K,
+    {
+        groupbylazy::new(self, key)
     }
 
     /// Split into an iterator pair that both yield all elements from
@@ -998,6 +1043,43 @@ pub trait Itertools : Iterator {
                 result
             }
         }
+    }
+
+    /// Format all iterator elements lazily, separated by `sep`.
+    ///
+    /// The supplied closure `format` is called once per iterator element,
+    /// with two arguments: the element and a callback that takes a
+    /// `&Display` value, i.e. any reference to type that implements `Display`.
+    ///
+    /// Using `&format_args!(...)` is the most versatile way to apply custom
+    /// element formatting. The callback can be called multiple times if needed.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// // Lazy generation is most useful if you output to a generic writer
+    /// // or to the stdout. For demonstration purposes we format to a String here.
+    /// let data = [1.1, 2.71828, -3.];
+    /// let data_formatter = data.iter().format(", ", |elt, f| f(&format_args!("{:2.2}", elt)));
+    /// assert_eq!(format!("{}", data_formatter),
+    ///            "1.10, 2.72, -3.00");
+    ///
+    /// // Lazy formatting is composable
+    /// let matrix = [[1., 2., 3.],
+    ///               [4., 5., 6.]];
+    /// let matrix_formatter = matrix.iter().format("\n", |row, f| {
+    ///                                 f(&row.iter().format(", ", |elt, f| f(&elt)))
+    ///                              });
+    /// assert_eq!(format!("{}", matrix_formatter),
+    ///            "1, 2, 3\n4, 5, 6");
+    ///
+    ///
+    /// ```
+    fn format<'a, F>(self, sep: &'a str, format: F) -> Format<'a, Self, F>
+        where Self: Sized,
+              F: FnMut(Self::Item, &mut FnMut(&fmt::Display) -> fmt::Result) -> fmt::Result,
+    {
+        format::new_format(self, sep, format)
     }
 
     /// Fold `Result` values from an iterator.
