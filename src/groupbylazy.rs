@@ -1,7 +1,5 @@
 use Itertools;
-use std::cmp;
 use std::cell::{Cell, RefCell};
-use std::mem;
 use std::vec;
 
 struct GroupInner<K, I, F>
@@ -11,17 +9,19 @@ struct GroupInner<K, I, F>
     iter: I,
     current_key: Option<K>,
     current_elt: Option<I::Item>,
-    // buffering stuff
+    /// flag set if iterator is exhausted
     done: bool,
     /// Index of group we are currently buffering or visiting
     top: usize,
     /// Least index for which we still have elements buffered
     bot: usize,
-
-    /// Buffered groups, from `bot` (index 0) to `top`.
+    /// Group index for `buffer[0]` -- the slots bufbot..bot are unused
+    /// and will be erased when that range is large enough.
+    bufbot: usize,
+    /// Buffered groups, from `bufbot` (index 0) to `top`.
     buffer: Vec<vec::IntoIter<I::Item>>,
-    /// index of last group iter that was dropped
-    dropped_group: Option<usize>,
+    /// index of last group iter that was dropped, usize::MAX == none
+    dropped_group: usize,
 }
 
 impl<K, I, F> GroupInner<K, I, F>
@@ -29,102 +29,141 @@ impl<K, I, F> GroupInner<K, I, F>
           F: FnMut(&I::Item) -> K,
           K: PartialEq,
 {
+    /// `client`: Index of group that requests next element
+    #[inline(always)]
+    fn step(&mut self, client: usize) -> Option<I::Item> {
+        /*
+        println!("client={}, bufbot={}, bot={}, top={}, buffers=[{}]",
+                 client, self.bufbot, self.bot, self.top,
+                 self.buffer.iter().format(", ", |elt, f| f(&elt.len())));
+         */
+        if client < self.bufbot {
+            None
+        } else if client < self.top ||
+            (client == self.top && self.buffer.len() > self.top - self.bufbot)
+        {
+            self.lookup_buffer(client)
+        } else if self.done {
+            None
+        } else if self.top == client {
+            self.step_current()
+        } else {
+            self.step_buffering(client)
+        }
+    }
+
+    #[inline(never)]
+    fn lookup_buffer(&mut self, client: usize) -> Option<I::Item> {
+        // if `bufidx` doesn't exist in self.buffer, it might be empty
+        let bufidx = client - self.bufbot;
+        if client < self.bot {
+            return None
+        }
+        let elt = self.buffer.get_mut(bufidx).and_then(|queue| queue.next());
+        if elt.is_none() && client == self.bot {
+            // FIXME: VecDeque is unfortunately not zero allocation when empty,
+            // so we do this job manually.
+            // `bufbot..bot` is unused, and if it's large enough, erase it.
+            self.bot += 1;
+            // skip forward further empty queues too
+            while self.buffer.get(self.bot - self.bufbot)
+                             .map_or(false, |buf| buf.len() == 0)
+            {
+                self.bot += 1;
+            }
+
+            let nclear = self.bot - self.bufbot;
+            if nclear > 0 && nclear >= self.buffer.len() / 2 {
+                let mut i = 0;
+                self.buffer.retain(|buf| {
+                    i += 1;
+                    debug_assert!(buf.len() == 0 || i > nclear);
+                    i > nclear
+                });
+                self.bufbot = self.bot;
+            }
+        }
+        elt
+    }
+
+    /// Take the next element from the iterator, and set the done
+    /// flag if exhausted. Must not be called after done.
+    #[inline(always)]
+    fn next_element(&mut self) -> Option<I::Item> {
+        debug_assert!(!self.done);
+        match self.iter.next() {
+            None => { self.done = true; None }
+            otherwise => otherwise,
+        }
+    }
+
+
+    #[inline(never)]
+    fn step_buffering(&mut self, client: usize) -> Option<I::Item> {
+        // requested a later group -- walk through the current group up to
+        // the requested group index, and buffer the elements (unless
+        // the group is marked as dropped).
+        // Because the `Groups` iterator is always the first to request
+        // each group index, client is the next index efter top.
+        debug_assert!(self.top + 1 == client);
+        let mut group = Vec::new();
+
+        if let Some(elt) = self.current_elt.take() {
+            if self.top != self.dropped_group {
+                group.push(elt);
+            }
+        }
+        let mut first_elt = None; // first element of the next group
+
+        while let Some(elt) = self.next_element() {
+            let key = (self.key)(&elt);
+            match self.current_key.take() {
+                None => {}
+                Some(old_key) => if old_key != key {
+                    self.current_key = Some(key);
+                    first_elt = Some(elt);
+                    break;
+                },
+            }
+            self.current_key = Some(key);
+            if self.top != self.dropped_group {
+                group.push(elt);
+            }
+        }
+
+        if self.top != self.dropped_group {
+            self.push_next_group(group);
+        }
+        if first_elt.is_some() {
+            self.top += 1;
+            debug_assert!(self.top == client);
+        }
+        first_elt
+    }
+
     fn push_next_group(&mut self, group: Vec<I::Item>) {
         // When we add a new buffered group, fill up slots between bot and top
-        while self.top - self.bot > self.buffer.len() {
+        while self.top - self.bufbot > self.buffer.len() {
             if self.buffer.is_empty() {
+                self.bufbot += 1;
                 self.bot += 1;
             } else {
                 self.buffer.push(Vec::new().into_iter());
             }
         }
         self.buffer.push(group.into_iter());
-        debug_assert!(self.top + 1 - self.bot == self.buffer.len());
-    }
-    /// `client`: Index of group that requests next element
-    fn step(&mut self, client: usize) -> Option<I::Item> {
-        /*
-        println!("client={}, bot={}, top={}, buffers={:?}",
-                 client, self.bot, self.top,
-                 self.buffer.iter().map(|x| x.len()).collect::<Vec<_>>());
-         */
-        if client < self.bot {
-            None
-        } else if client < self.top ||
-            (client == self.top && self.buffer.len() > self.top - self.bot)
-        {
-            // if `bufidx` doesn't exist in self.buffer, it might be empty
-            let bufidx = client - self.bot;
-            let elt = self.buffer.get_mut(bufidx).and_then(|queue| queue.next());
-            if elt.is_none() {
-                // FIXME: Use a smarter way to reuse the vector space
-                // VecDeque is unfortunately not zero allocation when empty.
-                while self.buffer.len() > 0 && self.buffer[0].len() == 0 {
-                    self.buffer.remove(0);
-                    self.bot += 1;
-                }
-            }
-            elt
-        } else if self.done {
-            return None;
-        } else if self.top == client {
-            self.step_current()
-        } else {
-            // requested a later group -- walk through all groups up to
-            // the requested group index, and buffer the elements (unless
-            // the group is marked as dropped).
-            let mut group = Vec::new();
-
-            if let Some(elt) = self.current_elt.take() {
-                if self.dropped_group != Some(self.top) {
-                    group.push(elt);
-                }
-            }
-            loop {
-                match self.iter.next() {
-                    None => {
-                        if self.dropped_group != Some(self.top) {
-                            self.push_next_group(group);
-                        }
-                        self.done = true;
-                        return None;
-                    }
-                    Some(elt) => {
-                        let key = (self.key)(&elt);
-                        match self.current_key.take() {
-                            None => {}
-                            Some(old_key) => if old_key != key {
-                                if self.dropped_group != Some(self.top) {
-                                    self.push_next_group(mem::replace(&mut group, Vec::new()));
-                                }
-                                self.top += 1;
-                                if self.top == client {
-                                    self.current_key = Some(key);
-                                    return Some(elt);
-                                }
-                            },
-                        }
-                        self.current_key = Some(key);
-                        if self.dropped_group != Some(self.top) {
-                            group.push(elt);
-                        }
-                    }
-                }
-            }
-        }
+        debug_assert!(self.top + 1 - self.bufbot == self.buffer.len());
     }
 
     /// This is the immediate case, where we use no buffering
+    #[inline]
     fn step_current(&mut self) -> Option<I::Item> {
         debug_assert!(!self.done);
         if let elt @ Some(..) = self.current_elt.take() {
             return elt;
         }
-        match self.iter.next() {
-            None => {
-                self.done = true;
-                return None;
-            }
+        match self.next_element() {
+            None => None,
             Some(elt) => {
                 let key = (self.key)(&elt);
                 match self.current_key.take() {
@@ -156,26 +195,16 @@ impl<K, I, F> GroupInner<K, I, F>
         debug_assert!(client == self.top);
         debug_assert!(self.current_key.is_some());
         debug_assert!(self.current_elt.is_none());
-        match self.iter.next() {
-            None => {
-                self.done = true;
-                self.current_key.take().unwrap()
+        let old_key = self.current_key.take().unwrap();
+        if let Some(elt) = self.next_element() {
+            let key = (self.key)(&elt);
+            if old_key != key {
+                self.top += 1;
             }
-            Some(elt) => {
-                let key = (self.key)(&elt);
-                match self.current_key.take() {
-                    None => unreachable!(),
-                    Some(old_key) => {
-                        if old_key != key {
-                            self.top += 1;
-                        }
-                        self.current_key = Some(key);
-                        self.current_elt = Some(elt);
-                        old_key
-                    }
-                }
-            }
+            self.current_key = Some(key);
+            self.current_elt = Some(elt);
         }
+        old_key
     }
 }
 
@@ -184,9 +213,10 @@ impl<K, I, F> GroupInner<K, I, F>
 {
     /// Called when a group is dropped
     fn drop_group(&mut self, client: usize) {
-        // It's only useful to track the highest index
-        self.dropped_group = Some(cmp::max(client,
-                                           self.dropped_group.unwrap_or(0)));
+        // It's only useful to track the maximal index
+        if self.dropped_group == !0 || client > self.dropped_group {
+            self.dropped_group = client;
+        }
     }
 }
 
@@ -226,8 +256,9 @@ pub fn new<K, J, F>(iter: J, f: F) -> GroupByLazy<K, J::IntoIter, F>
             done: false,
             top: 0,
             bot: 0,
+            bufbot: 0,
             buffer: Vec::new(),
-            dropped_group: None,
+            dropped_group: !0,
         }),
         index: Cell::new(0),
     }
@@ -242,14 +273,6 @@ impl<K, I, F> GroupByLazy<K, I, F>
               K: PartialEq,
     {
         self.inner.borrow_mut().step(client)
-    }
-
-    /// `client`: Index of group that requests next element
-    fn group_key(&self, client: usize) -> K
-        where F: FnMut(&I::Item) -> K,
-              K: PartialEq,
-    {
-        self.inner.borrow_mut().group_key(client)
     }
 
     /// `client`: Index of group
@@ -298,8 +321,9 @@ impl<'a, K, I, F> Iterator for Groups<'a, K, I, F>
     fn next(&mut self) -> Option<Self::Item> {
         let index = self.parent.index.get();
         self.parent.index.set(index + 1);
-        self.parent.step(index).map(|elt| {
-            let key = self.parent.group_key(index);
+        let inner = &mut *self.parent.inner.borrow_mut();
+        inner.step(index).map(|elt| {
+            let key = inner.group_key(index);
             (key, Group {
                 parent: self.parent,
                 index: index,

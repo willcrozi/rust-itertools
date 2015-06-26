@@ -6,6 +6,7 @@
 
 #[macro_use]
 extern crate itertools as it;
+extern crate permutohedron;
 
 use it::Itertools;
 use it::Interleave;
@@ -649,16 +650,12 @@ fn group_by_lazy() {
 
     let toupper = |ch: &char| ch.to_uppercase().nth(0).unwrap();
 
-    // next up: iterator for permutations...
-    for indices in &[[0, 1, 2, 3],
-                     [1, 0, 3, 2],
-                     [3, 0, 2, 1],
-                     [1, 2, 3, 0]]
-    {
+    // try all possible orderings
+    for indices in permutohedron::Heap::new(&mut [0, 1, 2, 3]) {
         let groups = "AaaBbbccCcDDDD".chars().group_by_lazy(&toupper);
         let mut subs = groups.into_iter().collect_vec();
 
-        for &idx in indices { 
+        for &idx in &indices[..] {
             let (key, text) = match idx {
                  0 => ('A', "Aaa".chars()),
                  1 => ('B', "Bbb".chars()),
