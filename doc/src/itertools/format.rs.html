@@ -90,6 +90,8 @@
 <span id="48">48</span>
 <span id="49">49</span>
 <span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cell</span>::<span class='ident'>RefCell</span>;
@@ -132,15 +134,17 @@
     }
 }
 
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>Format</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>I</span>, <span class='ident'>F</span><span class='op'>&gt;</span>
-    <span class='kw'>where</span> <span class='ident'>I</span>: <span class='ident'>Iterator</span>,
-          <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>I</span>::<span class='ident'>Item</span>, <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>FnMut</span>(<span class='kw-2'>&amp;</span><span class='ident'>fmt</span>::<span class='ident'>Display</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span>,
+<span class='comment'>/*
+impl&lt;&#39;a, I, F&gt; fmt::Debug for Format&lt;&#39;a, I, F&gt;
+    where I: Iterator,
+          F: FnMut(I::Item, &amp;mut FnMut(&amp;fmt::Display) -&gt; fmt::Result) -&gt; fmt::Result,
 {
-    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>fmt</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='ident'>fmt</span>::<span class='ident'>Display</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>, <span class='ident'>fmt</span>)
+    fn fmt(&amp;self, fmt: &amp;mut fmt::Formatter) -&gt; fmt::Result {
+        fmt::Display::fmt(self, fmt)
     }
 }
 
+*/</span>
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

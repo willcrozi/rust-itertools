@@ -1746,7 +1746,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// This type implements `IntoIterator` (it is **not** an iterator</span>
     <span class='doccomment'>/// itself), because the group iterators need to borrow from this</span>
-    <span class='doccomment'>/// value. It should stored in a local variable or temporary and</span>
+    <span class='doccomment'>/// value. It should be stored in a local variable or temporary and</span>
     <span class='doccomment'>/// iterated.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Iterator element type is `(K, Group)`: the group&#39;s key and the</span>
@@ -2429,7 +2429,7 @@
     <span class='doccomment'>/// let matrix = [[1., 2., 3.],</span>
     <span class='doccomment'>///               [4., 5., 6.]];</span>
     <span class='doccomment'>/// let matrix_formatter = matrix.iter().format(&quot;\n&quot;, |row, f| {</span>
-    <span class='doccomment'>///                                 f(&amp;row.iter().format(&quot;, &quot;, |elt, f| f(&amp;elt)))</span>
+    <span class='doccomment'>///                                 f(&amp;row.iter().format(&quot;, &quot;, |elt, g| g(&amp;elt)))</span>
     <span class='doccomment'>///                              });</span>
     <span class='doccomment'>/// assert_eq!(format!(&quot;{}&quot;, matrix_formatter),</span>
     <span class='doccomment'>///            &quot;1, 2, 3\n4, 5, 6&quot;);</span>
