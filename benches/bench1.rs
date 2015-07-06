@@ -1,20 +1,19 @@
 #![feature(test)]
 
-#![allow(raw_pointer_derive)]
 extern crate test;
 extern crate itertools;
 
+use test::{black_box};
 use itertools::Stride;
 use itertools::Itertools;
 
-#[cfg(not(feature = "unstable"))]
-use itertools::Zip;
-
 #[cfg(feature = "unstable")]
-use itertools::{Zip, ZipTrusted};
+use itertools::{ZipTrusted};
+
+use itertools::ZipSlices;
 
 use std::iter::repeat;
-use std::marker::PhantomData;
+use std::cmp;
 
 #[bench]
 fn slice_iter(b: &mut test::Bencher)
@@ -52,110 +51,88 @@ fn stride_iter_rev(b: &mut test::Bencher)
     })
 }
 
-#[derive(Copy, Clone)]
-struct ZipSlices<'a, T: 'a, U :'a>
-{
-    t_ptr: *const T,
-    t_end: *const T,
-    u_ptr: *const U,
-    mark: PhantomData<&'a (T, U)>,
-}
-
-impl<'a, T, U> ZipSlices<'a, T, U>
-{
-    pub fn new(t: &'a [T], u: &'a [U]) -> Self
-    {
-        assert!(::std::mem::size_of::<T>() != 0);
-        assert!(::std::mem::size_of::<U>() != 0);
-        let minl = std::cmp::min(t.len(), u.len());
-        let end_ptr = unsafe {
-            t.as_ptr().offset(minl as isize)
-        };
-        ZipSlices {
-            t_ptr: t.as_ptr(),
-            t_end: end_ptr,
-            u_ptr: u.as_ptr(),
-            mark: PhantomData,
-        }
-    }
-}
-
-impl<'a, T, U> Iterator for ZipSlices<'a, T, U>
-{
-    type Item = (&'a T, &'a U);
-
-    #[inline]
-    fn next(&mut self) -> Option<(&'a T, &'a U)>
-    {
-        if self.t_ptr == self.t_end {
-            return None
-        }
-        let t_elt: &T;
-        let u_elt: &U;
-        unsafe {
-            t_elt = ::std::mem::transmute(self.t_ptr);
-            self.t_ptr = self.t_ptr.offset(1);
-            u_elt = ::std::mem::transmute(self.u_ptr);
-            self.u_ptr = self.u_ptr.offset(1);
-        }
-        Some((t_elt, u_elt))
-    }
-
-    #[inline]
-    fn size_hint(&self) -> (usize, Option<usize>)
-    {
-        let len = self.t_end as usize - self.t_ptr as usize;
-        (len, Some(len))
-    }
-}
-
 #[bench]
-fn zip_slices_default_zip(b: &mut test::Bencher)
+fn zip_default_zip(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
 
-    b.iter(|| for (&x, &y) in xs.iter().zip(ys.iter()) {
-        test::black_box(x);
-        test::black_box(y);
+    b.iter(|| {
+        for (&x, &y) in xs.iter().zip(&ys) {
+            test::black_box(x);
+            test::black_box(y);
+        }
     })
 }
 
 #[bench]
-fn zip_slices_default_zip3(b: &mut test::Bencher)
+fn zip_default_zip3(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
     let zs = vec![0; 766];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+    let zs = black_box(zs);
 
-    b.iter(|| for ((&x, &y), &z) in xs.iter().zip(ys.iter()).zip(zs.iter()) {
-        test::black_box(x);
-        test::black_box(y);
-        test::black_box(z);
+    b.iter(|| {
+        for ((&x, &y), &z) in xs.iter().zip(&ys).zip(&zs) {
+            test::black_box(x);
+            test::black_box(y);
+            test::black_box(z);
+        }
     })
 }
 
+/*
 #[bench]
 fn zip_slices_ziptuple(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
 
-    b.iter(|| for (&x, &y) in Zip::new((xs.iter(), ys.iter())) {
-        test::black_box(x);
-        test::black_box(y);
+    b.iter(|| {
+        let xs = black_box(&xs);
+        let ys = black_box(&ys);
+        for (&x, &y) in Zip::new((xs, ys)) {
+            test::black_box(x);
+            test::black_box(y);
+        }
+    })
+}
+*/
+
+#[bench]
+fn zip_slices(b: &mut test::Bencher)
+{
+    let xs = vec![0; 1024];
+    let ys = vec![0; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        for (&x, &y) in ZipSlices::new(&xs, &ys) {
+            test::black_box(x);
+            test::black_box(y);
+        }
     })
 }
 
 #[bench]
-fn zipslices(b: &mut test::Bencher)
+fn zip_slices_mut(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
+    let xs = black_box(xs);
+    let mut ys = black_box(ys);
 
-    b.iter(|| for (&x, &y) in ZipSlices::new(&xs, &ys) {
-        test::black_box(x);
-        test::black_box(y);
+    b.iter(|| {
+        for (&x, &mut y) in ZipSlices::from_slices(&xs[..], &mut ys[..]) {
+            test::black_box(x);
+            test::black_box(y);
+        }
     })
 }
 
@@ -165,10 +142,14 @@ fn ziptrusted(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
 
-    b.iter(|| for (&x, &y) in ZipTrusted::new((xs.iter(), ys.iter())) {
-        test::black_box(x);
-        test::black_box(y);
+    b.iter(|| {
+        for (&x, &y) in ZipTrusted::new((xs.iter(), ys.iter())) {
+            test::black_box(x);
+            test::black_box(y);
+        }
     })
 }
 
@@ -179,22 +160,51 @@ fn ziptrusted3(b: &mut test::Bencher)
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
     let zs = vec![0; 766];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+    let zs = black_box(zs);
 
-    b.iter(|| for (&x, &y, &z) in ZipTrusted::new((xs.iter(), ys.iter(), zs.iter())) {
-        test::black_box(x);
-        test::black_box(y);
-        test::black_box(z);
+    b.iter(|| {
+        for (&x, &y, &z) in ZipTrusted::new((xs.iter(), ys.iter(), zs.iter())) {
+            test::black_box(x);
+            test::black_box(y);
+            test::black_box(z);
+        }
     })
 }
 
 #[bench]
-fn zip_loop(b: &mut test::Bencher)
+fn zip_checked_counted_loop(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
 
     b.iter(|| {
-        let len = ::std::cmp::min(xs.len(), ys.len());
+        let xs = &xs[..];
+        let ys = &ys[..];
+        let len = cmp::min(xs.len(), ys.len());
+
+        for i in 0..len {
+            let x = xs[i];
+            let y = ys[i];
+            test::black_box(x);
+            test::black_box(y);
+        }
+    })
+}
+
+#[bench]
+fn zip_unchecked_counted_loop(b: &mut test::Bencher)
+{
+    let xs = vec![0; 1024];
+    let ys = vec![0; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let len = cmp::min(xs.len(), ys.len());
         for i in 0..len {
             unsafe {
             let x = *xs.get_unchecked(i);
@@ -207,14 +217,17 @@ fn zip_loop(b: &mut test::Bencher)
 }
 
 #[bench]
-fn zip_loop3(b: &mut test::Bencher)
+fn zip_unchecked_counted_loop3(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
     let zs = vec![0; 766];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+    let zs = black_box(zs);
 
     b.iter(|| {
-        let len = ::std::cmp::min(xs.len(), ::std::cmp::min(ys.len(), zs.len()));
+        let len = cmp::min(xs.len(), cmp::min(ys.len(), zs.len()));
         for i in 0..len {
             unsafe {
             let x = *xs.get_unchecked(i);
@@ -235,9 +248,10 @@ fn group_by_lazy_1(b: &mut test::Bencher) {
         *elt = index / 10;
     }
 
+    let data = test::black_box(data);
+
     b.iter(|| {
-        let iter = test::black_box(data.iter());
-        for (_key, group) in &iter.group_by_lazy(|elt| **elt) {
+        for (_key, group) in &data.iter().group_by_lazy(|elt| **elt) {
             for elt in group {
                 test::black_box(elt);
             }
@@ -252,12 +266,24 @@ fn group_by_lazy_2(b: &mut test::Bencher) {
         *elt = index / 2;
     }
 
+    let data = test::black_box(data);
+
     b.iter(|| {
-        let iter = test::black_box(data.iter());
-        for (_key, group) in &iter.group_by_lazy(|elt| **elt) {
+        for (_key, group) in &data.iter().group_by_lazy(|elt| **elt) {
             for elt in group {
                 test::black_box(elt);
             }
         }
+    })
+}
+
+#[bench]
+fn equal(b: &mut test::Bencher) {
+    let data = vec![7; 1024];
+    let l = data.len();
+    b.iter(|| {
+        let a = test::black_box(&data[1..]);
+        let b = test::black_box(&data[..l - 1]);
+        itertools::equal(a, b)
     })
 }
