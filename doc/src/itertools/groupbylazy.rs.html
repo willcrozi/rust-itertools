@@ -451,7 +451,7 @@
                  client, self.bufbot, self.bot, self.top,
                  self.buffer.iter().format(&quot;, &quot;, |elt, f| f(&amp;elt.len())));
          */</span>
-        <span class='kw'>if</span> <span class='ident'>client</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>bufbot</span> {
+        <span class='kw'>if</span> <span class='ident'>client</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>bot</span> {
             <span class='prelude-val'>None</span>
         } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>client</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>top</span> <span class='op'>||</span>
             (<span class='ident'>client</span> <span class='op'>==</span> <span class='self'>self</span>.<span class='ident'>top</span> <span class='op'>&amp;&amp;</span> <span class='self'>self</span>.<span class='ident'>buffer</span>.<span class='ident'>len</span>() <span class='op'>&gt;</span> <span class='self'>self</span>.<span class='ident'>top</span> <span class='op'>-</span> <span class='self'>self</span>.<span class='ident'>bufbot</span>)

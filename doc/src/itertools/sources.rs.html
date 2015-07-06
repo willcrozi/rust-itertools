@@ -173,6 +173,7 @@
 <span id="131">131</span>
 <span id="132">132</span>
 <span id="133">133</span>
+<span id="134">134</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Iterators that are sources (produce elements from parameters,</span>
 <span class='doccomment'>//! not from another iterator).</span>
@@ -242,32 +243,33 @@
 <span class='doccomment'>/// implementation, and is useful for one-off iterators.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// ```</span>
-<span class='doccomment'>/// // an example of iterator that yields sequential Fibonacci numbers, and stops</span>
-<span class='doccomment'>/// // on overflow.</span>
+<span class='doccomment'>/// // an iterator that yields sequential Fibonacci numbers,</span>
+<span class='doccomment'>/// // and stops at the maximum representable value.</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// use itertools::Unfold;</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// // This iterator will yield up to the last Fibonacci number before the max</span>
-<span class='doccomment'>/// // value of `u32`. You can simply change `u32` to `u64` in this line if</span>
-<span class='doccomment'>/// // you want higher values than that.</span>
-<span class='doccomment'>/// let mut fibonacci = Unfold::new((Some(0u32), Some(1u32)),</span>
-<span class='doccomment'>///                                 |&amp;mut (ref mut x2, ref mut x1)| {</span>
+<span class='doccomment'>/// let mut fibonacci = Unfold::new((1_u32, 1_u32), |state| {</span>
+<span class='doccomment'>///     let (ref mut x1, ref mut x2) = *state;</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>///     // Attempt to get the next Fibonacci number</span>
-<span class='doccomment'>///     // `x1` will be `None` if previously overflowed.</span>
-<span class='doccomment'>///     let next = match (*x2, *x1) {</span>
-<span class='doccomment'>///         (Some(x2), Some(x1)) =&gt; x2.checked_add(x1),</span>
-<span class='doccomment'>///         _ =&gt; None,</span>
-<span class='doccomment'>///     };</span>
+<span class='doccomment'>///     let next = x1.saturating_add(*x2);</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>///     // Shift left: ret &lt;- x2 &lt;- x1 &lt;- next</span>
-<span class='doccomment'>///     let ret = *x2;</span>
-<span class='doccomment'>///     *x2 = *x1;</span>
-<span class='doccomment'>///     *x1 = next;</span>
+<span class='doccomment'>///     // Shift left: ret &lt;- x1 &lt;- x2 &lt;- next</span>
+<span class='doccomment'>///     let ret = *x1;</span>
+<span class='doccomment'>///     *x1 = *x2;</span>
+<span class='doccomment'>///     *x2 = next;</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>///     ret</span>
+<span class='doccomment'>///     // If addition has saturated at the maximum, we are finished</span>
+<span class='doccomment'>///     if ret == *x1 &amp;&amp; ret &gt; 1 {</span>
+<span class='doccomment'>///         return None;</span>
+<span class='doccomment'>///     }</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>///     Some(ret)</span>
 <span class='doccomment'>/// });</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// itertools::assert_equal(fibonacci.take(8),</span>
-<span class='doccomment'>///                         vec![0, 1, 1, 2, 3, 5, 8, 13]);</span>
+<span class='doccomment'>/// itertools::assert_equal(fibonacci.by_ref().take(8),</span>
+<span class='doccomment'>///                         vec![1, 1, 2, 3, 5, 8, 13, 21]);</span>
+<span class='doccomment'>/// assert_eq!(fibonacci.last(), Some(2_971_215_073))</span>
 <span class='doccomment'>/// ```</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Unfold</span><span class='op'>&lt;</span><span class='ident'>St</span>, <span class='ident'>F</span><span class='op'>&gt;</span> {
