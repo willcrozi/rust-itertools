@@ -65,7 +65,7 @@ pub use adaptors::{
 #[cfg(feature = "unstable")]
 pub use adaptors::EnumerateFrom;
 pub use format::Format;
-pub use groupbylazy::{GroupByLazy, Group, Groups};
+pub use groupbylazy::{ChunksLazy, Chunk, Chunks, GroupByLazy, Group, Groups};
 pub use intersperse::Intersperse;
 pub use islice::{ISlice};
 pub use pad_tail::PadUsing;
@@ -358,6 +358,7 @@ pub trait Itertools : Iterator {
     ///
     /// // group data into runs of larger than zero or not.
     /// let data = vec![1, 3, -2, -2, 1, 0, 1, 2];
+    /// // groups:     |---->|------>|--------->|
     ///
     /// for (key, group) in data.into_iter().group_by(|elt| *elt >= 0) {
     ///     // Check that the sum of each group is +/- 4.
@@ -370,6 +371,7 @@ pub trait Itertools : Iterator {
     {
         GroupBy::new(self, key)
     }
+
 
     /// Return an iterable that can group iterator elements.
     /// Consecutive elements that map to the same key (“runs”), are assigned
@@ -395,6 +397,7 @@ pub trait Itertools : Iterator {
     ///
     /// // group data into runs of larger than zero or not.
     /// let data = vec![1, 3, -2, -2, 1, 0, 1, 2];
+    /// // groups:     |---->|------>|--------->|
     ///
     /// // Note: The `&` is significant here, `GroupByLazy` is iterable
     /// // only by reference. You can also call `.into_iter()` explicitly.
@@ -409,6 +412,41 @@ pub trait Itertools : Iterator {
     {
         groupbylazy::new(self, key)
     }
+
+    /// Return an iterable that can chunk the iterator.
+    ///
+    /// Yield subiterators (chunks) that each yield a fixed number elements,
+    /// determined by `size`. The last chunk will be shorter if there aren't
+    /// enough elements.
+    ///
+    /// `ChunksLazy` is based on `GroupByLazy`: it is iterable (implements
+    /// `IntoIterator`, **not** `Iterator`), and it only buffers if several
+    /// chunk iterators are alive at the same time.
+    ///
+    /// Iterator element type is `Chunk`, each chunk's iterator.
+    ///
+    /// **Panics** if `size` is 0.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// let data = vec![1, 1, 2, -2, 6, 0, 3, 1];
+    /// //chunk size=3 |------->|-------->|--->|
+    ///
+    /// // Note: The `&` is significant here, `ChunksLazy` is iterable
+    /// // only by reference. You can also call `.into_iter()` explicitly.
+    /// for chunk in &data.into_iter().chunks_lazy(3) {
+    ///     // Check that the sum of each chunk is 4.
+    ///     assert_eq!(4, chunk.fold(0_i32, |a, b| a + b));
+    /// }
+    /// ```
+    fn chunks_lazy(self, size: usize) -> ChunksLazy<Self>
+        where Self: Sized,
+    {
+        assert!(size != 0);
+        groupbylazy::new_chunks(self, size)
+    }
+
 
     /// Split into an iterator pair that both yield all elements from
     /// the original iterator.
@@ -1044,7 +1082,7 @@ pub trait Itertools : Iterator {
         }
     }
 
-    /// Format all iterator elements lazily, separated by `sep`.
+    /// Format all iterator elements, separated by `sep`.
     ///
     /// The supplied closure `format` is called once per iterator element,
     /// with two arguments: the element and a callback that takes a
@@ -1056,14 +1094,12 @@ pub trait Itertools : Iterator {
     /// ```
     /// use itertools::Itertools;
     ///
-    /// // Lazy generation is most useful if you output to a generic writer
-    /// // or to the stdout. For demonstration purposes we format to a String here.
     /// let data = [1.1, 2.71828, -3.];
     /// let data_formatter = data.iter().format(", ", |elt, f| f(&format_args!("{:2.2}", elt)));
     /// assert_eq!(format!("{}", data_formatter),
     ///            "1.10, 2.72, -3.00");
     ///
-    /// // Lazy formatting is composable
+    /// // .format() is recursively composable
     /// let matrix = [[1., 2., 3.],
     ///               [4., 5., 6.]];
     /// let matrix_formatter = matrix.iter().format("\n", |row, f| {

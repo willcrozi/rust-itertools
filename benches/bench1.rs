@@ -182,9 +182,10 @@ fn zip_checked_counted_loop(b: &mut test::Bencher)
     let ys = black_box(ys);
 
     b.iter(|| {
-        let xs = &xs[..];
-        let ys = &ys[..];
+        // Must slice to equal lengths, and then bounds checks are eliminated!
         let len = cmp::min(xs.len(), ys.len());
+        let xs = &xs[..len];
+        let ys = &ys[..len];
 
         for i in 0..len {
             let x = xs[i];
@@ -270,6 +271,38 @@ fn group_by_lazy_2(b: &mut test::Bencher) {
 
     b.iter(|| {
         for (_key, group) in &data.iter().group_by_lazy(|elt| **elt) {
+            for elt in group {
+                test::black_box(elt);
+            }
+        }
+    })
+}
+
+#[bench]
+fn slice_chunks(b: &mut test::Bencher) {
+    let data = vec![0; 1024];
+
+    let data = test::black_box(data);
+    let sz = test::black_box(10);
+
+    b.iter(|| {
+        for group in data.chunks(sz) {
+            for elt in group {
+                test::black_box(elt);
+            }
+        }
+    })
+}
+
+#[bench]
+fn chunks_lazy_1(b: &mut test::Bencher) {
+    let data = vec![0; 1024];
+
+    let data = test::black_box(data);
+    let sz = test::black_box(10);
+
+    b.iter(|| {
+        for group in &data.iter().chunks_lazy(sz) {
             for elt in group {
                 test::black_box(elt);
             }
