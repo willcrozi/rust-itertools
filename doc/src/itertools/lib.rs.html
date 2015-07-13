@@ -1365,6 +1365,42 @@
 <span id="1323">1323</span>
 <span id="1324">1324</span>
 <span id="1325">1325</span>
+<span id="1326">1326</span>
+<span id="1327">1327</span>
+<span id="1328">1328</span>
+<span id="1329">1329</span>
+<span id="1330">1330</span>
+<span id="1331">1331</span>
+<span id="1332">1332</span>
+<span id="1333">1333</span>
+<span id="1334">1334</span>
+<span id="1335">1335</span>
+<span id="1336">1336</span>
+<span id="1337">1337</span>
+<span id="1338">1338</span>
+<span id="1339">1339</span>
+<span id="1340">1340</span>
+<span id="1341">1341</span>
+<span id="1342">1342</span>
+<span id="1343">1343</span>
+<span id="1344">1344</span>
+<span id="1345">1345</span>
+<span id="1346">1346</span>
+<span id="1347">1347</span>
+<span id="1348">1348</span>
+<span id="1349">1349</span>
+<span id="1350">1350</span>
+<span id="1351">1351</span>
+<span id="1352">1352</span>
+<span id="1353">1353</span>
+<span id="1354">1354</span>
+<span id="1355">1355</span>
+<span id="1356">1356</span>
+<span id="1357">1357</span>
+<span id="1358">1358</span>
+<span id="1359">1359</span>
+<span id="1360">1360</span>
+<span id="1361">1361</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>,
@@ -1433,7 +1469,7 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>adaptors</span>::<span class='ident'>EnumerateFrom</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>format</span>::<span class='ident'>Format</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>groupbylazy</span>::{<span class='ident'>GroupByLazy</span>, <span class='ident'>Group</span>, <span class='ident'>Groups</span>};
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>groupbylazy</span>::{<span class='ident'>ChunksLazy</span>, <span class='ident'>Chunk</span>, <span class='ident'>Chunks</span>, <span class='ident'>GroupByLazy</span>, <span class='ident'>Group</span>, <span class='ident'>Groups</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>intersperse</span>::<span class='ident'>Intersperse</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>islice</span>::{<span class='ident'>ISlice</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>pad_tail</span>::<span class='ident'>PadUsing</span>;
@@ -1726,6 +1762,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// // group data into runs of larger than zero or not.</span>
     <span class='doccomment'>/// let data = vec![1, 3, -2, -2, 1, 0, 1, 2];</span>
+    <span class='doccomment'>/// // groups:     |----&gt;|------&gt;|---------&gt;|</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// for (key, group) in data.into_iter().group_by(|elt| *elt &gt;= 0) {</span>
     <span class='doccomment'>///     // Check that the sum of each group is +/- 4.</span>
@@ -1738,6 +1775,7 @@
     {
         <span class='ident'>GroupBy</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>key</span>)
     }
+
 
     <span class='doccomment'>/// Return an iterable that can group iterator elements.</span>
     <span class='doccomment'>/// Consecutive elements that map to the same key (“runs”), are assigned</span>
@@ -1763,6 +1801,7 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// // group data into runs of larger than zero or not.</span>
     <span class='doccomment'>/// let data = vec![1, 3, -2, -2, 1, 0, 1, 2];</span>
+    <span class='doccomment'>/// // groups:     |----&gt;|------&gt;|---------&gt;|</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// // Note: The `&amp;` is significant here, `GroupByLazy` is iterable</span>
     <span class='doccomment'>/// // only by reference. You can also call `.into_iter()` explicitly.</span>
@@ -1777,6 +1816,41 @@
     {
         <span class='ident'>groupbylazy</span>::<span class='ident'>new</span>(<span class='self'>self</span>, <span class='ident'>key</span>)
     }
+
+    <span class='doccomment'>/// Return an iterable that can chunk the iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Yield subiterators (chunks) that each yield a fixed number elements,</span>
+    <span class='doccomment'>/// determined by `size`. The last chunk will be shorter if there aren&#39;t</span>
+    <span class='doccomment'>/// enough elements.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// `ChunksLazy` is based on `GroupByLazy`: it is iterable (implements</span>
+    <span class='doccomment'>/// `IntoIterator`, **not** `Iterator`), and it only buffers if several</span>
+    <span class='doccomment'>/// chunk iterators are alive at the same time.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Iterator element type is `Chunk`, each chunk&#39;s iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// **Panics** if `size` is 0.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let data = vec![1, 1, 2, -2, 6, 0, 3, 1];</span>
+    <span class='doccomment'>/// //chunk size=3 |-------&gt;|--------&gt;|---&gt;|</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// // Note: The `&amp;` is significant here, `ChunksLazy` is iterable</span>
+    <span class='doccomment'>/// // only by reference. You can also call `.into_iter()` explicitly.</span>
+    <span class='doccomment'>/// for chunk in &amp;data.into_iter().chunks_lazy(3) {</span>
+    <span class='doccomment'>///     // Check that the sum of each chunk is 4.</span>
+    <span class='doccomment'>///     assert_eq!(4, chunk.fold(0_i32, |a, b| a + b));</span>
+    <span class='doccomment'>/// }</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>chunks_lazy</span>(<span class='self'>self</span>, <span class='ident'>size</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>ChunksLazy</span><span class='op'>&lt;</span><span class='kw'>Self</span><span class='op'>&gt;</span>
+        <span class='kw'>where</span> <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
+    {
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>size</span> <span class='op'>!=</span> <span class='number'>0</span>);
+        <span class='ident'>groupbylazy</span>::<span class='ident'>new_chunks</span>(<span class='self'>self</span>, <span class='ident'>size</span>)
+    }
+
 
     <span class='doccomment'>/// Split into an iterator pair that both yield all elements from</span>
     <span class='doccomment'>/// the original iterator.</span>
@@ -2412,7 +2486,7 @@
         }
     }
 
-    <span class='doccomment'>/// Format all iterator elements lazily, separated by `sep`.</span>
+    <span class='doccomment'>/// Format all iterator elements, separated by `sep`.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// The supplied closure `format` is called once per iterator element,</span>
     <span class='doccomment'>/// with two arguments: the element and a callback that takes a</span>
@@ -2424,14 +2498,12 @@
     <span class='doccomment'>/// ```</span>
     <span class='doccomment'>/// use itertools::Itertools;</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// // Lazy generation is most useful if you output to a generic writer</span>
-    <span class='doccomment'>/// // or to the stdout. For demonstration purposes we format to a String here.</span>
     <span class='doccomment'>/// let data = [1.1, 2.71828, -3.];</span>
     <span class='doccomment'>/// let data_formatter = data.iter().format(&quot;, &quot;, |elt, f| f(&amp;format_args!(&quot;{:2.2}&quot;, elt)));</span>
     <span class='doccomment'>/// assert_eq!(format!(&quot;{}&quot;, data_formatter),</span>
     <span class='doccomment'>///            &quot;1.10, 2.72, -3.00&quot;);</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// // Lazy formatting is composable</span>
+    <span class='doccomment'>/// // .format() is recursively composable</span>
     <span class='doccomment'>/// let matrix = [[1., 2., 3.],</span>
     <span class='doccomment'>///               [4., 5., 6.]];</span>
     <span class='doccomment'>/// let matrix_formatter = matrix.iter().format(&quot;\n&quot;, |row, f| {</span>

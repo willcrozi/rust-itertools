@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `itertools` crate.">
     <meta name="keywords" content="rust, rustlang, rust-lang, itertools">
 
-    <title>itertools 0.3.22 - itertools - Rust</title>
+    <title>itertools 0.3.23 - itertools - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1325' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/itertools/lib.rs.html#1-1361' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Itertools — extra iterator adaptors, functions and macros.</p>
 
 <p>To use the iterator methods in this crate, import the <a href="./trait.Itertools.html"><code>Itertools</code> trait</a>:</p>
@@ -129,6 +129,33 @@ syntax extension that can offer real convenient python-like syntax.</p>
                         <td class='docblock short'>
                              <p>A “meta iterator adaptor”. Its closure recives a reference to the iterator
 and may pick off as many elements as it likes, to produce the next iterator element.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Chunk.html'
+                               title='itertools::Chunk'>Chunk</a></td>
+                        <td class='docblock short'>
+                             <p>An iterator for the elements in a single chunk.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Chunks.html'
+                               title='itertools::Chunks'>Chunks</a></td>
+                        <td class='docblock short'>
+                             <p>An iterator that yields the Chunk iterators.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.ChunksLazy.html'
+                               title='itertools::ChunksLazy'>ChunksLazy</a></td>
+                        <td class='docblock short'>
+                             <p><code>ChunkLazy</code> is the storage for a lazy chunking operation.</p>
 
                         </td>
                     </tr>
@@ -502,8 +529,7 @@ semantics as <em>equal(a, b)</em>.</p>
                         <td><a class='fn' href='fn.linspace.html'
                                title='itertools::linspace'>linspace</a></td>
                         <td class='docblock short'>
-                             <p>Return an iterator with <code>n</code> elements, where the first
-element is <code>a</code> and the last element is <code>b</code>.</p>
+                             <p>Return an iterator of evenly spaced floats.</p>
 
                         </td>
                     </tr>

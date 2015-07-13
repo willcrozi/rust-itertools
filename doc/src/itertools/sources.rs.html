@@ -186,16 +186,16 @@
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// use itertools::RepeatCall;</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// assert!(itertools::equal(</span>
+<span class='doccomment'>/// itertools::assert_equal(</span>
 <span class='doccomment'>///     RepeatCall::new(|| &quot;A&quot;.to_string()).take(5),</span>
 <span class='doccomment'>///     vec![&quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;]</span>
-<span class='doccomment'>/// ));</span>
+<span class='doccomment'>/// );</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// let mut x = 1;</span>
-<span class='doccomment'>/// assert!(itertools::equal(</span>
+<span class='doccomment'>/// itertools::assert_equal(</span>
 <span class='doccomment'>///     RepeatCall::new(|| { x = -x; x }).take(5),</span>
 <span class='doccomment'>///     vec![-1, 1, -1, 1, -1]</span>
-<span class='doccomment'>/// ));</span>
+<span class='doccomment'>/// );</span>
 <span class='doccomment'>/// ```</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>RepeatCall</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> {
     <span class='ident'>f</span>: <span class='ident'>F</span>,
