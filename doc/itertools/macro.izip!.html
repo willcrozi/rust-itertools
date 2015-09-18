@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `izip!` macro in crate `itertools`.">
     <meta name="keywords" content="rust, rustlang, rust-lang, izip!">
 
-    <title>itertools 0.3.25 - itertools::izip! - Rust</title>
+    <title>itertools 0.4.0 - itertools::izip! - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -24,10 +24,10 @@
 
     
 
-    <section class="sidebar">
+    <nav class="sidebar">
         
         <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'izip!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
-    </section>
+    </nav>
 
     <nav class="sub">
         <form class="search-form js-only">
@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-15473' class='srclink' href='../src/itertools/lib.rs.html#177-186' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-15717' class='srclink' href='../src/itertools/lib.rs.html#169-178' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>izip</span> {
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
@@ -66,8 +66,7 @@ returns <code>None</code>.</p>
 from iterators <code>(I, J, ..., M)</code> implementing <code>I: Iterator&lt;A&gt;</code>,
 <code>J: Iterator&lt;B&gt;</code>, ..., <code>M: Iterator&lt;E&gt;</code></p>
 <pre class='rust rust-example-rendered'>
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
 
 <span class='comment'>// Iterate over three sequences side-by-side</span>
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>xs</span> <span class='op'>=</span> [<span class='number'>0</span>, <span class='number'>0</span>, <span class='number'>0</span>];
@@ -83,10 +82,12 @@ from iterators <code>(I, J, ..., M)</code> implementing <code>I: Iterator&lt;A&g
 
     <section class="footer"></section>
 
-    <div id="help" class="hidden">
+    <aside id="help" class="hidden">
         <div>
+            <h1 class="hidden">Help</h1>
+
             <div class="shortcuts">
-                <h1>Keyboard Shortcuts</h1>
+                <h2>Keyboard Shortcuts</h2>
 
                 <dl>
                     <dt>?</dt>
@@ -103,7 +104,7 @@ from iterators <code>(I, J, ..., M)</code> implementing <code>I: Iterator&lt;A&g
             </div>
 
             <div class="infos">
-                <h1>Search Tricks</h1>
+                <h2>Search Tricks</h2>
 
                 <p>
                     Prefix searches with a type followed by a colon (e.g.
@@ -123,7 +124,7 @@ from iterators <code>(I, J, ..., M)</code> implementing <code>I: Iterator&lt;A&g
                 </p>
             </div>
         </div>
-    </div>
+    </aside>
 
     
 

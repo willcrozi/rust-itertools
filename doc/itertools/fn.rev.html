@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `CoalesceFn` type in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, CoalesceFn">
+    <meta name="description" content="API documentation for the Rust `rev` fn in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, rev">
 
-    <title>itertools 0.3.25 - itertools::CoalesceFn - Rust</title>
+    <title>itertools 0.4.0 - itertools::rev - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -24,10 +24,10 @@
 
     
 
-    <section class="sidebar">
+    <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'CoalesceFn', ty: 'type', relpath: ''};</script><script defer src="sidebar-items.js"></script>
-    </section>
+        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'rev', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
 
     <nav class="sub">
         <form class="search-form js-only">
@@ -40,22 +40,32 @@
         </form>
     </nav>
 
-    <section id='main' class="content type">
-<h1 class='fqn'><span class='in-band'><a href='index.html'>itertools</a>::<wbr><a class='type' href=''>CoalesceFn</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content fn">
+<h1 class='fqn'><span class='in-band'>Function <a href='index.html'>itertools</a>::<wbr><a class='fn' href=''>rev</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-2248' class='srclink' href='../src/itertools/adaptors.rs.html#792-793' title='goto source code'>[src]</a></span></h1>
-<pre class='rust typedef'>type CoalesceFn&lt;I&gt; <span class='where'>where I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a></span> = <a class='struct' href='../itertools/struct.Coalesce.html' title='itertools::Coalesce'>Coalesce</a>&lt;I, fn(I::Item, I::Item) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;I::Item, <a href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(I::Item, I::Item)</a>&gt;&gt;;</pre><div class='docblock'><p>An iterator adaptor that may join together adjacent elements.</p>
+        </span><a id='src-15700' class='srclink' href='../src/itertools/lib.rs.html#1339-1344' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub fn rev&lt;I&gt;(iterable: I) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/core/iter/struct.Rev.html' title='core::iter::Rev'>Rev</a>&lt;I::IntoIter&gt; <span class='where'>where I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>, I::IntoIter: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.DoubleEndedIterator.html' title='core::iter::DoubleEndedIterator'>DoubleEndedIterator</a></span></pre><div class='docblock'><p>Iterate <code>iterable</code> in reverse.</p>
+
+<p><code>IntoIterator</code> enabled version of <code>.rev()</code>.</p>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>rev</span>;
+
+<span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='ident'>rev</span>(<span class='kw-2'>&amp;</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>]) {
+    <span class='comment'>/* loop body */</span>
+}</pre>
 </div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
 
-    <div id="help" class="hidden">
+    <aside id="help" class="hidden">
         <div>
+            <h1 class="hidden">Help</h1>
+
             <div class="shortcuts">
-                <h1>Keyboard Shortcuts</h1>
+                <h2>Keyboard Shortcuts</h2>
 
                 <dl>
                     <dt>?</dt>
@@ -72,7 +82,7 @@
             </div>
 
             <div class="infos">
-                <h1>Search Tricks</h1>
+                <h2>Search Tricks</h2>
 
                 <p>
                     Prefix searches with a type followed by a colon (e.g.
@@ -92,7 +102,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </aside>
 
     
 

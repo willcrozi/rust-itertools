@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `iproduct!` macro in crate `itertools`.">
     <meta name="keywords" content="rust, rustlang, rust-lang, iproduct!">
 
-    <title>itertools 0.3.25 - itertools::iproduct! - Rust</title>
+    <title>itertools 0.4.0 - itertools::iproduct! - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -24,10 +24,10 @@
 
     
 
-    <section class="sidebar">
+    <nav class="sidebar">
         
         <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'iproduct!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
-    </section>
+    </nav>
 
     <nav class="sub">
         <form class="search-form js-only">
@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-15472' class='srclink' href='../src/itertools/lib.rs.html#133-149' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-15716' class='srclink' href='../src/itertools/lib.rs.html#126-142' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>iproduct</span> {
     (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>I</span>:<span class='ident'>expr</span>) <span class='op'>=&gt;</span> (
@@ -69,8 +69,7 @@
 <p>Iterator element type is like <code>(A, B, ..., E)</code> if formed
 from iterators <code>(I, J, ..., M)</code> with element types <code>I::Item = A</code>, <code>J::Item = B</code>, etc.</p>
 <pre class='rust rust-example-rendered'>
-<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>itertools</span>;
 <span class='comment'>// Iterate over the coordinates of a 4 x 4 x 4 grid</span>
 <span class='comment'>// from (0, 0, 0), (0, 0, 1), .., (0, 1, 0), (0, 1, 1), .. etc until (3, 3, 3)</span>
 <span class='kw'>for</span> (<span class='ident'>i</span>, <span class='ident'>j</span>, <span class='ident'>k</span>) <span class='kw'>in</span> <span class='macro'>iproduct</span><span class='macro'>!</span>(<span class='number'>0</span>..<span class='number'>4</span>, <span class='number'>0</span>..<span class='number'>4</span>, <span class='number'>0</span>..<span class='number'>4</span>) {
@@ -81,10 +80,12 @@ from iterators <code>(I, J, ..., M)</code> with element types <code>I::Item = A<
 
     <section class="footer"></section>
 
-    <div id="help" class="hidden">
+    <aside id="help" class="hidden">
         <div>
+            <h1 class="hidden">Help</h1>
+
             <div class="shortcuts">
-                <h1>Keyboard Shortcuts</h1>
+                <h2>Keyboard Shortcuts</h2>
 
                 <dl>
                     <dt>?</dt>
@@ -101,7 +102,7 @@ from iterators <code>(I, J, ..., M)</code> with element types <code>I::Item = A<
             </div>
 
             <div class="infos">
-                <h1>Search Tricks</h1>
+                <h2>Search Tricks</h2>
 
                 <p>
                     Prefix searches with a type followed by a colon (e.g.
@@ -121,7 +122,7 @@ from iterators <code>(I, J, ..., M)</code> with element types <code>I::Item = A<
                 </p>
             </div>
         </div>
-    </div>
+    </aside>
 
     
 
