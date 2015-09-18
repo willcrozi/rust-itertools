@@ -4,8 +4,7 @@
 //! option. This file may not be copied, modified, or distributed
 //! except according to those terms.
 
-#[macro_use]
-extern crate itertools as it;
+#[macro_use] extern crate itertools as it;
 extern crate permutohedron;
 
 use it::Itertools;
@@ -120,12 +119,6 @@ fn interleave_shortest() {
     let i1 = ::std::iter::repeat(1);
     let it = v0.into_iter().interleave_shortest(i1);
     assert_eq!(it.size_hint(), (6, Some(6)));
-}
-
-#[test]
-fn times() {
-    assert!(it::times(0).count() == 0);
-    assert!(it::times(5).count() == 5);
 }
 
 #[test]
@@ -379,7 +372,7 @@ fn merge_by() {
     let odd : Vec<(u32, &str)> = vec![(1, "hello"), (3, "world"), (5, "!")];
     let even = vec![(2, "foo"), (4, "bar"), (6, "baz")];
     let expected = vec![(1, "hello"), (2, "foo"), (3, "world"), (4, "bar"), (5, "!"), (6, "baz")];
-    let results = odd.iter().merge_by(even.iter(), |a, b|{ a.0.cmp(&b.0)});
+    let results = odd.iter().merge_by(even.iter(), |a, b| a.0 <= b.0);
     it::assert_equal(results, expected.iter());
 }
 
@@ -392,7 +385,7 @@ fn merge_by_btree() {
     let mut bt2 = BTreeMap::new();
     bt2.insert("foo", 2);
     bt2.insert("bar", 4);
-    let results = bt1.into_iter().merge_by(bt2.into_iter(), |a, b|{a.0.cmp(&b.0)});
+    let results = bt1.into_iter().merge_by(bt2.into_iter(), |a, b| a.0 <= b.0 );
     let expected = vec![("bar", 4), ("foo", 2), ("hello", 1), ("world", 3)];
     it::assert_equal(results, expected.into_iter());
 }
@@ -578,16 +571,6 @@ fn mend_slices_mut() {
         assert_eq!(iter.next(), Some(&mut [3][..]));
         assert_eq!(iter.next(), None);
     }
-}
-
-#[test]
-fn fn_map() {
-    // make sure it can be cloned
-    fn mapper<T: ToString>(x: T) -> String { x.to_string() }
-    let it = (0..4).fn_map(mapper);
-    let jt = it.clone();
-    it::assert_equal((0..4).map(|x| x.to_string()), it);
-    it::assert_equal((0..4).map(mapper), jt);
 }
 
 #[test]

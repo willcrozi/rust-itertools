@@ -14,7 +14,6 @@ use itertools::ZipSlices;
 
 use std::iter::repeat;
 use std::cmp;
-use std::cmp::Ordering;
 
 #[bench]
 fn slice_iter(b: &mut test::Bencher)
@@ -69,6 +68,40 @@ fn zip_default_zip(b: &mut test::Bencher)
 }
 
 #[bench]
+fn zipdot_i32_default_zip(b: &mut test::Bencher)
+{
+    let xs = vec![2; 1024];
+    let ys = vec![2; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let mut s = 0;
+        for (&x, &y) in xs.iter().zip(&ys) {
+            s += x * y;
+        }
+        s
+    })
+}
+
+#[bench]
+fn zipdot_f32_default_zip(b: &mut test::Bencher)
+{
+    let xs = vec![2f32; 1024];
+    let ys = vec![2f32; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let mut s = 0.;
+        for (&x, &y) in xs.iter().zip(&ys) {
+            s += x * y;
+        }
+        s
+    })
+}
+
+#[bench]
 fn zip_default_zip3(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
@@ -106,7 +139,7 @@ fn zip_slices_ziptuple(b: &mut test::Bencher)
 */
 
 #[bench]
-fn zip_slices(b: &mut test::Bencher)
+fn zipslices(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
@@ -122,7 +155,7 @@ fn zip_slices(b: &mut test::Bencher)
 }
 
 #[bench]
-fn zip_slices_mut(b: &mut test::Bencher)
+fn zipslices_mut(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
     let ys = vec![0; 768];
@@ -134,6 +167,40 @@ fn zip_slices_mut(b: &mut test::Bencher)
             test::black_box(x);
             test::black_box(y);
         }
+    })
+}
+
+#[bench]
+fn zipdot_i32_zipslices(b: &mut test::Bencher)
+{
+    let xs = vec![2; 1024];
+    let ys = vec![2; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let mut s = 0i32;
+        for (&x, &y) in ZipSlices::new(&xs, &ys) {
+            s += x * y;
+        }
+        s
+    })
+}
+
+#[bench]
+fn zipdot_f32_zipslices(b: &mut test::Bencher)
+{
+    let xs = vec![2f32; 1024];
+    let ys = vec![2f32; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let mut s = 0.;
+        for (&x, &y) in ZipSlices::new(&xs, &ys) {
+            s += x * y;
+        }
+        s
     })
 }
 
@@ -151,6 +218,42 @@ fn ziptrusted(b: &mut test::Bencher)
             test::black_box(x);
             test::black_box(y);
         }
+    })
+}
+
+#[cfg(feature = "unstable")]
+#[bench]
+fn zipdot_i32_ziptrusted(b: &mut test::Bencher)
+{
+    let xs = vec![2; 1024];
+    let ys = vec![2; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let mut s = 0i32;
+        for (&x, &y) in ZipTrusted::new((xs.iter(), ys.iter())) {
+            s += x * y;
+        }
+        s
+    })
+}
+
+#[cfg(feature = "unstable")]
+#[bench]
+fn zipdot_f32_ziptrusted(b: &mut test::Bencher)
+{
+    let xs = vec![2.; 1024];
+    let ys = vec![2.; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let mut s = 0f32;
+        for (&x, &y) in ZipTrusted::new((xs.iter(), ys.iter())) {
+            s += x * y;
+        }
+        s
     })
 }
 
@@ -198,6 +301,97 @@ fn zip_checked_counted_loop(b: &mut test::Bencher)
 }
 
 #[bench]
+fn zipdot_i32_checked_counted_loop(b: &mut test::Bencher)
+{
+    let xs = vec![2; 1024];
+    let ys = vec![2; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        // Must slice to equal lengths, and then bounds checks are eliminated!
+        let len = cmp::min(xs.len(), ys.len());
+        let xs = &xs[..len];
+        let ys = &ys[..len];
+
+        let mut s = 0i32;
+
+        for i in 0..len {
+            s += xs[i] * ys[i];
+        }
+        s
+    })
+}
+
+#[bench]
+fn zipdot_f32_checked_counted_loop(b: &mut test::Bencher)
+{
+    let xs = vec![2f32; 1024];
+    let ys = vec![2f32; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        // Must slice to equal lengths, and then bounds checks are eliminated!
+        let len = cmp::min(xs.len(), ys.len());
+        let xs = &xs[..len];
+        let ys = &ys[..len];
+
+        let mut s = 0.;
+
+        for i in 0..len {
+            s += xs[i] * ys[i];
+        }
+        s
+    })
+}
+
+#[bench]
+fn zipdot_f32_checked_counted_unrolled_loop(b: &mut test::Bencher)
+{
+    let xs = vec![2f32; 1024];
+    let ys = vec![2f32; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        // Must slice to equal lengths, and then bounds checks are eliminated!
+        let len = cmp::min(xs.len(), ys.len());
+        let mut xs = &xs[..len];
+        let mut ys = &ys[..len];
+
+        let mut s = 0.;
+        let (mut p0, mut p1, mut p2, mut p3, mut p4, mut p5, mut p6, mut p7) =
+            (0., 0., 0., 0., 0., 0., 0., 0.);
+
+        // how to unroll and have bounds checks eliminated (by cristicbz)
+        // split sum into eight parts to enable vectorization (by bluss)
+        while xs.len() >= 8 {
+            p0 += xs[0] * ys[0];
+            p1 += xs[1] * ys[1];
+            p2 += xs[2] * ys[2];
+            p3 += xs[3] * ys[3];
+            p4 += xs[4] * ys[4];
+            p5 += xs[5] * ys[5];
+            p6 += xs[6] * ys[6];
+            p7 += xs[7] * ys[7];
+
+            xs = &xs[8..];
+            ys = &ys[8..];
+        }
+        s += p0 + p4;
+        s += p1 + p5;
+        s += p2 + p6;
+        s += p3 + p7;
+
+        for i in 0..xs.len() {
+            s += xs[i] * ys[i];
+        }
+        s
+    })
+}
+
+#[bench]
 fn zip_unchecked_counted_loop(b: &mut test::Bencher)
 {
     let xs = vec![0; 1024];
@@ -215,6 +409,50 @@ fn zip_unchecked_counted_loop(b: &mut test::Bencher)
             test::black_box(y);
             }
         }
+    })
+}
+
+#[bench]
+fn zipdot_i32_unchecked_counted_loop(b: &mut test::Bencher)
+{
+    let xs = vec![2; 1024];
+    let ys = vec![2; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let len = cmp::min(xs.len(), ys.len());
+        let mut s = 0i32;
+        for i in 0..len {
+            unsafe {
+            let x = *xs.get_unchecked(i);
+            let y = *ys.get_unchecked(i);
+            s += x * y;
+            }
+        }
+        s
+    })
+}
+
+#[bench]
+fn zipdot_f32_unchecked_counted_loop(b: &mut test::Bencher)
+{
+    let xs = vec![2.; 1024];
+    let ys = vec![2.; 768];
+    let xs = black_box(xs);
+    let ys = black_box(ys);
+
+    b.iter(|| {
+        let len = cmp::min(xs.len(), ys.len());
+        let mut s = 0f32;
+        for i in 0..len {
+            unsafe {
+            let x = *xs.get_unchecked(i);
+            let y = *ys.get_unchecked(i);
+            s += x * y;
+            }
+        }
+        s
     })
 }
 
@@ -370,7 +608,7 @@ fn merge_by_cmp(b: &mut test::Bencher) {
     let data1 = test::black_box(data1);
     let data2 = test::black_box(data2);
     b.iter(|| {
-        data1.iter().merge_by(&data2, Ord::cmp).count()
+        data1.iter().merge_by(&data2, PartialOrd::le).count()
     })
 }
 
@@ -396,6 +634,6 @@ fn merge_by_lt(b: &mut test::Bencher) {
     let data1 = test::black_box(data1);
     let data2 = test::black_box(data2);
     b.iter(|| {
-        data1.iter().merge_by(&data2, |a, b| if a <= b { Ordering::Less } else { Ordering::Greater }).count()
+        data1.iter().merge_by(&data2, |a, b| a <= b).count()
     })
 }

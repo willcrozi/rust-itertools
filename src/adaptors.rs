@@ -4,17 +4,18 @@
 //! option. This file may not be copied, modified, or distributed
 //! except according to those terms.
 
+use std::cmp;
 use std::mem;
 #[cfg(feature = "unstable")]
 use std::num::One;
 #[cfg(feature = "unstable")]
 use std::ops::Add;
-use std::cmp::Ordering;
 use std::iter::{Fuse, Peekable};
 use std::collections::HashSet;
 use std::hash::Hash;
 use Itertools;
 use size_hint;
+use misc::MendSlice;
 
 macro_rules! clone_fields {
     ($name:ident, $base:expr, $($field:ident),+) => (
@@ -84,8 +85,8 @@ pub struct InterleaveShortest<I, J> where
     I: Iterator,
     J: Iterator<Item=I::Item>,
 {
-    it0: Fuse<I>,
-    it1: Fuse<J>,
+    it0: I,
+    it1: J,
     phase: bool, // false ==> it0, true ==> it1
 }
 
@@ -96,8 +97,8 @@ impl<I, J> InterleaveShortest<I, J> where
     /// Create a new `InterleaveShortest` iterator.
     pub fn new(a: I, b: J) -> InterleaveShortest<I, J> {
         InterleaveShortest {
-            it0: a.fuse(),
-            it1: b.fuse(),
+            it0: a,
+            it1: b,
             phase: false,
         }
     }
@@ -131,78 +132,24 @@ impl<I, J> Iterator for InterleaveShortest<I, J> where
 
     #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
-        fn bound(a: usize, b: usize) -> Option<usize> {
+        let bound = |a: usize, b: usize| -> Option<usize> {
             use std::cmp::min;
             2usize.checked_mul(min(a, b))
-                .and_then(|lhs| lhs.checked_add(if a > b { 1 } else { 0 }))
-        }
+                .and_then(|lhs| lhs.checked_add(if !self.phase && a > b { 1 } else { 0 }))
+        };
 
         let (l0, u0) = self.it0.size_hint();
         let (l1, u1) = self.it1.size_hint();
         let lb = bound(l0, l1).unwrap_or(usize::max_value());
         let ub = match (u0, u1) {
             (None, None) => None,
-            (Some(u0), None) => 2usize.checked_mul(u0),
-            (None, Some(u1)) => 2usize.checked_mul(u1).and_then(|l| l.checked_add(1)),
-            (Some(u0), Some(u1)) => bound(u0, u1)
+            (Some(u0), None) => Some(u0 * 2 + self.phase as usize),
+            (None, Some(u1)) => Some(u1 * 2 + !self.phase as usize),
+            (Some(u0), Some(u1)) => Some(cmp::min(u0, u1) * 2 +
+                                         (u0 > u1 && !self.phase ||
+                                          (u0 < u1 && self.phase)) as usize),
         };
         (lb, ub)
-    }
-}
-
-/// **Deprecated:** Use *.map_fn()* instead.
-pub struct FnMap<B, I> where
-    I: Iterator,
-{
-    map: fn(I::Item) -> B,
-    iter: I,
-}
-
-impl<B, I> FnMap<B, I> where
-    I: Iterator
-{
-    /// **Deprecated:** Use *.map_fn()* instead.
-    pub fn new(iter: I, map: fn(I::Item) -> B) -> Self
-    {
-        FnMap{iter: iter, map: map}
-    }
-}
-
-impl<B, I> Iterator for FnMap<B, I> where
-    I: Iterator,
-{
-    type Item = B;
-    #[inline]
-    fn next(&mut self) -> Option<B>
-    {
-        self.iter.next().map(|a| (self.map)(a))
-    }
-
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        self.iter.size_hint()
-    }
-}
-
-impl<B, I> DoubleEndedIterator for FnMap<B, I> where
-    I: DoubleEndedIterator
-{
-    #[inline]
-    fn next_back(&mut self) -> Option<B> {
-        self.iter.next_back().map(|a| (self.map)(a))
-    }
-}
-
-// same size
-impl<B, I> ExactSizeIterator for FnMap<B, I> where
-    I: ExactSizeIterator,
-{ }
-
-impl<B, I> Clone for FnMap<B, I> where
-    I: Clone + Iterator,
-{
-    fn clone(&self) -> Self
-    {
-        FnMap::new(self.iter.clone(), self.map)
     }
 }
 
@@ -557,80 +504,39 @@ impl<I> ExactSizeIterator for Step<I> where
     I: ExactSizeIterator,
 { }
 
-/// An iterator adaptor that merges the two base iterators in ascending order.
-/// If both base iterators are sorted (ascending), the result is sorted.
-///
-/// Iterator element type is `I::Item`.
-///
-/// See [*.merge_by()*](trait.Itertools.html#method.merge_by) for more information.
-pub struct Merge<I, J, F> where
-    I: Iterator,
-    J: Iterator<Item=I::Item>,
+
+struct MergeCore<I, J>
+    where I: Iterator,
+          J: Iterator<Item=I::Item>,
 {
     a: Peekable<I>,
     b: Peekable<J>,
-    cmp: F,
     fused: Option<bool>,
 }
 
-// default ordering function for .merge()
-// Note: To be replaced by unit struct
-#[inline]
-pub fn merge_default_ordering<A: PartialOrd>(a: &A, b: &A) -> Ordering {
-    if a > b {
-        Ordering::Greater
-    } else {
-        Ordering::Less
-    }
-}
 
-impl<I, J, F> Merge<I, J, F> where
-    I: Iterator,
-    J: Iterator<Item=I::Item>,
-    F: FnMut(&I::Item, &I::Item) -> Ordering
-{
-    /// Create a `Merge` iterator.
-    pub fn new(a: I, b: J, cmp: F) -> Self
-    {
-        Merge {
-            a: a.peekable(),
-            b: b.peekable(),
-            cmp: cmp,
-            fused: None,
-        }
-    }
-}
-
-impl<I, J, F> Clone for Merge<I, J, F> where
+impl<I, J> Clone for MergeCore<I, J> where
     I: Iterator,
     J: Iterator<Item=I::Item>,
     Peekable<I>: Clone,
     Peekable<J>: Clone,
-    F: Clone,
 {
     fn clone(&self) -> Self {
-        clone_fields!(Merge, self, a, b, cmp, fused)
+        clone_fields!(MergeCore, self, a, b, fused)
     }
 }
 
-impl<I, J, F> Iterator for Merge<I, J, F> where
-    I: Iterator,
-    J: Iterator<Item=I::Item>,
-    F: FnMut(&I::Item, &I::Item) -> Ordering
+impl<I, J> MergeCore<I, J>
+    where I: Iterator,
+          J: Iterator<Item=I::Item>,
 {
-    type Item = I::Item;
-
-    fn next(&mut self) -> Option<I::Item> {
+    fn next_with<F>(&mut self, mut less_than: F) -> Option<I::Item>
+        where F: FnMut(&I::Item, &I::Item) -> bool
+    {
         let less_than = match self.fused {
             Some(lt) => lt,
             None => match (self.a.peek(), self.b.peek()) {
-                (Some(a), Some(b)) => {
-                    match (self.cmp)(a, b) {
-                        Ordering::Less => true,
-                        Ordering::Equal => true,
-                        Ordering::Greater => false,
-                    }
-                }
+                (Some(a), Some(b)) => less_than(a, b),
                 (Some(_), None) => {
                     self.fused = Some(true);
                     true
@@ -653,6 +559,117 @@ impl<I, J, F> Iterator for Merge<I, J, F> where
     fn size_hint(&self) -> (usize, Option<usize>) {
         // Not ExactSizeIterator because size may be larger than usize
         size_hint::add(self.a.size_hint(), self.b.size_hint())
+    }
+}
+
+/// An iterator adaptor that merges the two base iterators in ascending order.
+/// If both base iterators are sorted (ascending), the result is sorted.
+///
+/// Iterator element type is `I::Item`.
+///
+/// See [*.merge()*](trait.Itertools.html#method.merge_by) for more information.
+pub struct Merge<I, J> where
+    I: Iterator,
+    J: Iterator<Item=I::Item>,
+{
+    merge: MergeCore<I, J>,
+}
+
+impl<I, J> Clone for Merge<I, J> where
+    I: Iterator,
+    J: Iterator<Item=I::Item>,
+    Peekable<I>: Clone,
+    Peekable<J>: Clone,
+{
+    fn clone(&self) -> Self {
+        clone_fields!(Merge, self, merge)
+    }
+}
+
+/// Create a `Merge` iterator.
+pub fn merge_new<I, J>(a: I, b: J) -> Merge<I, J>
+    where I: Iterator,
+          J: Iterator<Item=I::Item>,
+{
+    Merge {
+        merge: MergeCore {
+            a: a.peekable(),
+            b: b.peekable(),
+            fused: None,
+        }
+    }
+}
+
+impl<I, J> Iterator for Merge<I, J>
+    where I: Iterator,
+          J: Iterator<Item=I::Item>,
+          I::Item: PartialOrd,
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<I::Item> {
+        self.merge.next_with(|a, b| a <= b)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.merge.size_hint()
+    }
+}
+
+/// An iterator adaptor that merges the two base iterators in ascending order.
+/// If both base iterators are sorted (ascending), the result is sorted.
+///
+/// Iterator element type is `I::Item`.
+///
+/// See [*.merge_by()*](trait.Itertools.html#method.merge_by) for more information.
+pub struct MergeBy<I, J, F> where
+    I: Iterator,
+    J: Iterator<Item=I::Item>,
+{
+    merge: MergeCore<I, J>,
+    cmp: F,
+}
+
+/// Create a `MergeBy` iterator.
+pub fn merge_by_new<I, J, F>(a: I, b: J, cmp: F) -> MergeBy<I, J, F>
+    where I: Iterator,
+          J: Iterator<Item=I::Item>,
+{
+    MergeBy {
+        merge: MergeCore {
+            a: a.peekable(),
+            b: b.peekable(),
+            fused: None,
+        },
+        cmp: cmp,
+    }
+}
+
+impl<I, J, F> Clone for MergeBy<I, J, F> where
+    I: Iterator,
+    J: Iterator<Item=I::Item>,
+    Peekable<I>: Clone,
+    Peekable<J>: Clone,
+    F: Clone,
+{
+    fn clone(&self) -> Self {
+        clone_fields!(MergeBy, self, merge, cmp)
+    }
+}
+
+impl<I, J, F> Iterator for MergeBy<I, J, F> where
+    I: Iterator,
+    J: Iterator<Item=I::Item>,
+    F: FnMut(&I::Item, &I::Item) -> bool
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<I::Item> {
+        self.merge.next_with(&mut self.cmp)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.merge.size_hint()
     }
 }
 
@@ -776,43 +793,19 @@ impl<I> ExactSizeIterator for MultiPeek<I> where
     I: ExactSizeIterator,
 { }
 
-/// An iterator adaptor that may join together adjacent elements.
-///
-/// See [*.coalesce()*](trait.Itertools.html#method.coalesce) for more information.
 #[derive(Clone)]
-pub struct Coalesce<I, F> where
-    I: Iterator,
+pub struct CoalesceCore<I>
+    where I: Iterator,
 {
     iter: I,
     last: Option<I::Item>,
-    f: F,
 }
 
-/// An iterator adaptor that may join together adjacent elements.
-pub type CoalesceFn<I> where I: Iterator =
-    Coalesce<I, fn(I::Item, I::Item) -> Result<I::Item, (I::Item, I::Item)>>;
-
-impl<I, F> Coalesce<I, F> where
-    I: Iterator,
+impl<I> CoalesceCore<I>
+    where I: Iterator,
 {
-    /// Create a new `Coalesce`.
-    pub fn new(mut iter: I, f: F) -> Self
-    {
-        Coalesce {
-            last: iter.next(),
-            iter: iter,
-            f: f,
-        }
-    }
-}
-
-impl<I, F> Iterator for Coalesce<I, F> where
-    I: Iterator,
-    F: FnMut(I::Item, I::Item) -> Result<I::Item, (I::Item, I::Item)>
-{
-    type Item = I::Item;
-
-    fn next(&mut self) -> Option<I::Item>
+    fn next_with<F>(&mut self, mut f: F) -> Option<I::Item>
+        where F: FnMut(I::Item, I::Item) -> Result<I::Item, (I::Item, I::Item)>
     {
         // this fuses the iterator
         let mut last = match self.last.take() {
@@ -820,7 +813,7 @@ impl<I, F> Iterator for Coalesce<I, F> where
             Some(x) => x,
         };
         for next in &mut self.iter {
-            match (self.f)(last, next) {
+            match f(last, next) {
                 Ok(joined) => last = joined,
                 Err((last_, next_)) => {
                     self.last = Some(next_);
@@ -840,7 +833,147 @@ impl<I, F> Iterator for Coalesce<I, F> where
     }
 }
 
+/// An iterator adaptor that may join together adjacent elements.
+///
+/// See [*.coalesce()*](trait.Itertools.html#method.coalesce) for more information.
+pub struct Coalesce<I, F>
+    where I: Iterator,
+{
+    iter: CoalesceCore<I>,
+    f: F,
+}
 
+impl<I: Clone, F: Clone> Clone for Coalesce<I, F>
+    where I: Iterator, I::Item: Clone
+{
+    fn clone(&self) -> Self {
+        clone_fields!(Coalesce, self, iter, f)
+    }
+}
+
+impl<I, F> Coalesce<I, F> where
+    I: Iterator,
+{
+    /// Create a new `Coalesce`.
+    pub fn new(mut iter: I, f: F) -> Self {
+        Coalesce {
+            iter: CoalesceCore {
+                last: iter.next(),
+                iter: iter,
+            },
+            f: f,
+        }
+    }
+}
+
+impl<I, F> Iterator for Coalesce<I, F>
+    where I: Iterator,
+          F: FnMut(I::Item, I::Item) -> Result<I::Item, (I::Item, I::Item)>
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<I::Item> {
+        self.iter.next_with(&mut self.f)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.iter.size_hint()
+    }
+}
+
+/// An iterator adaptor that removes repeated duplicates.
+///
+/// See [*.dedup()*](trait.Itertools.html#method.dedup) for more information.
+pub struct Dedup<I>
+    where I: Iterator,
+{
+    iter: CoalesceCore<I>,
+}
+
+impl<I: Clone> Clone for Dedup<I>
+    where I: Iterator, I::Item: Clone
+{
+    fn clone(&self) -> Self {
+        clone_fields!(Dedup, self, iter)
+    }
+}
+
+impl<I> Dedup<I> where
+    I: Iterator,
+{
+    /// Create a new `Dedup`.
+    pub fn new(mut iter: I) -> Self {
+        Dedup {
+            iter: CoalesceCore {
+                last: iter.next(),
+                iter: iter,
+            },
+        }
+    }
+}
+
+impl<I> Iterator for Dedup<I>
+    where I: Iterator,
+          I::Item: PartialEq,
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<I::Item> {
+        self.iter.next_with(|x, y| {
+            if x == y { Ok(x) } else { Err((x, y)) }
+        })
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.iter.size_hint()
+    }
+}
+
+/// An iterator adaptor that glues together adjacent contiguous slices.
+///
+/// See [*.mend_slices()*](trait.Itertools.html#method.mend_slices) for more information.
+pub struct MendSlices<I>
+    where I: Iterator,
+{
+    iter: CoalesceCore<I>,
+}
+
+impl<I: Clone> Clone for MendSlices<I>
+    where I: Iterator, I::Item: Clone
+{
+    fn clone(&self) -> Self {
+        clone_fields!(MendSlices, self, iter)
+    }
+}
+
+impl<I> MendSlices<I> where
+    I: Iterator,
+{
+    /// Create a new `MendSlices`.
+    pub fn new(mut iter: I) -> Self {
+        MendSlices {
+            iter: CoalesceCore {
+                last: iter.next(),
+                iter: iter,
+            },
+        }
+    }
+}
+
+impl<I> Iterator for MendSlices<I>
+    where I: Iterator,
+          I::Item: MendSlice,
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<I::Item> {
+        self.iter.next_with(MendSlice::mend)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.iter.size_hint()
+    }
+}
 
 /// An iterator adaptor that borrows from a `Clone`-able iterator
 /// to only pick off elements while the predicate returns `true`.
@@ -988,7 +1121,7 @@ impl<I> Iterator for Combinations<I> where I: Iterator + Clone, I::Item: Clone{
 
 /// An iterator adapter to filter out duplicate elements.
 ///
-/// See [*.unique()*](trait.Itertools.html#method.unique) for more information.
+/// See [*.unique_by()*](trait.Itertools.html#method.unique) for more information.
 #[derive(Clone)]
 pub struct UniqueBy<I: Iterator, V, F> {
     iter: I,
@@ -1038,6 +1171,51 @@ impl<I, V, F> Iterator for UniqueBy<I, V, F> where
     }
 }
 
+impl<I> Iterator for Unique<I> where
+    I: Iterator,
+    I::Item: Eq + Hash + Clone,
+{
+    type Item = I::Item;
+
+    fn next(&mut self) -> Option<I::Item> {
+        loop {
+            match self.iter.iter.next() {
+                None => return None,
+                Some(v) => {
+                    if !self.iter.used.contains(&v) {
+                        // FIXME: Avoid this double lookup when the entry api allows
+                        self.iter.used.insert(v.clone());
+                        return Some(v);
+                    }
+                }
+            }
+        }
+    }
+
+    #[inline]
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let (low, hi) = self.iter.iter.size_hint();
+        ((low > 0 && self.iter.used.is_empty()) as usize, hi)
+    }
+}
+
 /// An iterator adapter to filter out duplicate elements.
-pub type Unique<I> where I: Iterator =
-    UniqueBy<I, I::Item, fn(&I::Item) -> I::Item>;
+///
+/// See [*.unique()*](trait.Itertools.html#method.unique) for more information.
+#[derive(Clone)]
+pub struct Unique<I: Iterator> {
+    iter: UniqueBy<I, I::Item, ()>,
+}
+
+pub fn unique<I>(iter: I) -> Unique<I>
+    where I: Iterator,
+          I::Item: Eq + Hash,
+{
+    Unique {
+        iter: UniqueBy {
+            iter: iter,
+            used: HashSet::new(),
+            f: (),
+        }
+    }
+}
