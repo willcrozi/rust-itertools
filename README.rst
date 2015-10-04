@@ -19,7 +19,7 @@ __ http://bluss.github.io/rust-itertools/
 How to use with cargo::
 
     [dependencies]
-    itertools = "0.3"
+    itertools = "0.4"
 
 How to use in your crate:
 
@@ -32,6 +32,10 @@ How to use in your crate:
 
 Recent Changes
 --------------
+
+- 0.4.1
+
+  - Update .dropping() to take advantage of .nth()
 
 - 0.4.0
 
