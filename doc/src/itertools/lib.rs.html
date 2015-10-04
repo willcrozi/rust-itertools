@@ -1384,6 +1384,9 @@
 <span id="1342">1342</span>
 <span id="1343">1343</span>
 <span id="1344">1344</span>
+<span id="1345">1345</span>
+<span id="1346">1346</span>
+<span id="1347">1347</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>,
@@ -2264,6 +2267,7 @@
     <span class='doccomment'>/// ```</span>
     <span class='kw'>fn</span> <span class='ident'>dropn</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span>
     {
+        <span class='comment'>// FIXME: Can we use .nth() somehow?</span>
         <span class='kw'>let</span> <span class='ident'>start</span> <span class='op'>=</span> <span class='ident'>n</span>;
         <span class='kw'>while</span> <span class='ident'>n</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
             <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>next</span>() {
@@ -2289,7 +2293,9 @@
     <span class='kw'>fn</span> <span class='ident'>dropping</span>(<span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='kw'>Self</span> <span class='kw'>where</span>
         <span class='kw'>Self</span>: <span class='ident'>Sized</span>,
     {
-        <span class='self'>self</span>.<span class='ident'>dropn</span>(<span class='ident'>n</span>);
+        <span class='kw'>if</span> <span class='ident'>n</span> <span class='op'>&gt;</span> <span class='number'>0</span> {
+            <span class='self'>self</span>.<span class='ident'>nth</span>(<span class='ident'>n</span> <span class='op'>-</span> <span class='number'>1</span>);
+        }
         <span class='self'>self</span>
     }
 
