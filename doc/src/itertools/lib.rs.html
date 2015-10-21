@@ -1387,6 +1387,38 @@
 <span id="1345">1345</span>
 <span id="1346">1346</span>
 <span id="1347">1347</span>
+<span id="1348">1348</span>
+<span id="1349">1349</span>
+<span id="1350">1350</span>
+<span id="1351">1351</span>
+<span id="1352">1352</span>
+<span id="1353">1353</span>
+<span id="1354">1354</span>
+<span id="1355">1355</span>
+<span id="1356">1356</span>
+<span id="1357">1357</span>
+<span id="1358">1358</span>
+<span id="1359">1359</span>
+<span id="1360">1360</span>
+<span id="1361">1361</span>
+<span id="1362">1362</span>
+<span id="1363">1363</span>
+<span id="1364">1364</span>
+<span id="1365">1365</span>
+<span id="1366">1366</span>
+<span id="1367">1367</span>
+<span id="1368">1368</span>
+<span id="1369">1369</span>
+<span id="1370">1370</span>
+<span id="1371">1371</span>
+<span id="1372">1372</span>
+<span id="1373">1373</span>
+<span id="1374">1374</span>
+<span id="1375">1375</span>
+<span id="1376">1376</span>
+<span id="1377">1377</span>
+<span id="1378">1378</span>
+<span id="1379">1379</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>,
@@ -2501,6 +2533,38 @@
             }
         }
         <span class='prelude-val'>Ok</span>(<span class='ident'>start</span>)
+    }
+
+    <span class='doccomment'>/// Fold `Option` values from an iterator.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// Only `Some` values are folded. If no `None` is encountered, the folded</span>
+    <span class='doccomment'>/// value is returned inside `Some`. Otherwise, the operation terminates</span>
+    <span class='doccomment'>/// and returns `None`. No iterator elements are consumed after the `None`.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// This is the `Option` equivalent to `fold_results`.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// use std::ops::Add;</span>
+    <span class='doccomment'>/// use itertools::Itertools;</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let mut values = vec![Some(1), Some(2), Some(-2)].into_iter();</span>
+    <span class='doccomment'>/// assert_eq!(values.fold_options(5, Add::add), Some(5 + 1 + 2 - 2));</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>/// let mut more_values = vec![Some(2), None, Some(0)].into_iter();</span>
+    <span class='doccomment'>/// assert!(more_values.fold_options(0, Add::add).is_none());</span>
+    <span class='doccomment'>/// assert_eq!(more_values.next().unwrap(), Some(0));</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='kw'>fn</span> <span class='ident'>fold_options</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span>, <span class='ident'>F</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='kw-2'>mut</span> <span class='ident'>start</span>: <span class='ident'>B</span>, <span class='kw-2'>mut</span> <span class='ident'>f</span>: <span class='ident'>F</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> <span class='kw'>where</span>
+        <span class='kw'>Self</span>: <span class='ident'>Iterator</span><span class='op'>&lt;</span><span class='ident'>Item</span><span class='op'>=</span><span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>A</span><span class='op'>&gt;&gt;</span>,
+        <span class='ident'>F</span>: <span class='ident'>FnMut</span>(<span class='ident'>B</span>, <span class='ident'>A</span>) <span class='op'>-&gt;</span> <span class='ident'>B</span>,
+    {
+        <span class='kw'>for</span> <span class='ident'>elt</span> <span class='kw'>in</span> <span class='self'>self</span> {
+            <span class='kw'>match</span> <span class='ident'>elt</span> {
+                <span class='prelude-val'>Some</span>(<span class='ident'>v</span>) <span class='op'>=&gt;</span> <span class='ident'>start</span> <span class='op'>=</span> <span class='ident'>f</span>(<span class='ident'>start</span>, <span class='ident'>v</span>),
+                <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>None</span>,
+            }
+        }
+        <span class='prelude-val'>Some</span>(<span class='ident'>start</span>)
     }
 
     <span class='doccomment'>/// Accumulator of the elements in the iterator.</span>
