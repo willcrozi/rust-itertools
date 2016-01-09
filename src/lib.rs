@@ -65,6 +65,7 @@ pub use adaptors::{
 };
 #[cfg(feature = "unstable")]
 pub use adaptors::EnumerateFrom;
+pub use free::{enumerate, rev};
 pub use format::Format;
 pub use groupbylazy::{ChunksLazy, Chunk, Chunks, GroupByLazy, Group, Groups};
 pub use intersperse::Intersperse;
@@ -86,6 +87,7 @@ pub use ziptuple::{Zip};
 pub use ziptrusted::{ZipTrusted, TrustedIterator};
 pub use zipslices::ZipSlices;
 mod adaptors;
+pub mod free;
 mod format;
 mod groupbylazy;
 mod intersperse;
@@ -253,10 +255,10 @@ pub trait Itertools : Iterator {
     ///
     /// This iterator is *fused*.
     ///
-    /// When both iterators return `None`, all further invocations of `.next()` 
+    /// When both iterators return `None`, all further invocations of `.next()`
     /// will return `None`.
     ///
-    /// Iterator element type is 
+    /// Iterator element type is
     /// [`EitherOrBoth<Self::Item, J::Item>`](enum.EitherOrBoth.html).
     ///
     /// ```rust
@@ -1219,6 +1221,26 @@ pub trait Itertools : Iterator {
         }
     }
 
+    /// Collect all iterator elements into a sorted vector in ascending order.
+    ///
+    /// **Note:** This consumes the entire iterator, uses the
+    /// `slice::sort_by()` method and returns the sorted vector.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    ///
+    /// // sort the letters of the text in ascending order
+    /// let text = "bdacfe";
+    /// itertools::assert_equal(text.chars().sorted(),
+    ///                         "abcdef".chars());
+    /// ```
+    fn sorted(self) -> Vec<Self::Item>
+        where Self: Sized,
+              Self::Item: Ord
+    {
+        self.sorted_by(Ord::cmp)
+    }
+
     /// Collect all iterator elements into a sorted vector.
     ///
     /// **Note:** This consumes the entire iterator, uses the
@@ -1362,38 +1384,3 @@ pub fn partition<'a, A: 'a, I, F>(iter: I, mut pred: F) -> usize where
     split_index
 }
 
-
-/// Iterate `iterable` with a running index.
-///
-/// `IntoIterator` enabled version of `.enumerate()`.
-///
-/// ```
-/// use itertools::enumerate;
-///
-/// for (i, elt) in enumerate(&[1, 2, 3]) {
-///     /* loop body */
-/// }
-/// ```
-pub fn enumerate<I>(iterable: I) -> iter::Enumerate<I::IntoIter>
-    where I: IntoIterator,
-{
-    iterable.into_iter().enumerate()
-}
-
-/// Iterate `iterable` in reverse.
-///
-/// `IntoIterator` enabled version of `.rev()`.
-///
-/// ```
-/// use itertools::rev;
-///
-/// for elt in rev(&[1, 2, 3]) {
-///     /* loop body */
-/// }
-/// ```
-pub fn rev<I>(iterable: I) -> iter::Rev<I::IntoIter>
-    where I: IntoIterator,
-          I::IntoIter: DoubleEndedIterator,
-{
-    iterable.into_iter().rev()
-}
