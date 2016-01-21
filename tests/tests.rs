@@ -821,3 +821,73 @@ fn flatten_clone() {
     it::assert_equal(flattened1, &[1,2,3,4,5,6]);
     it::assert_equal(flattened2, &[1,2,3,4,5,6]);
 }
+
+#[test]
+fn combinations_n() {
+    assert!((1..3).combinations_n(5).next().is_none());
+
+    let it = (1..3).combinations_n(2);
+    it::assert_equal(it, vec![
+        vec![1, 2],
+        ]);
+
+    let it = (1..5).combinations_n(2);
+    it::assert_equal(it, vec![
+        vec![1, 2],
+        vec![1, 3],
+        vec![1, 4],
+        vec![2, 3],
+        vec![2, 4],
+        vec![3, 4],
+        ]);
+
+    it::assert_equal((0..0).combinations(), <Vec<_>>::new());
+    it::assert_equal((0..1).combinations(), <Vec<_>>::new());
+    it::assert_equal((0..2).combinations(), vec![(0, 1)]);
+
+    it::assert_equal((0..0).combinations_n(2), <Vec<Vec<_>>>::new());
+    it::assert_equal((0..1).combinations_n(1), vec![vec![0]]);
+    it::assert_equal((0..2).combinations_n(1), vec![vec![0], vec![1]]);
+    it::assert_equal((0..2).combinations_n(2), vec![vec![0, 1]]);
+}
+
+#[test]
+fn diff_mismatch() {
+    let a = vec![1, 2, 3, 4];
+    let b = vec![1.0, 5.0, 3.0, 4.0];
+    let b_map = b.into_iter().map(|f| f as i32);
+    let diff = it::diff_with(a.iter(), b_map, |a, b| *a == b);
+
+    assert!(match diff {
+        Some(it::Diff::FirstMismatch(1, _, from_diff)) =>
+            from_diff.collect::<Vec<_>>() == vec![5, 3, 4],
+        _ => false,
+    });
+}
+
+#[test]
+fn diff_longer() {
+    let a = vec![1, 2, 3, 4];
+    let b = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0];
+    let b_map = b.into_iter().map(|f| f as i32);
+    let diff = it::diff_with(a.iter(), b_map, |a, b| *a == b);
+
+    assert!(match diff {
+        Some(it::Diff::Longer(_, remaining)) =>
+            remaining.collect::<Vec<_>>() == vec![5, 6],
+        _ => false,
+    });
+}
+
+#[test]
+fn diff_shorter() {
+    let a = vec![1, 2, 3, 4];
+    let b = vec![1.0, 2.0];
+    let b_map = b.into_iter().map(|f| f as i32);
+    let diff = it::diff_with(a.iter(), b_map, |a, b| *a == b);
+
+    assert!(match diff {
+        Some(it::Diff::Shorter(len, _)) => len == 2,
+        _ => false,
+    });
+}
