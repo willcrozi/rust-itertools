@@ -8,6 +8,7 @@ use std::iter::{self, Zip};
 use {
     Itertools,
     Merge,
+    KMerge,
     Interleave,
 };
 
@@ -23,7 +24,7 @@ use {
 /// }
 /// ```
 pub fn enumerate<I>(iterable: I) -> iter::Enumerate<I::IntoIter>
-    where I: IntoIterator,
+    where I: IntoIterator
 {
     iterable.into_iter().enumerate()
 }
@@ -41,7 +42,7 @@ pub fn enumerate<I>(iterable: I) -> iter::Enumerate<I::IntoIter>
 /// ```
 pub fn rev<I>(iterable: I) -> iter::Rev<I::IntoIter>
     where I: IntoIterator,
-          I::IntoIter: DoubleEndedIterator,
+          I::IntoIter: DoubleEndedIterator
 {
     iterable.into_iter().rev()
 }
@@ -60,7 +61,7 @@ pub fn rev<I>(iterable: I) -> iter::Rev<I::IntoIter>
 /// ```
 pub fn zip<I, J>(i: I, j: J) -> Zip<I::IntoIter, J::IntoIter>
     where I: IntoIterator,
-          J: IntoIterator,
+          J: IntoIterator
 {
     i.into_iter().zip(j)
 }
@@ -78,7 +79,7 @@ pub fn zip<I, J>(i: I, j: J) -> Zip<I::IntoIter, J::IntoIter>
 /// ```
 pub fn chain<I, J>(i: I, j: J) -> iter::Chain<I::IntoIter, J::IntoIter>
     where I: IntoIterator,
-          J: IntoIterator<Item=I::Item>,
+          J: IntoIterator<Item = I::Item>
 {
     i.into_iter().chain(j)
 }
@@ -94,7 +95,7 @@ pub fn chain<I, J>(i: I, j: J) -> iter::Chain<I::IntoIter, J::IntoIter>
 /// ```
 pub fn fold<I, B, F>(iterable: I, init: B, f: F) -> B
     where I: IntoIterator,
-          F: FnMut(B, I::Item) -> B,
+          F: FnMut(B, I::Item) -> B
 {
     iterable.into_iter().fold(init, f)
 }
@@ -110,7 +111,7 @@ pub fn fold<I, B, F>(iterable: I, init: B, f: F) -> B
 /// ```
 pub fn all<I, F>(iterable: I, f: F) -> bool
     where I: IntoIterator,
-          F: FnMut(I::Item) -> bool,
+          F: FnMut(I::Item) -> bool
 {
     iterable.into_iter().all(f)
 }
@@ -126,7 +127,7 @@ pub fn all<I, F>(iterable: I, f: F) -> bool
 /// ```
 pub fn any<I, F>(iterable: I, f: F) -> bool
     where I: IntoIterator,
-          F: FnMut(I::Item) -> bool,
+          F: FnMut(I::Item) -> bool
 {
     iterable.into_iter().any(f)
 }
@@ -142,7 +143,7 @@ pub fn any<I, F>(iterable: I, f: F) -> bool
 /// ```
 pub fn max<I>(iterable: I) -> Option<I::Item>
     where I: IntoIterator,
-          I::Item: Ord,
+          I::Item: Ord
 {
     iterable.into_iter().max()
 }
@@ -158,7 +159,7 @@ pub fn max<I>(iterable: I) -> Option<I::Item>
 /// ```
 pub fn min<I>(iterable: I) -> Option<I::Item>
     where I: IntoIterator,
-          I::Item: Ord,
+          I::Item: Ord
 {
     iterable.into_iter().min()
 }
@@ -176,7 +177,7 @@ pub fn min<I>(iterable: I) -> Option<I::Item>
 /// ```
 pub fn interleave<I, J>(i: I, j: J) -> Interleave<I::IntoIter, J::IntoIter>
     where I: IntoIterator,
-          J: IntoIterator<Item=I::Item>,
+          J: IntoIterator<Item = I::Item>
 {
     i.into_iter().interleave(j)
 }
@@ -194,10 +195,29 @@ pub fn interleave<I, J>(i: I, j: J) -> Interleave<I::IntoIter, J::IntoIter>
 /// ```
 pub fn merge<I, J>(i: I, j: J) -> Merge<I::IntoIter, J::IntoIter>
     where I: IntoIterator,
-          J: IntoIterator<Item=I::Item>,
-          I::Item: PartialOrd,
+          J: IntoIterator<Item = I::Item>,
+          I::Item: PartialOrd
 {
     i.into_iter().merge(j)
+}
+
+/// Create an iterator that merges elements of the contained iterators.
+///
+/// Equivalent to `i.into_iter().kmerge()`.
+///
+/// ```
+/// use itertools::free::kmerge;
+///
+/// for elt in kmerge(vec![vec![0, 2, 4], vec![1, 3, 5], vec![6, 7]]) {
+///     /* loop body */
+/// }
+/// ```
+pub fn kmerge<I>(i: I) -> KMerge<<<I as IntoIterator>::Item as IntoIterator>::IntoIter>
+    where I: IntoIterator,
+          I::Item: IntoIterator,
+          <<I as IntoIterator>::Item as IntoIterator>::Item: Ord,
+{
+    i.into_iter().kmerge()
 }
 
 /// Combine all iterator elements into one String, seperated by `sep`.
@@ -211,7 +231,7 @@ pub fn merge<I, J>(i: I, j: J) -> Merge<I::IntoIter, J::IntoIter>
 /// ```
 pub fn join<I>(iterable: I, sep: &str) -> String
     where I: IntoIterator,
-          I::Item: Display,
+          I::Item: Display
 {
     iterable.into_iter().join(sep)
 }
@@ -228,7 +248,7 @@ pub fn join<I>(iterable: I, sep: &str) -> String
 /// ```
 pub fn sorted<I>(iterable: I) -> Vec<I::Item>
     where I: IntoIterator,
-          I::Item: Ord,
+          I::Item: Ord
 {
     iterable.into_iter().sorted()
 }
