@@ -81,6 +81,7 @@ pub use sources::{RepeatCall, Unfold};
 pub use stride::Stride;
 pub use stride::StrideMut;
 pub use tee::Tee;
+pub use zip_eq::ZipEq;
 pub use zip_longest::{ZipLongest, EitherOrBoth};
 pub use ziptuple::Zip;
 #[cfg(feature = "unstable")]
@@ -103,6 +104,7 @@ mod sources;
 pub mod size_hint;
 mod stride;
 mod tee;
+mod zip_eq;
 mod zip_longest;
 mod ziptuple;
 #[cfg(feature = "unstable")]
@@ -275,6 +277,19 @@ pub trait Itertools : Iterator {
               Self: Sized
     {
         ZipLongest::new(self, other.into_iter())
+    }
+
+    /// Create an iterator which iterates over both this and the specified
+    /// iterator simultaneously, yielding pairs of elements.
+    ///
+    /// **Panics** if the iterators reach an end and they are not of equal
+    /// lengths.
+    #[inline]
+    fn zip_eq<J>(self, other: J) -> ZipEq<Self, J::IntoIter>
+        where J: IntoIterator,
+              Self: Sized
+    {
+        zip_eq::new(self, other.into_iter())
     }
 
     /// A “meta iterator adaptor”. Its closure recives a reference to the iterator
@@ -1247,6 +1262,64 @@ pub trait Itertools : Iterator {
         }
     }
 
+    /// An iterator adaptor that applies a function, producing a single, final value.
+    ///
+    /// `fold_while()` is basically equivalent to `fold()` but with additional support for
+    /// early exit via short-circuiting.
+    ///
+    /// ```
+    /// use itertools::Itertools;
+    /// use itertools::FoldWhile::{Continue, Done};
+    ///
+    /// let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    ///
+    /// let mut result = 0;
+    ///
+    /// // for loop:
+    /// for i in &numbers {
+    ///     if *i > 5 {
+    ///         break;
+    ///     }
+    ///     result = result + i;
+    /// }
+    ///
+    /// // fold:
+    /// let result2 = numbers.iter().fold(0, |acc, x| {
+    ///     if *x > 5 { acc } else { acc + x }
+    /// });
+    ///
+    /// // fold_while:
+    /// let result3 = numbers.iter().fold_while(0, |acc, x| {
+    ///     if *x > 5 { Done(acc) } else { Continue(acc + x) }
+    /// });
+    ///
+    /// // they're the same
+    /// assert_eq!(result, result2);
+    /// assert_eq!(result2, result3);
+    /// ```
+    ///
+    /// The big difference between the computations of `result2` and `result3` is that while
+    /// `fold()` called the provided closure for every item of the callee iterator,
+    /// `fold_while()` actually stopped iterating as soon as it encountered `Fold::Done(_)`.
+    fn fold_while<B, F>(self, init: B, mut f: F) -> B
+        where Self: Sized,
+              F: FnMut(B, Self::Item) -> FoldWhile<B>
+    {
+        let mut accum = init;
+        for item in self {
+            match f(accum, item) {
+                FoldWhile::Continue(res) => {
+                    accum = res;
+                }
+                FoldWhile::Done(res) => {
+                    accum = res;
+                    break;
+                }
+            }
+        }
+        accum
+    }
+
     /// Tell if the iterator is empty or not according to its size hint.
     /// Return `None` if the size hint does not tell, or return a `Some`
     /// value with the emptiness if it's possible to tell.
@@ -1330,6 +1403,46 @@ pub trait Itertools : Iterator {
               F: FnMut(&Self::Item, &Self::Item) -> Ordering,
     {
         self.sorted_by(cmp)
+    }
+
+    /// Collect all iterator elements into one of two
+    /// partitions. Unlike `Iterator::partition`, each partition may
+    /// have a distinct type.
+    ///
+    /// ```
+    /// use itertools::{Itertools, Partition};
+    ///
+    /// let successes_and_failures = vec![Ok(1), Err(false), Err(true), Ok(2)];
+    ///
+    /// let (successes, failures): (Vec<_>, Vec<_>) = successes_and_failures
+    ///     .into_iter()
+    ///     .partition_map(|r| {
+    ///         match r {
+    ///             Ok(v) => Partition::Left(v),
+    ///             Err(v) => Partition::Right(v),
+    ///         }
+    ///     });
+    ///
+    /// assert_eq!(successes, [1, 2]);
+    /// assert_eq!(failures, [false, true]);
+    /// ```
+    fn partition_map<A, B, F, L, R>(self, predicate: F) -> (A, B)
+        where Self: Sized,
+              F: Fn(Self::Item) -> Partition<L, R>,
+              A: Default + Extend<L>,
+              B: Default + Extend<R>,
+    {
+        let mut left = A::default();
+        let mut right = B::default();
+
+        for val in self {
+            match predicate(val) {
+                Partition::Left(v) => left.extend(Some(v)),
+                Partition::Right(v) => right.extend(Some(v)),
+            }
+        }
+
+        (left, right)
     }
 }
 
@@ -1439,3 +1552,24 @@ pub fn partition<'a, A: 'a, I, F>(iter: I, mut pred: F) -> usize
     }
     split_index
 }
+
+/// Classifies the result of the `.partition_map()` closure into a
+/// partition.
+pub enum Partition<L, R> {
+    /// Classify into the left partition.
+    Left(L),
+    /// Classify into the right partition.
+    Right(R),
+}
+
+
+/// An enum used for controlling the execution of `.fold_while()`.
+/// 
+/// See [`.fold_while()`](trait.Itertools.html#method.fold_while) for more information.
+pub enum FoldWhile<T> {
+    /// Continue folding with this value
+    Continue(T),
+    /// Fold is complete and will return this value
+    Done(T),
+}
+

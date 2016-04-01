@@ -28,7 +28,6 @@ macro_rules! clone_fields {
     );
 }
 
-
 /// An iterator adaptor that alternates elements from two iterators until both
 /// run out.
 ///
