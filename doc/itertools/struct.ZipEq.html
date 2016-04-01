@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `RepeatCall` struct in crate `itertools`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, RepeatCall">
+    <meta name="description" content="API documentation for the Rust `ZipEq` struct in crate `itertools`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ZipEq">
 
-    <title>itertools 0.4.12 - itertools::RepeatCall - Rust</title>
+    <title>itertools 0.4.12 - itertools::ZipEq - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'RepeatCall', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>itertools</a></p><script>window.sidebarCurrent = {name: 'ZipEq', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,35 +42,19 @@
     </nav>
 
     <section id='main' class="content struct">
-<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>itertools</a>::<wbr><a class='struct' href=''>RepeatCall</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>itertools</a>::<wbr><a class='struct' href=''>ZipEq</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-1825' class='srclink' href='../src/itertools/src/sources.rs.html#23-25' title='goto source code'>[src]</a></span></h1>
-<pre class='rust struct'>pub struct RepeatCall&lt;F&gt; {
+               </span><a id='src-2239' class='srclink' href='../src/itertools/src/zip_eq.rs.html#8-11' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>#[must_use = "iterator adaptors are lazy and do nothing unless consumed"]
+pub struct ZipEq&lt;I, J&gt; {
     // some fields omitted
-}</pre><div class='docblock'><p>An iterator source that produces elements indefinitely by calling
-a given closure.</p>
+}</pre><div class='docblock'><p>An iterator which iterates two other iterators simultaneously</p>
 
-<p>Iterator element type is the return type of the closure.</p>
-
-<pre class='rust rust-example-rendered'>
-<span class='kw'>use</span> <span class='ident'>itertools</span>::<span class='ident'>RepeatCall</span>;
-
-<span class='ident'>itertools</span>::<span class='ident'>assert_equal</span>(
-    <span class='ident'>RepeatCall</span>::<span class='ident'>new</span>(<span class='op'>||</span> <span class='string'>&quot;A&quot;</span>.<span class='ident'>to_string</span>()).<span class='ident'>take</span>(<span class='number'>5</span>),
-    <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;A&quot;</span>, <span class='string'>&quot;A&quot;</span>, <span class='string'>&quot;A&quot;</span>, <span class='string'>&quot;A&quot;</span>, <span class='string'>&quot;A&quot;</span>]
-);
-
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='number'>1</span>;
-<span class='ident'>itertools</span>::<span class='ident'>assert_equal</span>(
-    <span class='ident'>RepeatCall</span>::<span class='ident'>new</span>(<span class='op'>||</span> { <span class='ident'>x</span> <span class='op'>=</span> <span class='op'>-</span><span class='ident'>x</span>; <span class='ident'>x</span> }).<span class='ident'>take</span>(<span class='number'>5</span>),
-    <span class='macro'>vec</span><span class='macro'>!</span>[<span class='op'>-</span><span class='number'>1</span>, <span class='number'>1</span>, <span class='op'>-</span><span class='number'>1</span>, <span class='number'>1</span>, <span class='op'>-</span><span class='number'>1</span>]
-);</pre>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;F&gt; <a class='struct' href='../itertools/struct.RepeatCall.html' title='itertools::RepeatCall'>RepeatCall</a>&lt;F&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>&lt;A&gt;(func: F) -&gt; Self <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>() -&gt; A</span></code></h4>
-<div class='docblock'><p>Create a new <code>RepeatCall</code> from a closure.</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;A, F&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> for <a class='struct' href='../itertools/struct.RepeatCall.html' title='itertools::RepeatCall'>RepeatCall</a>&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>() -&gt; A</span></code></h3><div class='impl-items'><h4 id='associatedtype.Item' class='type'><code>type <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#associatedtype.Item' class='type'>Item</a> = A</code></h4>
-<h4 id='method.next' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#tymethod.next' class='fnname'>next</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;A&gt;</code></h4>
+<p>See <a href="trait.Itertools.html#method.zip_eq"><em>.zip_eq()</em></a> for more information.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;I, J&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> for <a class='struct' href='../itertools/struct.ZipEq.html' title='itertools::ZipEq'>ZipEq</a>&lt;I, J&gt; <span class='where'>where I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a>, J: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a></span></code></h3><div class='impl-items'><h4 id='associatedtype.Item' class='type'><code>type <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#associatedtype.Item' class='type'>Item</a> = <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a>I::Item, J::Item<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a></code></h4>
+<h4 id='method.next' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#tymethod.next' class='fnname'>next</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Item</a>&gt;</code></h4>
 <h4 id='method.size_hint' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.size_hint' class='fnname'>size_hint</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a></code></h4>
 <h4 id='method.count' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.count' class='fnname'>count</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h4>
 <h4 id='method.last' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.last' class='fnname'>last</a>(self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Item</a>&gt;</code></h4>
@@ -117,7 +101,9 @@ a given closure.</p>
 <h4 id='method.le' class='method'><span class="since">1.5.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.le' class='fnname'>le</a>&lt;I&gt;(self, other: I) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> <span class='where'>where I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>, Self::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Item</a>: <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html' title='core::cmp::PartialOrd'>PartialOrd</a>&lt;I::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>Item</a>&gt;</span></code></h4>
 <h4 id='method.gt' class='method'><span class="since">1.5.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.gt' class='fnname'>gt</a>&lt;I&gt;(self, other: I) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> <span class='where'>where I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>, Self::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Item</a>: <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html' title='core::cmp::PartialOrd'>PartialOrd</a>&lt;I::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>Item</a>&gt;</span></code></h4>
 <h4 id='method.ge' class='method'><span class="since">1.5.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.ge' class='fnname'>ge</a>&lt;I&gt;(self, other: I) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> <span class='where'>where I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>, Self::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Item</a>: <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html' title='core::cmp::PartialOrd'>PartialOrd</a>&lt;I::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>Item</a>&gt;</span></code></h4>
-</div><h3 class='impl'><code>impl&lt;A, F&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.DoubleEndedIterator.html' title='core::iter::DoubleEndedIterator'>DoubleEndedIterator</a> for <a class='struct' href='../itertools/struct.RepeatCall.html' title='itertools::RepeatCall'>RepeatCall</a>&lt;F&gt; <span class='where'>where F: <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>() -&gt; A</span></code></h3><div class='impl-items'><h4 id='method.next_back' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.DoubleEndedIterator.html#tymethod.next_back' class='fnname'>next_back</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;A&gt;</code></h4>
+</div><h3 class='impl'><code>impl&lt;I, J&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.ExactSizeIterator.html' title='core::iter::ExactSizeIterator'>ExactSizeIterator</a> for <a class='struct' href='../itertools/struct.ZipEq.html' title='itertools::ZipEq'>ZipEq</a>&lt;I, J&gt; <span class='where'>where I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.ExactSizeIterator.html' title='core::iter::ExactSizeIterator'>ExactSizeIterator</a>, J: <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.ExactSizeIterator.html' title='core::iter::ExactSizeIterator'>ExactSizeIterator</a></span></code></h3><div class='impl-items'><h4 id='method.len' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.ExactSizeIterator.html#method.len' class='fnname'>len</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a>, J: <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../itertools/struct.ZipEq.html' title='itertools::ZipEq'>ZipEq</a>&lt;I, J&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../itertools/struct.ZipEq.html' title='itertools::ZipEq'>ZipEq</a>&lt;I, J&gt;</code></h4>
+<h4 id='method.clone_from' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
 </div></section>
     <section id='search' class="content hidden"></section>
 
