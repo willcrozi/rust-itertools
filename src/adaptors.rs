@@ -139,7 +139,7 @@ impl<I, J> Iterator for InterleaveShortest<I, J>
         let bound = |a: usize, b: usize| -> Option<usize> {
             use std::cmp::min;
             2usize.checked_mul(min(a, b))
-                .and_then(|lhs| lhs.checked_add(if !self.phase && a > b { 1 } else { 0 }))
+                .and_then(|lhs| lhs.checked_add(if  !self.phase && a > b || (self.phase && a < b)  { 1 } else { 0 }))
         };
 
         let (l0, u0) = self.it0.size_hint();
@@ -312,8 +312,7 @@ impl<I, J> Product<I, J>
     /// Create a new cartesian product iterator
     ///
     /// Iterator element type is `(I::Item, J::Item)`.
-    pub fn new(i: I, j: J) -> Self {
-        let mut i = i;
+    pub fn new(mut i: I, j: J) -> Self {
         Product {
             a_cur: i.next(),
             a: i,
