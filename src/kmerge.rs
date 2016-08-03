@@ -119,7 +119,7 @@ impl<I> Ord for HeadTail<I>
 
 /// Make `data` a heap (max-heap w.r.t T's Ord).
 fn heapify<T: Ord>(data: &mut [T]) {
-    for i in 0..data.len() / 2 {
+    for i in (0..data.len() / 2).rev() {
         sift_down(data, i);
     }
 }
@@ -153,7 +153,7 @@ fn sift_down<T: Ord>(heap: &mut [T], index: usize) {
 ///
 /// Iterator element type is `I::Item`.
 ///
-/// See [*.kmerge()*](trait.Itertools.html#method.kmerge) for more information.
+/// See [`.kmerge()`](trait.Itertools.html#method.kmerge) for more information.
 pub struct KMerge<I>
     where I: Iterator
 {
