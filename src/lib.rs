@@ -478,6 +478,9 @@ pub trait Itertools : Iterator {
         ISlice::new(self, range)
     }
 
+    /// **Deprecated:** use `itertools::free::rciter` instead.
+    /// (It's an iterator constructor, not an adaptor).
+    ///
     /// Return an iterator inside a `Rc<RefCell<_>>` wrapper.
     ///
     /// The returned `RcIter` can be cloned, and each clone will refer back to the
@@ -505,6 +508,7 @@ pub trait Itertools : Iterator {
     /// **Panics** in iterator methods if a borrow error is encountered,
     /// but it can only happen if the `RcIter` is reentered in for example `.next()`,
     /// i.e. if it somehow participates in an “iterator knot” where it is an adaptor of itself.
+    #[cfg_attr(feature = "unstable", deprecated(note = "use itertools::free::rciter instead"))]
     fn into_rc(self) -> RcIter<Self>
         where Self: Sized
     {
@@ -916,6 +920,8 @@ pub trait Itertools : Iterator {
         Flatten::new(self)
     }
 
+    /// **Deprecated:** Will be removed in the next version
+    ///
     /// Like regular `.map()`, specialized to using a simple function pointer instead,
     /// so that the resulting `Map` iterator value can be cloned.
     ///
@@ -932,6 +938,7 @@ pub trait Itertools : Iterator {
     /// itertools::assert_equal(iter, vec![Some(1), Some(0), None]);
     /// itertools::assert_equal(iter_copy, vec![Some(1), Some(0), None]);
     /// ```
+    #[cfg_attr(feature = "unstable", deprecated(note = "will be removed in the next version"))]
     fn map_fn<B>(self, f: fn(Self::Item) -> B) -> MapFn<Self, B>
         where Self: Sized
     {
@@ -1514,7 +1521,7 @@ pub trait Itertools : Iterator {
     fn minmax(self) -> MinMaxResult<Self::Item>
         where Self: Sized, Self::Item: Ord
     {
-        minmax::minmax_impl(self, |_| (), |x, y, _, _| x < y, |x, y, _, _| x > y)
+        minmax::minmax_impl(self, |_| (), |x, y, _, _| x < y)
     }
 
     /// Return the minimum and maximum element of an iterator, as determined by
@@ -1525,10 +1532,28 @@ pub trait Itertools : Iterator {
     /// For the minimum, the first minimal element is returned.  For the maximum,
     /// the last maximal element wins.  This matches the behavior of the standard
     /// `Iterator::min()` and `Iterator::max()` methods.
-    fn minmax_by_key<K, F>(self, f: F) -> MinMaxResult<Self::Item>
+    fn minmax_by_key<K, F>(self, key: F) -> MinMaxResult<Self::Item>
         where Self: Sized, K: Ord, F: FnMut(&Self::Item) -> K
     {
-        minmax::minmax_impl(self, f, |_, _, xk, yk| xk < yk, |_, _, xk, yk| xk > yk)
+        minmax::minmax_impl(self, key, |_, _, xk, yk| xk < yk)
+    }
+
+    /// Return the minimum and maximum element of an iterator, as determined by
+    /// the specified comparison function.
+    ///
+    /// The return value is a variant of `MinMaxResult` like for `minmax()`.
+    ///
+    /// For the minimum, the first minimal element is returned.  For the maximum,
+    /// the last maximal element wins.  This matches the behavior of the standard
+    /// `Iterator::min()` and `Iterator::max()` methods.
+    fn minmax_by<F>(self, mut compare: F) -> MinMaxResult<Self::Item>
+        where Self: Sized, F: FnMut(&Self::Item, &Self::Item) -> Ordering
+    {
+        minmax::minmax_impl(
+            self,
+            |_| (),
+            |x, y, _, _| Ordering::Less == compare(x, y)
+        )
     }
 }
 
