@@ -2,7 +2,7 @@
 Itertools
 =========
 
-Extra iterator adaptors, functions and macros. Requires Rust 1.2+.
+Extra iterator adaptors, functions and macros. Requires Rust 1.11 or later.
 
 Please read the `API documentation here`__
 
@@ -19,7 +19,7 @@ __ https://bluss.github.io/rust-itertools/
 How to use with cargo::
 
     [dependencies]
-    itertools = "0.4.19"
+    itertools = "0.5"
 
 How to use in your crate:
 
@@ -38,6 +38,62 @@ How to contribute:
 
 Recent Changes
 --------------
+
+- 0.5.0
+
+  - `Release announcement <http://bluss.github.io/rust/2016/09/26/itertools-0.5.0/>`_
+  - Renamed:
+
+    - combinations is now tuple_combinations
+    - combinations_n to combinations
+    - group_by_lazy, chunks_lazy to group_by, chunks
+    - Unfold::new to unfold()
+    - RepeatCall::new to repeat_call()
+    - Zip::new to multizip
+    - PutBack::new, PutBackN::new to put_back, put_back_n
+    - PutBack::with_value is now a builder setter, not a constructor
+    - MultiPeek::new, .multipeek() to multipeek()
+    - format to format_with and format_default to format
+    - .into_rc() to rciter
+    - ``Partition`` enum is now ``Either``
+
+  - Module reorganization:
+
+    - All iterator structs are under ``itertools::structs`` but also
+      reexported to the top level, for backwards compatibility
+    - All free functions are reexported at the root, ``itertools::free`` will
+      be removed in the next version
+
+  - Removed:
+
+    - ZipSlices, use .zip() instead
+    - .enumerate_from(), ZipTrusted, due to being unstable
+    - .mend_slices(), moved to crate odds
+    - Stride, StrideMut, moved to crate odds
+    - linspace(), moved to crate itertools-num
+    - .sort_by(), use .sorted_by()
+    - .is_empty_hint(), use .size_hint()
+    - .dropn(), use .dropping()
+    - .map_fn(), use .map()
+    - .slice(), use .take() / .skip()
+    - helper traits in misc
+    - ``new`` constructors on iterator structs, use Itertools trait or free
+      functions instead
+    - ``itertools::size_hint`` is now private
+
+  - Behaviour changes:
+
+    - format and format_with helpers now panic if you try to format them more
+      than once.
+    - ``repeat_call`` is not double ended anymore
+
+  - New features:
+
+    - tuple flattening iterator is constructible with ``cons_tuples``
+    - itertools reexports ``Either`` from the ``either`` crate. ``Either<L, R>``
+      is an iterator when ``L, R`` are.
+    - ``MinMaxResult`` now implements Copy and Clone
+    - tuple_combinations supports 1-4 tuples of combinations (previously just 2)
 
 - 0.4.19
 
@@ -170,7 +226,7 @@ Recent Changes
 
 - 0.3.23
 
-  - Added .chunks_lazy(), similar to (and based on) .group_by_lazy().
+  - Added .chunks(), similar to (and based on) .group_by_lazy().
   - Tweak linspace to match numpy.linspace and make it double ended.
 
 - 0.3.22

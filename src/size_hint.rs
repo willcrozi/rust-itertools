@@ -30,6 +30,7 @@ pub fn add_scalar(sh: SizeHint, x: usize) -> SizeHint {
 
 /// Sbb **x** correctly to a **SizeHint**.
 #[inline]
+#[allow(dead_code)]
 pub fn sub_scalar(sh: SizeHint, x: usize) -> SizeHint {
     let (mut low, mut hi) = sh;
     low = low.saturating_sub(x);
@@ -38,32 +39,9 @@ pub fn sub_scalar(sh: SizeHint, x: usize) -> SizeHint {
 }
 
 
-/// Multiply **x** correctly with a **SizeHint**.
-///
-/// ```
-/// use std::usize;
-/// use itertools::size_hint;
-///
-/// assert_eq!(size_hint::mul_scalar((3, Some(4)), 3),
-///            (9, Some(12)));
-/// assert_eq!(size_hint::mul_scalar((3, Some(4)), usize::MAX),
-///            (usize::MAX, None));
-/// ```
-#[inline]
-pub fn mul_scalar(sh: SizeHint, x: usize) -> SizeHint {
-    let (mut low, mut hi) = sh;
-    low = low.checked_mul(x).unwrap_or(usize::MAX);
-    if x == 0 {
-        hi = Some(0)
-    } else {
-        hi = hi.and_then(|elt| elt.checked_mul(x));
-    }
-    (low, hi)
-}
-
 /// Multiply **SizeHint** correctly
 ///
-/// ```
+/// ```ignore
 /// use std::usize;
 /// use itertools::size_hint;
 ///
