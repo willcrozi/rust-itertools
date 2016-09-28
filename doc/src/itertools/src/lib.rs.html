@@ -1576,22 +1576,22 @@
         <span class='ident'>UniqueBy</span>,
         <span class='ident'>Flatten</span>,
     };
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>cons_tuples</span>::<span class='ident'>ConsTuples</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>cons_tuples_impl</span>::<span class='ident'>ConsTuples</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>format</span>::{<span class='ident'>Format</span>, <span class='ident'>FormatWith</span>};
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>groupbylazy</span>::{<span class='ident'>IntoChunks</span>, <span class='ident'>Chunk</span>, <span class='ident'>Chunks</span>, <span class='ident'>GroupBy</span>, <span class='ident'>Group</span>, <span class='ident'>Groups</span>};
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>intersperse</span>::<span class='ident'>Intersperse</span>;
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>kmerge</span>::<span class='ident'>KMerge</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>kmerge_impl</span>::<span class='ident'>KMerge</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>pad_tail</span>::<span class='ident'>PadUsing</span>;
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>rciter</span>::<span class='ident'>RcIter</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>rciter_impl</span>::<span class='ident'>RcIter</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>repeatn</span>::<span class='ident'>RepeatN</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>sources</span>::{<span class='ident'>RepeatCall</span>, <span class='ident'>Unfold</span>};
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>tee</span>::<span class='ident'>Tee</span>;
-    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip_eq</span>::<span class='ident'>ZipEq</span>;
+    <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip_eq_impl</span>::<span class='ident'>ZipEq</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>zip_longest</span>::<span class='ident'>ZipLongest</span>;
     <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>ziptuple</span>::<span class='ident'>Zip</span>;
 }
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>structs</span>::<span class='op'>*</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>cons_tuples</span>::<span class='ident'>cons_tuples</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>cons_tuples_impl</span>::<span class='ident'>cons_tuples</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>diff</span>::<span class='ident'>diff_with</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>diff</span>::<span class='ident'>Diff</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>minmax</span>::<span class='ident'>MinMaxResult</span>;
@@ -1603,20 +1603,20 @@
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>free</span>;
 <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>inline</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>free</span>::<span class='op'>*</span>;
-<span class='kw'>mod</span> <span class='ident'>cons_tuples</span>;
+<span class='kw'>mod</span> <span class='ident'>cons_tuples_impl</span>;
 <span class='kw'>mod</span> <span class='ident'>diff</span>;
 <span class='kw'>mod</span> <span class='ident'>format</span>;
 <span class='kw'>mod</span> <span class='ident'>groupbylazy</span>;
 <span class='kw'>mod</span> <span class='ident'>intersperse</span>;
-<span class='kw'>mod</span> <span class='ident'>kmerge</span>;
+<span class='kw'>mod</span> <span class='ident'>kmerge_impl</span>;
 <span class='kw'>mod</span> <span class='ident'>minmax</span>;
 <span class='kw'>mod</span> <span class='ident'>pad_tail</span>;
-<span class='kw'>mod</span> <span class='ident'>rciter</span>;
+<span class='kw'>mod</span> <span class='ident'>rciter_impl</span>;
 <span class='kw'>mod</span> <span class='ident'>repeatn</span>;
 <span class='kw'>mod</span> <span class='ident'>size_hint</span>;
 <span class='kw'>mod</span> <span class='ident'>sources</span>;
 <span class='kw'>mod</span> <span class='ident'>tee</span>;
-<span class='kw'>mod</span> <span class='ident'>zip_eq</span>;
+<span class='kw'>mod</span> <span class='ident'>zip_eq_impl</span>;
 <span class='kw'>mod</span> <span class='ident'>zip_longest</span>;
 <span class='kw'>mod</span> <span class='ident'>ziptuple</span>;
 
