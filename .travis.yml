@@ -27,6 +27,7 @@ matrix:
 branches:
   only:
     - master
+    - powerset-ci
     # bors branches
     - staging
     - trying
